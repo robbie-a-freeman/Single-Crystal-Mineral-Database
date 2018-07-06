@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Princeton Single-Crystal Mineral Database</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/css/customstyle.css">
+  <link rel="icon" href="../static/img/logo.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+  <style>
+  /* Remove the navbar's default margin-bottom and rounded borders */
+  .navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+  .row.content {height: 450px}
+
+  /* Set gray background color and 100% height */
+  .sidenav {
+    padding-top: 20px;
+    background-color: #f1f1f1;
+  }
+
+  /* Set black background color, white text and some padding */
+  footer {
+    background-color: #555;
+    color: white;
+    padding: 15px;
+  }
+
+  /* On small screens, set height to 'auto' for sidenav and grid */
+  @media screen and (max-width: 767px) {
+    .sidenav {
+      height: auto;
+      padding: 15px;
+    }
+    .row.content {height:auto;}
+  }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><img src="../static/img/logo.png"></img> Princeton Single-Crystal Mineral Database</a>
+    </div>
+    <a class="navbar-brand-right" href="https://www.princeton.edu/"><img src="../static/img/pusig.png" align="right"></img></a>
+  </nav>
+
+  <div class="container-fluid text-center">
+    <form method="POST">
+      <div class="row content">
+        <div class="col-sm-2 sidenav">
+          <p><a href="/search">Search</a></p> <!-- Go to advanced search page -->
+          <p><a href="/entries">Browse all entries</a></p> <!-- List of names of all minerals in DB -->
+          <p><a href="/changelog">Changelog</a></p> <!-- Log of changes for transparency -->
+          <p><a href="/downloads">Downloads</a></p> <!-- Tom's paper, complete database, etc. -->
+          <p><a href="/links">Related Links</a></p> <!-- List of related links -->
+          <p><a href="/databases">Other Databases</a></p> <!-- List of other DBs -->
+          <p><a href="https://www.princeton.edu/geosciences/">Princeton Geosciences</a></p> <!-- Link to Princeton Geosciences -->
+        </div>
+        <!-- Note: for the checkbox scripts to work, the children need to be of a
+        class of the same name as their parent's id -->
+        <div class="col-sm text-left">
+          <h2>Mineral Class</h2>
+          <input id="all_minerals" type="checkbox" name="all_minerals"> Select all</input><br>
+          <div class="sub_stat_categories">
+            <input id="silicates" class="all_minerals" type="checkbox" name="Silicates" value="Silicates"> Silicates <button class="accordion"> + </button><br>
+            <div class="structures">
+              <input class="silicates" type="checkbox" name="Garnet" value="Garnet"> Garnet<br>
+              <input class="silicates" type="checkbox" name="Spinel" value="Spinel"> Spinel<br>
+              <input class="silicates" type="checkbox" name="Zeolite" value="Zeolite"> Zeolite<br>
+              <input class="silicates" type="checkbox" name="Eulytine" value="Eulytine"> Eulytine<br>
+            </div>
+            <input id="oxides" class="all_minerals" type="checkbox" name="Oxides" value="Oxides"> Oxides<br>
+            <input id="halides" class="all_minerals" type="checkbox" name="Halides" value="Halides"> Halides<br>
+            <input id="sulfides" class="all_minerals" type="checkbox" name="Sulfides" value="Sulfides"> Sulfides<br>
+            <input id="nitrates" class="all_minerals" type="checkbox" name="Nitrates" value="Nitrates"> Nitrates<br>
+            <input id="carbon_and_carbides" class="all_minerals" type="checkbox" name="Carbon and Carbides" value="Carbon and Carbides"> Carbon and Carbides<br>
+            <input id="nitrides" class="all_minerals" type="checkbox" name="Nitrides" value="Nitrides"> Nitrides<br>
+            <input id="phosphides" class="all_minerals" type="checkbox" name="Phosphides" value="Phosphides"> Phosphides<br>
+          </div>
+          <br>
+        </div>
+        <div class="col-sm text-left">
+          <h2>Desired Properties</h2>
+          <script>$(function () { /* toggle the tooltips on */
+            $('[data-toggle="tooltip"]').tooltip()
+          })</script>
+          <p><a href="/definitions">For detailed definitions of quantities, please visit this page.</a></p>
+          <input id="all_cats" name="all_cats" type="checkbox"> Select all</input><br>
+          <div class="sub_stat_categories">
+            <input id="aem" class="all_cats" type="checkbox" name="aem" value="aem"> Adiabatic elastic moduli <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="C<sub>11</sub>, C<sub>12</sub>, C<sub>44</sub> – 3 independent, non-zero, adiatic elastic moduli that characterize crystals of cubic symmetry (in units of GPa)"><i class="fa fa-question"></i></button><br>
+            <input id="am" class="all_cats"  type="checkbox" name="am" value="am"> Aggregate adiabatic elastic moduli<br>
+            <div class="sub_stat_categories">
+              <input class="am" type="checkbox" name="vrh" value="vrh"> Voigt-Reuss-Hill averages <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="K, G, K/G, E, ν - Average of the Voigt and Reuss bounds on bulk and shear moduli (in units of GPa)"><i class="fa fa-question"></i></button><br>
+              <input class="am" type="checkbox" name="vrb" value="vrb"> Voigt, Reuss bounds on shear modulus <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="G<sub>R</sub>, G<sub>V</sub> - Resus (lower) and Voigt (upper) bounds on the effective shear modulus of a randomly oriented polycrystalline aggregate (in units of GPa)"><i class="fa fa-question"></i></button><br>
+              <input class="am" type="checkbox" name="hsb" value="hsb"> Hashin-Shtrikman bounds on shear modulus <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="Hashin-Shtrikman bounds on the aggregate shear modulus (G<sub>HS1</sub>, G<sub>HS2</sub>) and average of the bounds (G<sub>HSA</sub>) (in units of GPa)"><i class="fa fa-question"></i></button><br>
+              <input class="am" type="checkbox" name="ympr" value="ympr"> Aggregate Young’s modulus and Poisson’s ratio <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="Aggregate values of Young’s modulus (in GPa) and Poisson’s ratio (dimensionless) using Voigt-Reuss-Hill averages"><i class="fa fa-question"></i></button><br>
+            </div>
+            <input id="sv" class="all_cats"  type="checkbox" name="sv" value="sv"> Sound velocities <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="P-wave and S-wave velocities. Also includes the shear wave velocity: V<sub>P</sub>, V<sub>B</sub>, V<sub>S</sub>"><i class="fa fa-question"></i></button><br>
+            <input id="svr" class="all_cats"  type="checkbox" name="svr" value="svr"> Sound velocity ratios <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="K/G, V<sub>P</sub> / V<sub>S</sub>, V<sub>B</sub> / V<sub>S</sub> - Ratios of aggregate elastic moduli and elastic wave velocities  (Voigt-Reuss-Hill averages)"><i class="fa fa-question"></i></button><br>
+            <input id="nm" class="all_cats"  type="checkbox" name="nm" value="nm"> Normalized elastic moduli <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="Ratios of individual adiabatic elastic moduli (C<sub>12</sub> / C<sub>11</sub>, C<sub>44</sub> / C<sub>11</sub>) used in Blackman diagrams"><i class="fa fa-question"></i></button><br>
+            <input id="af" class="all_cats"  type="checkbox" name="af" value="af"> Anisotropy factors <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="Metrics for characterizing the elastic anisotropy of cubic crystals:  A<sup>Z</sup> – Zener anisotropy ratio, A<sup>G</sup> – Chung-Buessem anisotropy factor (in %), A<sup>U</sup> – Universal anisotropy index, A<sup>L</sup> – Kube log-Euclidean anisotropy index"><i class="fa fa-question"></i></button><br>
+            <input id="ec" class="all_cats"  type="checkbox" name="ec" value="ec"> Adiabatic elastic compliances <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="S<sub>11</sub>, S<sub>44</sub>, S<sub>12</sub> - Three non-zero, independent, adiabatic elastic compliances for cubic crystals (S11, S44, S12 ) (Units of GPa<sup>-1</sup>)"><i class="fa fa-question"></i></button><br>
+            <input id="pre" class="all_cats"  type="checkbox" name="pre" value="pre"> Extrema of Poisson’s ratio <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" title="Poisson’s ratio, ν(n,m), for direction pairs (110, 001) and (110, 1-10) which represent extrema in this quantity for most cubic crystals"><i class="fa fa-question"></i></button><br>
+            <br>
+            <input type="submit" value="Search">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <script src="../static/js/checkboxes.js"></script>
+  <script src="../static/js/accordion.js"></script>
+
+  <footer class="text-center">
+    <div id="footer-imgs">
+      <a href="https://www.princeton.edu/geosciences/"><img src="../static/img/geo_logo.png" align="left"></img></a>
+      <a href="https://www.nsf.gov/"><img src="../static/img/NSF_logo.png" height="6%" width="6%" align="right"></img></a>
+
+      <p>Reference:  Duffy, T. S., Single-crystal elastic constants of minerals and related materials with cubic symmetry, American Mineralogist, 103, 977-988, 2018.</p>
+      <p>Email: duffy@princeton.edu</p>
+      <p>This project was supported by <a style="color:white;" href="http://compres.us/">COMPRES</a>, the Consortium for Materials Properties Research in Earth Sciences under NSF Cooperative Agreement EAR 1606856</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+@font-face {
+  font-family: 'Princeton Monticello';
+  src: url('../fonts/Monticello-fonts-TrueType/fonts-truetype/PrinceMontiDSOSRegular.ttf') format('truetype'); /* princeton_monticello */
+}
+
+h1, h2 {
+  text-align: center;
+  padding:20px;
+}
+
+form.bottom-button {
+  margin:10px;
+}
+
+.col-sm-10 {
+  padding:40px;
+  height:auto;
+}
+
+.col-sm {
+  margin:10px;
+  height:auto;
+}
+
+body {
+  font-family:"Princeton Monticello", "Times New Roman";
+  height:auto;
+  min-height:100%;
+  position: relative;
+}
+
+footer {
+  position:relative;
+  bottom:0;
+}
+
+#footer-img {
+  left:0px;
+  position: absolute;
+  bottom:0px;
+  height:auto;
+  width:100%;
+  background:#999;
+}
+
+#footer-img img {
+  position: relative;
+}
+
+.navbar {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+  cursor: pointer;
+  background: none;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  color: black;
+  font-size: 18px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active {
+  color:#ff8f00;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.structures {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+}
+
+a, a:visited {
+  color:black;
+  font-weight:bold;
+}
+
+a:hover {
+  text-decoration:underline;
+  color:#ff8f00;
+}
+
+.container-fluid {
+  margin: 0;
+  height:630px;
+}
+
+.sidenav {
+  height:630px;
+  font-weight: bold;
+}
+
+.btn-info {
+  padding:0px 4px 0px 4px;
+  font-size:10px;
+  color: black;
+  outline:none;
+  border-color: black;
+  background-color:white;
+}
+
+.tooltip {
+  font-family:"Princeton Monticello";
+}
+
+.btn-info:hover, .btn:focus, .btn-info:active  {
+  box-shadow:none;
+  color: white;
+  outline:none;
+  border-color: black;
+  background-color:black;
+}
+
+.sub_stat_categories {
+  margin-left: 20px;
+}
+
+td, th {
+  padding-right: 10px;
+}
+
+.undecorated {
+  text-decoration:none;
+  font-weight:normal;
+}

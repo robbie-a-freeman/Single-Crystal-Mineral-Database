@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Princeton Single-Crystal Mineral Database</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/customstyle.css">
+  <link rel="icon" href="../static/img/logo.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+
+  .container-fluid, .sidenav {
+    height:1000px;
+  }
+
+  /* Remove the navbar's default margin-bottom and rounded borders */
+  .navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+  .row.content {height: 450px}
+
+  /* Set gray background color and 100% height */
+  .sidenav {
+    padding-top: 20px;
+    background-color: #f1f1f1;
+  }
+
+  /* Set black background color, white text and some padding */
+  footer {
+    background-color: #555;
+    color: white;
+    padding: 15px;
+  }
+
+  /* On small screens, set height to 'auto' for sidenav and grid */
+  @media screen and (max-width: 767px) {
+    .sidenav {
+      height: auto;
+      padding: 15px;
+    }
+    .row.content {height:auto;}
+  }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><img src="../static/img/logo.png"></img> Princeton Single-Crystal Mineral Database</a>
+    </div>
+    <a class="navbar-brand-right" href="https://www.princeton.edu/"><img src="../static/img/pusig.png" align="right"></img></a>
+  </nav>
+
+  <div class="container-fluid text-center">
+    <div class="row content">
+      <div class="col-sm-2 sidenav">
+        <p><a href="/search">Search</a></p> <!-- Go to advanced search page -->
+        <p><a href="/entries">Browse all entries</a></p> <!-- List of names of all minerals in DB -->
+        <p><a href="/changelog">Changelog</a></p> <!-- Log of changes for transparency -->
+        <p><a href="/downloads">Downloads</a></p> <!-- Tom's paper, complete database, etc. -->
+        <p><a href="/links">Related Links</a></p> <!-- List of related links -->
+        <p><a href="/databases">Other Databases</a></p> <!-- List of other DBs -->
+        <p><a href="https://www.princeton.edu/geosciences/">Princeton Geosciences</a></p> <!-- Link to Princeton Geosciences -->
+      </div>
+      <div class="col-sm-10 text-left">
+
+        <h1>Related Software Links</h1>
+        <br></br>
+        <div class=WordSection1>
+
+          <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+            normal'>MSAT<o:p></o:p></b></p>
+
+            <p class=MsoNormal align=center style='text-align:center'><span
+              class=MsoHyperlink><a href="https://www1.gly.bris.ac.uk/MSAT/">https://www1.gly.bris.ac.uk/MSAT/</a></span></p>
+
+              <p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+
+              <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+                normal'>ELAM<o:p></o:p></b></p>
+
+                <p class=MsoNormal align=center style='text-align:center'><span
+                  class=MsoHyperlink><b style='mso-bidi-font-weight:normal'><a
+                    href="https://www.sciencedirect.com/science/article/pii/S0010465510003401">https://www.sciencedirect.com/science/article/pii/S0010465510003401</a></b></span><b
+                    style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
+
+                    <p class=MsoBibliography><span class=SpellE>Marmier</span>, A., Lethbridge,
+                      Z.A.D., Walton, R.I., Smith, C.W., Parker, S.C., and Evans, K.E. (2010) <span
+                      class=SpellE>ElAM</span>: A computer program for the analysis and
+                      representation of anisotropic elastic properties. Computer Physics
+                      Communications, 181, 2102–2115.</p>
+
+                      <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+                        normal'><o:p>&nbsp;</o:p></b></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+                          normal'>ELATE<o:p></o:p></b></p>
+
+                          <p class=MsoNormal style='text-align:center'><span class=MsoHyperlink><a
+                            href="http://iopscience.iop.org/article/10.1088/0953-8984/28/27/275201/meta">http://iopscience.iop.org/article/10.1088/0953-8984/28/27/275201/meta</a></span></p>
+
+                            <p class=MsoNormal style='margin-left:24.0pt;text-indent:-24.0pt;line-height:
+                            normal'><span class=SpellE><span style='mso-bidi-font-size:12.0pt;mso-fareast-font-family:
+                              "Times New Roman"'>Gaillac</span></span><span style='mso-bidi-font-size:12.0pt;
+                              mso-fareast-font-family:"Times New Roman"'>, R., <span class=SpellE>Pullumbi</span>,
+                              P., and <span class=SpellE>Coudert</span>, F.-X. (2016) ELATE: an open-source
+                              online application for analysis and visualization of elastic tensors. Journal
+                              of Physics: Condensed Matter, 28, 275201.<o:p></o:p></span></p>
+
+                              <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                              <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+                                normal'>MTEX<o:p></o:p></b></p>
+
+                                <p class=MsoNormal style='text-align:center'><a
+                                  href="http://mtex-toolbox.github.io/">http://mtex-toolbox.github.io/</a> and <a href="http://www.gm.univ-montp2.fr/PERSO/mainprice/W_data/CareWare_Unicef_Databases/">http://www.gm.univ-montp2.fr/PERSO/mainprice/W_data/CareWare_Unicef_Databases/</a></span></p>
+
+                                  <p class=MsoBibliography>Mainprice, D. (1990) A FORTRAN program to calculate
+                                    seismic anisotropy from the lattice preferred orientation of minerals.
+                                    Computers &amp; Geosciences, 16, 385–393.</p>
+
+                                    <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <footer class="text-center">
+                              <div id="footer-imgs">
+                                <a href="https://www.princeton.edu/geosciences/"><img src="../static/img/geo_logo.png" align="left"></img></a>
+                                <a href="https://www.nsf.gov/"><img src="../static/img/NSF_logo.png" height="6%" width="6%" align="right"></img></a>
+
+                                <p>Reference:  Duffy, T. S., Single-crystal elastic constants of minerals and related materials with cubic symmetry, American Mineralogist, 103, 977-988, 2018.</p>
+                                <p>Email: duffy@princeton.edu</p>
+                                <p>This project was supported by <a style="color:white;" href="http://compres.us/">COMPRES</a>, the Consortium for Materials Properties Research in Earth Sciences under NSF Cooperative Agreement EAR 1606856</p>
+                              </div>
+                            </footer>
+
+                          </body>
+                          </html>

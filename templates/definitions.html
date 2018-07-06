@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Princeton Single-Crystal Mineral Database</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/customstyle.css">
+  <link rel="icon" href="../static/img/logo.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  .container-fluid {
+    height:4500px;
+  }
+
+  .sidenav {
+    height:4500px;
+  }
+
+  /* Remove the navbar's default margin-bottom and rounded borders */
+  .navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+  .row.content {height: 450px}
+
+  /* Set gray background color and 100% height */
+  .sidenav {
+    padding-top: 20px;
+    background-color: #f1f1f1;
+  }
+
+  /* Set black background color, white text and some padding */
+  footer {
+    background-color: #555;
+    color: white;
+    padding: 15px;
+  }
+
+  .MsoNormal {
+    font-size:18px;
+  }
+
+  /* On small screens, set height to 'auto' for sidenav and grid */
+  @media screen and (max-width: 767px) {
+    .sidenav {
+      height: auto;
+      padding: 15px;
+    }
+    .row.content {height:auto;}
+  }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><img src="../static/img/logo.png"></img> Princeton Single-Crystal Mineral Database</a>
+    </div>
+    <a class="navbar-brand-right" href="https://www.princeton.edu/"><img src="../static/img/pusig.png" align="right"></img></a>
+  </nav>
+
+  <div class="container-fluid text-center">
+    <div class="row content">
+      <div class="col-sm-2 sidenav">
+        <p><a href="/search">Search</a></p> <!-- Go to advanced search page -->
+        <p><a href="/entries">Browse all entries</a></p> <!-- List of names of all minerals in DB -->
+        <p><a href="/changelog">Changelog</a></p> <!-- Log of changes for transparency -->
+        <p><a href="/downloads">Downloads</a></p> <!-- Tom's paper, complete database, etc. -->
+        <p><a href="/links">Related Links</a></p> <!-- List of related links -->
+        <p><a href="/databases">Other Databases</a></p> <!-- List of other DBs -->
+        <p><a href="https://www.princeton.edu/geosciences/">Princeton Geosciences</a></p> <!-- Link to Princeton Geosciences -->
+      </div>
+      <div class="col-sm-10 text-left">
+        <h1>Elaborate Definitions</h1>
+        <div class=WordSection1>
+
+          <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+          <p class=MsoNormal><u>Adiabatic elastic moduli (<i>C<sub>11</sub></i>, <i>C<sub>44</sub></i>,
+            <i>C<sub>12</sub></i>):<o:p></o:p></u></p>
+
+            <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+            <p class=MsoNormal align=center style='text-align:center'><span
+              style='position:relative;'><img width=250 height=144
+              src="../static/img/definitions_files/image002.png" v:shapes="_x0000_i1025"></span><!--[if gte mso 9]><xml>
+                <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1025"
+                DrawAspect="Content" ObjectID="_1590837569">
+              </o:OLEObject>
+            </xml><![endif]--></p>
+
+            <br>
+
+            <p class=MsoNormal><u>Aggregate adiabatic elastic moduli<o:p></o:p></u></p>
+
+            <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+            <p class=MsoNormal>Bulk modulus, <i style='mso-bidi-font-style:normal'>K</i>:</p>
+
+            <p class=MsoNormal align=center style='text-align:center'><span
+              style='position:relative;top:12.0pt;mso-text-raise:-12.0pt'>
+              <img width=96 height=38
+              src="../static/img/definitions_files/image004.png" v:shapes="_x0000_i1026"></span><!--[if gte mso 9]><xml>
+                <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1026"
+                DrawAspect="Content" ObjectID="_1590837570">
+              </o:OLEObject>
+            </xml><![endif]--></p>
+
+            <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+            <p class=MsoNormal>Shear modulus, <i>G</i>:</p>
+
+            <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+            <p class=MsoNormal><span style='mso-tab-count:1'>            </span>Reuss
+              bound, <i style='mso-bidi-font-style:normal'>G<sub>R</sub></i>:</p>
+
+              <p class=MsoNormal align=center style='text-align:center'><span
+                style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                  id="_x0000_i1027" type="#_x0000_t75" style='width:223.5pt;height:36pt' o:ole="">
+                  <v:imagedata src="../static/img/definitions_files/image005.wmz" o:title=""/>
+                </v:shape><![endif]--><![if !vml]><img width=298 height=48
+                src="../static/img/definitions_files/image006.png" v:shapes="_x0000_i1027"><![endif]></span><!--[if gte mso 9]><xml>
+                  <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1027"
+                  DrawAspect="Content" ObjectID="_1590837572">
+                </o:OLEObject>
+              </xml><![endif]--></p>
+
+              <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+              <p class=MsoNormal><span style='mso-tab-count:1'>            </span>Voigt
+                bound, <i style='mso-bidi-font-style:normal'>G<sub>V</sub></i>:</p>
+
+                <p class=MsoNormal align=center style='text-align:center'><span
+                  style='position:relative;top:12.0pt;mso-text-raise:-12.0pt'><!--[if gte vml 1]><v:shape
+                    id="_x0000_i1028" type="#_x0000_t75" style='width:123pt;height:28.5pt' o:ole="">
+                    <v:imagedata src="../static/img/definitions_files/image007.wmz" o:title=""/>
+                  </v:shape><![endif]--><![if !vml]><img width=164 height=38
+                  src="../static/img/definitions_files/image008.png" v:shapes="_x0000_i1028"><![endif]></span><!--[if gte mso 9]><xml>
+                    <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1028"
+                    DrawAspect="Content" ObjectID="_1590837573">
+                  </o:OLEObject>
+                </xml><![endif]--></p>
+
+                <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                <p class=MsoNormal><span style='mso-tab-count:1'>            </span>Voigt-Reuss-Hill
+                  (VRH) average, <i style='mso-bidi-font-style:normal'>G<o:p></o:p></i></p>
+
+                  <p class=MsoNormal align=center style='text-align:center'><span
+                    style='position:relative;top:12.0pt;mso-text-raise:-12.0pt'><!--[if gte vml 1]><v:shape
+                      id="_x0000_i1029" type="#_x0000_t75" style='width:64.5pt;height:28.5pt' o:ole="">
+                      <v:imagedata src="../static/img/definitions_files/image009.wmz" o:title=""/>
+                    </v:shape><![endif]--><![if !vml]><img width=86 height=38
+                    src="../static/img/definitions_files/image010.png" v:shapes="_x0000_i1029"><![endif]></span><!--[if gte mso 9]><xml>
+                      <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1029"
+                      DrawAspect="Content" ObjectID="_1590837574">
+                    </o:OLEObject>
+                  </xml><![endif]--></p>
+
+                  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                  <p class=MsoNormal><span style='mso-tab-count:1'>            </span><span
+                    style='mso-spacerun:yes'> </span>Hashin-Shtrikman bounds on shear modulus (<i
+                    style='mso-bidi-font-style:normal'>G<sub>HS1</sub>, G<sub>HS2</sub>, G<sub>HSA</sub></i>)</p>
+
+                    <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                    <p class=MsoNormal><span style='mso-tab-count:3'>                                    </span>Need
+                      Expressions <span class=GramE>from<span style='mso-spacerun:yes'>  </span>Brown</span>,
+                      2015</p>
+
+                      <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                      <p class=MsoNormal>Poisson’s ratio (VRH average), <i style='mso-bidi-font-style:
+                      normal'>&#957;</i>:</p>
+
+                      <p class=MsoNormal align=center style='text-align:center'><span
+                        style='position:relative;top:14.0pt;mso-text-raise:-14.0pt'><!--[if gte vml 1]><v:shape
+                          id="_x0000_i1030" type="#_x0000_t75" style='width:1in;height:36pt' o:ole="">
+                          <v:imagedata src="../static/img/definitions_files/image011.wmz" o:title=""/>
+                        </v:shape><![endif]--><![if !vml]><img width=96 height=48
+                        src="../static/img/definitions_files/image012.png" v:shapes="_x0000_i1030"><![endif]></span><!--[if gte mso 9]><xml>
+                          <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1030"
+                          DrawAspect="Content" ObjectID="_1590837575">
+                        </o:OLEObject>
+                      </xml><![endif]--></p>
+
+                      <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                      <p class=MsoNormal>Young’s modulus (VRH average), <i style='mso-bidi-font-style:
+                      normal'>E</i>:</p>
+
+                      <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                      <p class=MsoNormal align=center style='text-align:center'><span
+                        ><!--[if gte vml 1]><v:shape
+                          id="_x0000_i1031" type="#_x0000_t75" style='width:1in;' o:ole="">
+                          <v:imagedata src="../static/img/definitions_files/image013.wmz" o:title=""/>
+                        </v:shape><![endif]--><![if !vml]><img width=96 height=48
+                        src="../static/img/definitions_files/image014.png" v:shapes="_x0000_i1031"><![endif]></span><!--[if gte mso 9]><xml>
+                          <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1031"
+                          DrawAspect="Content" ObjectID="_1590837576">
+                        </o:OLEObject>
+                      </xml><![endif]--></p>
+
+                      <br>
+                      <p class=MsoNormal><u>Sound velocities<o:p></o:p></u></p>
+
+                      <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                      <p class=MsoNormal>Compression, bulk, and shear sound velocities (<i>V<sub>P</sub></i>,
+                        <i>V<sub>B</sub></i>, <i>V<sub>S</sub></i>):</p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><span
+                          style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1032" type="#_x0000_t75" style='width:195pt;height:51pt' o:ole="">
+                            <v:imagedata src="../static/img/"../static/img/definitions_files/"image015.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=260 height=68
+                          src="../static/img/definitions_files/image016.png" v:shapes="_x0000_i1032"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1032"
+                            DrawAspect="Content" ObjectID="_1590837577">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <br>
+
+                        <p class=MsoNormal>where <i>&#961;</i>=density</p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal>Sound velocity ratios:</p>
+
+                        <p class=MTDisplayEquation><span style='mso-tab-count:1'>                                                </span><span
+                          style='position:relative;top:6.0pt;mso-text-raise:-6.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1033" type="#_x0000_t75" style='width:68.7pt;height:18.3pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image017.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=92 height=24
+                          src="../static/img/definitions_files/image018.png" v:shapes="_x0000_i1033"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1033"
+                            DrawAspect="Content" ObjectID="_1590837578">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal><u>Normalized elastic moduli<o:p></o:p></u></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><i style='mso-bidi-font-style:
+                        normal'>C<sub>12</sub>/C<sub>11</sub>, C<sub>44</sub>/C<sub>11<o:p></o:p></sub></i></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><i style='mso-bidi-font-style:
+                        normal'><sub><o:p>&nbsp;</o:p></sub></i></p>
+
+                        <p class=MsoNormal><u>Elastic anisotropy factors<o:p></o:p></u></p>
+
+                        <br>
+
+                        <p class=MsoNormal>Zener anisotropy factor, <i>A<sup>Z</sup></i>:</p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><span
+                          style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1034" type="#_x0000_t75" style='width:1in;height:36pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image019.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=96 height=48
+                          src="../static/img/definitions_files/image020.png" v:shapes="_x0000_i1034"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1034"
+                            DrawAspect="Content" ObjectID="_1590837579">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal>Chung and Buessem anisotropy factor, <i style='mso-bidi-font-style:
+                        normal'>A<sup>G</sup></i>:</p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MTDisplayEquation><span style='mso-tab-count:1'> </span><span
+                          style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1035" type="#_x0000_t75" style='width:216.9pt;height:36pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image021.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=289 height=48
+                          src="../static/img/definitions_files/image022.png" v:shapes="_x0000_i1035"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1035"
+                            DrawAspect="Content" ObjectID="_1590837580">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal>Universal anisotropy index, <i style='mso-bidi-font-style:
+                        normal'>A<sup>U</sup></i>:</p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><span
+                          style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1036" type="#_x0000_t75" style='width:100.5pt;height:36pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image023.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=134 height=48
+                          src="../static/img/definitions_files/image024.png" v:shapes="_x0000_i1036"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1036"
+                            DrawAspect="Content" ObjectID="_1590837581">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal>which for the cubic system is:</p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><span
+                          style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1037" type="#_x0000_t75" style='width:1in;height:36pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image025.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=96 height=48
+                          src="../static/img/definitions_files/image026.png" v:shapes="_x0000_i1037"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1037"
+                            DrawAspect="Content" ObjectID="_1590837582">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal>Universal log-Euclidean anisotropy index, <i>A<sup>L</sup></i>:</p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><span
+                          style='position:relative;top:18.0pt;mso-text-raise:-18.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1038" type="#_x0000_t75" style='width:165pt;height:43.5pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image027.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=220 height=58
+                          src="../static/img/definitions_files/image028.png" v:shapes="_x0000_i1038"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1038"
+                            DrawAspect="Content" ObjectID="_1590837583">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal>which for the cubic system is:</p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><span
+                          style='position:relative;top:16.0pt;mso-text-raise:-16.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1039" type="#_x0000_t75" style='width:87pt;height:36pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image029.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=116 height=48
+                          src="../static/img/definitions_files/image030.png" v:shapes="_x0000_i1039"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1039"
+                            DrawAspect="Content" ObjectID="_1590837584">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal><u>Adiabatic elastic compliances (<i style='mso-bidi-font-style:
+                        normal'>S<sub>11</sub></i>, <i style='mso-bidi-font-style:normal'>S<sub>44</sub></i>,<i
+                        style='mso-bidi-font-style:normal'> S<sub>12</sub></i>)<o:p></o:p></u></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><span
+                          style='position:relative;top:52.0pt;mso-text-raise:-52.0pt'><!--[if gte vml 1]><v:shape
+                            id="_x0000_i1040" type="#_x0000_t75" style='width:179.4pt;height:108pt' o:ole="">
+                            <v:imagedata src="../static/img/definitions_files/image031.wmz" o:title=""/>
+                          </v:shape><![endif]--><![if !vml]><img width=239 height=144
+                          src="../static/img/definitions_files/image032.png" v:shapes="_x0000_i1040"><![endif]></span><!--[if gte mso 9]><xml>
+                            <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1040"
+                            DrawAspect="Content" ObjectID="_1590837585">
+                          </o:OLEObject>
+                        </xml><![endif]--></p>
+
+                        <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+
+                        <p class=MsoNormal>Relationships between <i style='mso-bidi-font-style:normal'>S<sub>ij</sub></i>s
+                          and <i style='mso-bidi-font-style:normal'>C­<sub>ij</sub></i>s:</p>
+
+                          <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                          <p class=MsoNormal align=center style='text-align:center'><span
+                            style='position:relative;top:12.0pt;mso-text-raise:-12.0pt'><!--[if gte vml 1]><v:shape
+                              id="_x0000_i1041" type="#_x0000_t75" style='width:182.1pt;height:30.6pt'
+                              o:ole="">
+                              <v:imagedata src="../static/img/definitions_files/image033.wmz" o:title=""/>
+                            </v:shape><![endif]--><![if !vml]><img width=243 height=41
+                            src="../static/img/definitions_files/image034.png" v:shapes="_x0000_i1041"><![endif]></span><!--[if gte mso 9]><xml>
+                              <o:OLEObject Type="Embed" ProgID="Equation.Ribbit" ShapeID="_x0000_i1041"
+                              DrawAspect="Content" ObjectID="_1590837586">
+                            </o:OLEObject>
+                          </xml><![endif]--></p>
+
+                          <p class=MsoNormal align=center style='text-align:center'><span
+                            style='position:relative;top:18.0pt;mso-text-raise:-18.0pt'><!--[if gte vml 1]><v:shape
+                              id="_x0000_i1042" type="#_x0000_t75" style='width:188.7pt;height:39.3pt'
+                              o:ole="">
+                              <v:imagedata src="../static/img/definitions_files/image035.wmz" o:title=""/>
+                            </v:shape><![endif]--><![if !vml]><img width=252 height=52
+                            src="../static/img/definitions_files/image036.png" v:shapes="_x0000_i1042"><![endif]></span><!--[if gte mso 9]><xml>
+                              <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1042"
+                              DrawAspect="Content" ObjectID="_1590837587">
+                            </o:OLEObject>
+                          </xml><![endif]--></p>
+
+                          <p class=MTDisplayEquation><span style='mso-tab-count:1'>                                                       </span><span
+                            style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                              id="_x0000_i1043" type="#_x0000_t75" style='width:48.9pt;height:33.9pt' o:ole="">
+                              <v:imagedata src="../static/img/definitions_files/image037.wmz" o:title=""/>
+                            </v:shape><![endif]--><![if !vml]><img width=65 height=45
+                            src="../static/img/definitions_files/image038.png" v:shapes="_x0000_i1043"><![endif]></span><!--[if gte mso 9]><xml>
+                              <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1043"
+                              DrawAspect="Content" ObjectID="_1590837588">
+                            </o:OLEObject>
+                          </xml><![endif]--></p>
+
+                          <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                          <p class=MsoNormal>Extrema of Poisson’s ratio: <span class=GramE><i
+                            style='mso-bidi-font-style:normal'>&#957;</i>(</span>110,001) and <i
+                            style='mso-bidi-font-style:normal'>&#957;</i>(110,1<span style='font-family:
+                            Crystallography'>1</span>0)</p>
+
+                            <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                            <p class=MsoNormal align=center style='text-align:center'><span
+                              style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                                id="_x0000_i1044" type="#_x0000_t75" style='width:4in;height:36pt' o:ole="">
+                                <v:imagedata src="../static/img/definitions_files/image039.wmz" o:title=""/>
+                              </v:shape><![endif]--><![if !vml]><img width=384 height=48
+                              src="../static/img/definitions_files/image040.png" v:shapes="_x0000_i1044"><![endif]></span><!--[if gte mso 9]><xml>
+                                <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1044"
+                                DrawAspect="Content" ObjectID="_1590837589">
+                              </o:OLEObject>
+                            </xml><![endif]--></p>
+
+                            <p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+
+                            <p class=MsoNormal align=center style='text-align:center'><span
+                              style='position:relative;top:15.0pt;mso-text-raise:-15.0pt'><!--[if gte vml 1]><v:shape
+                                id="_x0000_i1045" type="#_x0000_t75" style='width:4in;height:36pt' o:ole="">
+                                <v:imagedata src="../static/img/definitions_files/image041.wmz" o:title=""/>
+                              </v:shape><![endif]--><![if !vml]><img width=384 height=48
+                              src="../static/img/definitions_files/image042.png" v:shapes="_x0000_i1045"><![endif]></span><!--[if gte mso 9]><xml>
+                                <o:OLEObject Type="Embed" ProgID="Equation.DSMT4" ShapeID="_x0000_i1045"
+                                DrawAspect="Content" ObjectID="_1590837590">
+                              </o:OLEObject>
+                            </xml><![endif]--></p>
+
+                            <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                            <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <footer class="text-center">
+                      <div id="footer-imgs">
+                        <a href="https://www.princeton.edu/geosciences/"><img src="../static/img/geo_logo.png" align="left"></img></a>
+                        <a href="https://www.nsf.gov/"><img src="../static/img/NSF_logo.png" height="6%" width="6%" align="right"></img></a>
+
+                        <p>Reference:  Duffy, T. S., Single-crystal elastic constants of minerals and related materials with cubic symmetry, American Mineralogist, 103, 977-988, 2018.</p>
+                        <p>Email: duffy@princeton.edu</p>
+                        <p>This project was supported by <a style="color:white;" href="http://compres.us/">COMPRES</a>, the Consortium for Materials Properties Research in Earth Sciences under NSF Cooperative Agreement EAR 1606856</p>
+                      </div>
+                    </footer>
+
+                  </body>
+                  </html>
