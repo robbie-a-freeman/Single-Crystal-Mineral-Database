@@ -22,15 +22,16 @@ function fillEntries(table) {
     var tr = document.createElement("tr");
     var cells = rows[i].split("~*")
     for (var j = 0; j < 3; j++) {
-      var link = document.createElement("a");
-      link.setAttribute("href", "#");
-      link.setAttribute("class", "undecorated");
+      //var link = document.createElement("a");
+      //link.setAttribute("href", "#");
+      //link.setAttribute("class", "undecorated");
       var td = document.createElement("td");
       node = document.createTextNode(cells[j]);
-      link.appendChild(node);
-      td.appendChild(link);
+      //link.appendChild(node);
+      td.appendChild(node);
       tr.appendChild(td);
     }
+    tr.setAttribute("data-href", "#");
     bigTable.appendChild(tr);
   }
   var element = document.getElementById("content");
