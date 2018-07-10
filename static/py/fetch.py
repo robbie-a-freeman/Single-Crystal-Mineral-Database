@@ -43,10 +43,12 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
             vrh = isSelected(formData, 'vrh', selectedProperties)
             vrb = isSelected(formData, 'vrb', selectedProperties)
             hsb = isSelected(formData, 'hsb', selectedProperties)
+            ympr = isSelected(formData, 'ympr', selectedProperties)
         else:
             vrh = ("vrh", True)
             vrb = ("vrb", True)
             hsb = ("hsb", True)
+            ympr = ("ympr", True)
         sv = isSelected(formData, 'sv', selectedProperties)
         svr = isSelected(formData, 'svr', selectedProperties)
         nm = isSelected(formData, 'nm', selectedProperties)
@@ -59,6 +61,7 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
         vrh = ("vrh", True)
         vrb = ("vrb", True)
         hsb = ("hsb", True)
+        ympr = ("ympr", True)
         sv = ("sv", True)
         svr = ("svr", True)
         nm = ("nm", True)
@@ -70,18 +73,8 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
     table = pd.read_csv("static/downloads/single-crystal_db.csv", header=3, skip_blank_lines=True, skipinitialspace=True)
 
     # Get rid of all lines with all NaN values (not including class labels)
-    table = table.drop('Unnamed: 30', axis=1)   # columns
-    table = table.drop('Unnamed: 33', axis=1)
-
-    x = 0                                       # rows TODO: cleanup
-    table.dropna(inplace=True, how="all")
-    """while x < len(table.index):
-        if pd.isnull(table.iloc[x, 0]):
-            table.drop(x, inplace=True, axis=0)
-            x = x - 1;
-        x = x + 1;"""
-
-    print(table)
+    table.dropna(inplace=True, how="all", axis=1) # columns
+    table.dropna(inplace=True, how="all")         # rows
 
     # Select all rows for each mineral class, assuming they are accurately
     # grouped under their labels, and collect them in their respective
@@ -110,36 +103,53 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
 
     print(results)
 
-    # Get rid of mineral class labels/incomplete data portions
-    table.dropna(inplace=True, how="any")
-    """
-    if silicates[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(silicates[0][:-1]) == True]])
-        numResults = len(results)
-    if oxides[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(oxides[0][:-1]) == True]])
-        numResults = len(results)
-    if halides[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(halides[0][:-1]) == True]])
-        numResults = len(results)
-    if sulfides[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(sulfides[0][:-1]) == True]])
-        numResults = len(results)
-    if nitrates[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(nitrates[0][:-1]) == True]])
-        numResults = len(results)
-    if carbonAndCarbides[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(carbonAndCarbides[0][:-1]) == True]])
-        numResults = len(results)
-    if nitrides[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(nitrides[0][:-1]) == True]])
-        numResults = len(results)
-    if phosphides[1] == True:
-        results = pd.concat([results, table[table['Group'].str.contains(phosphides[0][:-1]) == True]])
-        numResults = len(results)"""
-    # Read the selected properties of the matching minerals into a Pandas DataFrame
-    #if aem[1] == true:
-        #table
+    # Read the selected properties of the matching minerals into a Pandas
+    # DataFrame
+    # Assumes all values are selected initially and removes the appropriate
+    # column(s) if a category isn't
+    if all[0] not in selectedProperties:
+        if aem[0] not in selectedProperties:
+            results.drop('11', axis=1)
+            results.drop('44', axis=1)
+            results.drop('12', axis=1)
+        if am[0] not in selectedProperties:
+            if vrh[0] not in selectedProperties:
+                results.drop('K', axis=1)
+                results.drop('G', axis=1)
+                results.drop('K/G', axis=1) # TODO Should more be here?
+            if vrb[0] not in selectedProperties:
+                results.drop('GR', axis=1)
+                results.drop('GV', axis=1)
+            if hsb[0] not in selectedProperties:
+                results.drop('GHS1', axis=1)
+                results.drop('GHS2', axis=1)
+                results.drop('GHSA', axis=1)
+            if ympr[0] not in selectedProperties:
+                results.drop('nVRH', axis=1) # TODO Should these be here?
+                results.drop('EVRH', axis=1)
+        if sv[0] not in selectedProperties:
+            results.drop('VP', axis=1)
+            results.drop('VB', axis=1)
+            results.drop('VS', axis=1)
+        if svr[0] not in selectedProperties:
+            results.drop('VP/VS', axis=1) # TODO add in VB/VS AND K/G
+        if nm[0] not in selectedProperties:
+            results.drop('C12/C11', axis=1)
+            results.drop('C44/C11', axis=1)
+        if af[0] not in selectedProperties:
+            results.drop('AZ', axis=1)
+            results.drop('AU', axis=1)
+            results.drop('AL', axis=1)
+            results.drop('AG', axis=1)
+        if ec[0] not in selectedProperties:
+            results.drop('S11', axis=1)
+            results.drop('S12', axis=1)
+            results.drop('S44', axis=1)
+        if pre[0] not in selectedProperties:
+            results.drop('n_110', axis=1)
+            results.drop('n_001', axis=1)
+    else:
+        print("all properties included")
 
     # Format the DataFrame to be read into the js file
 
@@ -155,9 +165,9 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
                 if type(cell) != str:
                     cell = str(cell)
                 if y != len(results.columns) - 1:
-                    resultString += cell + "~*"
-                else:
-                    resultString += cell
+                    resultString += cell + "~*" # this is the arbitrarily set
+                else:                           # cell separator expected by the
+                    resultString += cell        # js file
         resultString = resultString[:-1]
     # Return the DataFrame
     return resultString

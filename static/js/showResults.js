@@ -1,5 +1,4 @@
 function fillEntries(table) {
-  console.log("being called");
   var bigTable = document.createElement("table");
   bigTable.setAttribute("align", "center");
   // for each line in the string, make a table row and fill it with entries
@@ -18,16 +17,12 @@ function fillEntries(table) {
   node = document.createTextNode("Group");
   th.appendChild(node);
   bigTable.appendChild(th);
-  for (var i = 0; i < rows.length - 1; i++) {
-    var tr = document.createElement("tr");
-    var cells = rows[i].split("~*")
-    for (var j = 0; j < 3; j++) {
-      //var link = document.createElement("a");
-      //link.setAttribute("href", "#");
-      //link.setAttribute("class", "undecorated");
+  for (var i = 0; i < rows.length - 1; i++) { // Skip the last column, which are
+    var tr = document.createElement("tr");    // the backslashes to make the js
+    var cells = rows[i].split("~*")           // read the multiline string.
+    for (var j = 0; j < 3; j++) {             // Also, parse the cells
       var td = document.createElement("td");
       node = document.createTextNode(cells[j]);
-      //link.appendChild(node);
       td.appendChild(node);
       tr.appendChild(td);
     }
