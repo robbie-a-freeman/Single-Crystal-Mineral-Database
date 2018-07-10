@@ -14,24 +14,15 @@ form.bottom-button {
 
 .col-sm-10 {
   padding:40px;
-  height:auto;
 }
 
 .col-sm {
   margin:10px;
-  height:auto;
 }
 
 body {
   font-family:"Princeton Monticello", "Times New Roman";
-  height:auto;
   min-height:100%;
-  position: relative;
-}
-
-footer {
-  position:relative;
-  bottom:0;
 }
 
 #footer-img {
@@ -73,6 +64,10 @@ button:focus {
   outline: none;
 }
 
+#search {
+  margin-bottom:60px;
+}
+
 /* Style the accordion panel. Note: hidden by default */
 .structures {
   padding: 0 18px;
@@ -92,12 +87,10 @@ a:hover, tr:hover {
 }
 
 .container-fluid {
-  margin: 0;
-  height:630px;
+	width: 100%;
 }
 
 .sidenav {
-  height:630px;
   font-weight: bold;
 }
 
@@ -133,4 +126,8 @@ td, th {
 .undecorated {
   text-decoration:none;
   font-weight:normal;
+}
+
+table {
+  margin-bottom:20px;
 }
