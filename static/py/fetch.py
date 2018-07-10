@@ -1,5 +1,6 @@
 import pandas as pd
 import math
+import numpy
 
 def isSelected(formData, str, catList) :
     if formData.get(str) != None:
@@ -68,15 +69,50 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
     # Search the master sheet for any minerals that fit by class, then by type TODO: expand to general case
     table = pd.read_csv("static/downloads/single-crystal_db.csv", header=3, skip_blank_lines=True, skipinitialspace=True)
 
-    # Get rid of all lines with NaN values
+    # Get rid of all lines with all NaN values (not including class labels)
     table = table.drop('Unnamed: 30', axis=1)   # columns
     table = table.drop('Unnamed: 33', axis=1)
-    for x in range(len(table.index)):           # rows
-        if table.loc[x].isnull().values.any():
-            table.drop(x, inplace=True)
 
+    x = 0                                       # rows TODO: cleanup
+    table.dropna(inplace=True, how="all")
+    """while x < len(table.index):
+        if pd.isnull(table.iloc[x, 0]):
+            table.drop(x, inplace=True, axis=0)
+            x = x - 1;
+        x = x + 1;"""
+
+    print(table)
+
+    # Select all rows for each mineral class, assuming they are accurately
+    # grouped under their labels, and collect them in their respective
+    # dataframes
+    lastLabel = ''
     results = pd.DataFrame(columns=table.columns)
+    classdf = pd.DataFrame(columns=table.columns)
+    for index, row in table.iterrows(): # for each of the rows
+        rowdf = row.to_frame()
+        # if it's a row with a mineral class label
+        if not (pd.isnull(row['Name'])) and pd.isnull(row['Composition']) and lastLabel != row['Name']:
+            lastLabel = row['Name']
+            if not classdf.equals(results):
+                results = pd.concat([results, classdf], sort=False)
+                classdf = pd.DataFrame(columns=table.columns)
+        # if it's a row following a label but not a label itself
+        elif lastLabel != '' and lastLabel in selectedClasses:
+            classdf = pd.concat([rowdf.T, classdf]) # transpose of row because pandas stores it as a column
+        # if it's a label but it's not being searched for
+        elif lastLabel not in selectedClasses:
+            lastLabel = ''
+        # if it's a case that's unaccounted for
+        else:
+            print(":( something went wrong or was unexpected at line " + str(index))
+    results = pd.concat([results, classdf], sort=False) # for the final category
+
     print(results)
+
+    # Get rid of mineral class labels/incomplete data portions
+    table.dropna(inplace=True, how="any")
+    """
     if silicates[1] == True:
         results = pd.concat([results, table[table['Group'].str.contains(silicates[0][:-1]) == True]])
         numResults = len(results)
@@ -100,8 +136,7 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
         numResults = len(results)
     if phosphides[1] == True:
         results = pd.concat([results, table[table['Group'].str.contains(phosphides[0][:-1]) == True]])
-        numResults = len(results)
-
+        numResults = len(results)"""
     # Read the selected properties of the matching minerals into a Pandas DataFrame
     #if aem[1] == true:
         #table
@@ -115,7 +150,6 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
         resultString = ""
         results.insert(len(results.columns), "\\\\\\", "\\\\\\")
         for x in range(len(results.index)):
-            print("y-coord: " + str(x))
             for y in range(len(results.columns)):
                 cell = results.iloc[x, y]
                 if type(cell) != str:

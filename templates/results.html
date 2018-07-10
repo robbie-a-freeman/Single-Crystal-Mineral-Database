@@ -76,15 +76,7 @@
       <script>
       var table = "{{ table }}";
       fillEntries(table);</script>
-      <script>
-      $('tr[data-href]').on("click",function(){
-        window.location = $(this).data('href');
-        return false;
-      });
-      $("td > a").on("click",function(e){
-        e.stopPropagation();
-      });
-      </script>
+      <script src="../static/js/tableLinks.js"></script>
     </div>
   </div>
 
