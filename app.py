@@ -37,8 +37,8 @@ def entries():
 def links():
     return render_template('links.html')
 
-@app.route("/")
-@app.route("/home")
+@app.route('/')
+@app.route('/home')
 def home():
     return render_template('index.html')
 
@@ -49,11 +49,18 @@ def search():
     return render_template('search.html')
 
 def searchResults(query_params):
-    results = retrieveResults(query_params)
-    return render_template('results.html', table = results)
+    results = fetch.search(query_params) # Has to be called first
+    properties = fetch.getSelectedProperties()
+    columns = fetch.getColumnNames()
+    return render_template('results.html', table = results, properties = properties, columns = columns)
 
-def retrieveResults(query_params): # TODO make this function
-    return fetch.main(query_params)
+@app.route('/search/<rowNum>')
+def specificResult(rowNum):
+    print(rowNum)
+    results = fetch.getMineral(rowNum) # Has to be called first
+    properties = fetch.getSelectedProperties()
+    columns = fetch.getColumnNames()
+    return render_template('results.html', table = results, properties = properties, columns = columns)
 
 @app.errorhandler(404)
 def page_not_found(error):

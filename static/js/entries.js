@@ -17,21 +17,19 @@ function fillEntries(table) {
   node = document.createTextNode("Group");
   th.appendChild(node);
   bigTable.appendChild(th);
+  var rowNum = 0;
   for (var i = 0; i < rows.length; i++) {
     var tr = document.createElement("tr");
     var cells = rows[i].split("~*")
     for (var j = 0; j < cells.length - 1; j++) {
-      //var link = document.createElement("a");
-      //link.setAttribute("href", "#");
-      //link.setAttribute("class", "undecorated");
       var td = document.createElement("td");
       node = document.createTextNode(cells[j]);
-      //link.appendChild(node);
       td.appendChild(node);
       tr.appendChild(td);
     }
-    tr.setAttribute("data-href", "#");
+    tr.setAttribute("data-href", 'search/' + rowNum);
     bigTable.appendChild(tr);
+    rowNum++;
   }
   var element = document.getElementById("content");
   element.appendChild(bigTable);

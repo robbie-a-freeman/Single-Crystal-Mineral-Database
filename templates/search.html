@@ -64,23 +64,23 @@
         <!-- Note: for the checkbox scripts to work, the children need to be of a
         class of the same name as their parent's id -->
         <div class="col-sm text-left">
-          <h2>Mineral Class</h2>
+          <h2>Mineral Class/Structure</h2>
           <input id="all_minerals" type="checkbox" name="all_minerals"> Select all</input><br>
           <div class="sub_stat_categories">
-            <input id="silicates" class="all_minerals" type="checkbox" name="Silicates" value="Silicates"> Silicates <button class="accordion"> + </button><br>
+            <input id="silicates" class="all_minerals" type="checkbox" name="Silicates_all" value="Silicates_all"> Silicates <button class="accordion"> + </button><br>
             <div class="structures">
-              <input class="silicates" type="checkbox" name="Garnet" value="Garnet"> Garnet<br>
-              <input class="silicates" type="checkbox" name="Spinel" value="Spinel"> Spinel<br>
-              <input class="silicates" type="checkbox" name="Zeolite" value="Zeolite"> Zeolite<br>
-              <input class="silicates" type="checkbox" name="Eulytine" value="Eulytine"> Eulytine<br>
+              <input class="silicates" type="checkbox" name="Silicates_Garnet" value="Silicates_Garnet"> Garnet<br>
+              <input class="silicates" type="checkbox" name="Silicates_Spinel" value="Silicates_Spinel"> Spinel<br>
+              <input class="silicates" type="checkbox" name="Silicates_Zeolite" value="Silicates_Zeolite"> Zeolite<br>
+              <input class="silicates" type="checkbox" name="Silicates_Eulytine" value="Silicates_Eulytine"> Eulytine<br>
             </div>
-            <input id="oxides" class="all_minerals" type="checkbox" name="Oxides" value="Oxides"> Oxides<br>
-            <input id="halides" class="all_minerals" type="checkbox" name="Halides" value="Halides"> Halides<br>
-            <input id="sulfides" class="all_minerals" type="checkbox" name="Sulfides" value="Sulfides"> Sulfides<br>
-            <input id="nitrates" class="all_minerals" type="checkbox" name="Nitrates" value="Nitrates"> Nitrates<br>
-            <input id="carbon_and_carbides" class="all_minerals" type="checkbox" name="Carbon and Carbides" value="Carbon and Carbides"> Carbon and Carbides<br>
-            <input id="nitrides" class="all_minerals" type="checkbox" name="Nitrides" value="Nitrides"> Nitrides<br>
-            <input id="phosphides" class="all_minerals" type="checkbox" name="Phosphides" value="Phosphides"> Phosphides<br>
+            <input id="oxides" class="all_minerals" type="checkbox" name="Oxides_all" value="Oxides_all"> Oxides<br>
+            <input id="halides" class="all_minerals" type="checkbox" name="Halides_all" value="Halides_all"> Halides<br>
+            <input id="sulfides" class="all_minerals" type="checkbox" name="Sulfides_all" value="Sulfides_all"> Sulfides<br>
+            <input id="nitrates" class="all_minerals" type="checkbox" name="Nitrates_all" value="Nitrates_all"> Nitrates<br>
+            <input id="carbon_and_carbides" class="all_minerals" type="checkbox" name="Carbon and Carbides_all" value="Carbon and Carbides_all"> Carbon and Carbides<br>
+            <input id="nitrides" class="all_minerals" type="checkbox" name="Nitrides_all" value="Nitrides_all"> Nitrides<br>
+            <input id="phosphides" class="all_minerals" type="checkbox" name="Phosphides_all" value="Phosphides_all"> Phosphides<br>
           </div>
           <br>
         </div>
@@ -101,7 +101,7 @@
               <input class="am" type="checkbox" name="ympr" value="ympr"> Aggregate Young’s modulus and Poisson’s ratio <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="Aggregate values of Young’s modulus (in GPa) and Poisson’s ratio (dimensionless) using Voigt-Reuss-Hill averages"><i class="fa fa-question"></i></button><br>
             </div>
             <input id="sv" class="all_cats"  type="checkbox" name="sv" value="sv"> Sound velocities <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="P-wave and S-wave velocities. Also includes the shear wave velocity: V<sub>P</sub>, V<sub>B</sub>, V<sub>S</sub>"><i class="fa fa-question"></i></button><br>
-            <input id="svr" class="all_cats"  type="checkbox" name="svr" value="svr"> Sound velocity ratios <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="K/G, V<sub>P</sub> / V<sub>S</sub>, V<sub>B</sub> / V<sub>S</sub> - Ratios of aggregate elastic moduli and elastic wave velocities  (Voigt-Reuss-Hill averages)"><i class="fa fa-question"></i></button><br>
+            <input id="svr" class="all_cats"  type="checkbox" name="svr" value="svr"> Sound velocity ratios <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="V<sub>P</sub> / V<sub>S</sub> - Ratio of elastic wave velocity (Voigt-Reuss-Hill averages)"><i class="fa fa-question"></i></button><br>
             <input id="nm" class="all_cats"  type="checkbox" name="nm" value="nm"> Normalized elastic moduli <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="Ratios of individual adiabatic elastic moduli (C<sub>12</sub> / C<sub>11</sub>, C<sub>44</sub> / C<sub>11</sub>) used in Blackman diagrams"><i class="fa fa-question"></i></button><br>
             <input id="af" class="all_cats"  type="checkbox" name="af" value="af"> Anisotropy factors <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="Metrics for characterizing the elastic anisotropy of cubic crystals:  A<sup>Z</sup> – Zener anisotropy ratio, A<sup>G</sup> – Chung-Buessem anisotropy factor (in %), A<sup>U</sup> – Universal anisotropy index, A<sup>L</sup> – Kube log-Euclidean anisotropy index"><i class="fa fa-question"></i></button><br>
             <input id="ec" class="all_cats"  type="checkbox" name="ec" value="ec"> Adiabatic elastic compliances <button type="button" class="btn btn-secondary btn-info" data-toggle="tooltip" data-placement="right" data-html="true" title="S<sub>11</sub>, S<sub>44</sub>, S<sub>12</sub> - Three non-zero, independent, adiabatic elastic compliances for cubic crystals (S11, S44, S12 ) (Units of GPa<sup>-1</sup>)"><i class="fa fa-question"></i></button><br>

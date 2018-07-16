@@ -2,7 +2,33 @@ import pandas as pd
 import math
 import numpy
 
-def isSelected(formData, str, catList) :
+selectedProperties = []
+columnLabels = []
+
+# Return the selected properties list. Shouldn't be called before main()
+def getSelectedProperties() :
+    return selectedProperties
+
+def getColumnNames() :
+    return columnLabels
+
+# Determine if str has a checkbox in formData that is selected. If so, add to
+# the given lists and return a tuple with True. Otherwise, return a tuple with
+# False. For categories
+def isSelected(formData, str, classList, structList) :
+    if formData.get(str) != None or formData.get('all_minerals') != None:
+        print (str + " is selected")
+        if str.split('_')[0] not in classList:
+            classList.append(str.split('_')[0])
+        structList.append(str)
+        return (str, True)
+    else:
+        return (str, False)
+
+# Determine if str has a checkbox in formData that is selected. If so, add to
+# the given lists and return a tuple with True. Otherwise, return a tuple with
+# False. For properties
+def isSelectedProperties(formData, str, catList) :
     if formData.get(str) != None:
         print (str + " is selected")
         catList.append(str)
@@ -11,50 +37,59 @@ def isSelected(formData, str, catList) :
         return (str, False)
 
 # Take in a request.form (ImmutableMultiDict) that is from search.html
-def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
+def search(formData) : # TODO: Generalize to work with all data in the spreadsheet
     # Save the strings of the chosen mineral classes and types in a list
+    # TODO: utilize the select all checkbox for minerals
+
+    print(formData)
+
     selectedClasses = []
-    silicates = isSelected(formData, 'Silicates', selectedClasses)
-    if not silicates:
-        garnet = isSelected(formData, 'Garnet', selectedClasses)
-        spinel = isSelected(formData, 'Spinel', selectedClasses)
-        zeolite = isSelected(formData, 'Zeolite', selectedClasses)
-        eulytine = isSelected(formData, 'Eulytine', selectedClasses)
+    selectedStructures = []
+
+    silicates = isSelected(formData, 'Silicates_all', selectedClasses, selectedStructures)
+    if not silicates[1]:
+        garnet = isSelected(formData, 'Silicates_Garnet', selectedClasses, selectedStructures)
+        spinel = isSelected(formData, 'Silicates_Spinel', selectedClasses, selectedStructures)
+        zeolite = isSelected(formData, 'Silicates_Zeolite', selectedClasses, selectedStructures)
+        eulytine = isSelected(formData, 'Silicates_Eulytine', selectedClasses, selectedStructures)
     else:
-        garnet = ('Garnet', True)
-        spinel = ('Spinel', True)
-        zeolite = ('Zeolite', True)
-        eulytine = ('Eulytine', True)
-    oxides = isSelected(formData, 'Oxides', selectedClasses)
-    halides = isSelected(formData, 'Halides', selectedClasses)
-    sulfides = isSelected(formData, 'Sulfides', selectedClasses)
-    nitrates = isSelected(formData, 'Nitrates', selectedClasses)
-    carbonAndCarbides = isSelected(formData, 'Carbon and Carbides', selectedClasses)
-    nitrides = isSelected(formData, 'Nitrides', selectedClasses)
-    phosphides = isSelected(formData, 'Phosphides', selectedClasses)
+        garnet = (silicates[0] + 'Silicates_Garnet', True)
+        spinel = (silicates[0] + 'Silicates_Spinel', True)
+        zeolite = (silicates[0] + 'Silicates_Zeolite', True)
+        eulytine = (silicates[0] + 'Silicates_Eulytine', True)
+    oxides = isSelected(formData, 'Oxides_all', selectedClasses, selectedStructures)
+    halides = isSelected(formData, 'Halides_all', selectedClasses, selectedStructures)
+    sulfides = isSelected(formData, 'Sulfides_all', selectedClasses, selectedStructures)
+    nitrates = isSelected(formData, 'Nitrates_all', selectedClasses, selectedStructures)
+    carbonAndCarbides = isSelected(formData, 'Carbon and Carbides_all', selectedClasses, selectedStructures)
+    nitrides = isSelected(formData, 'Nitrides_all', selectedClasses, selectedStructures)
+    phosphides = isSelected(formData, 'Phosphides_all', selectedClasses, selectedStructures)
 
     # Save the strings of desired properties to be retrieved in a second list
+    # selectedProperties list defined above
+    global selectedProperties
     selectedProperties = []
-    all = isSelected(formData, 'all_cats', selectedProperties)
-    if not all:
-        aem = isSelected(formData, 'aem', selectedProperties)
-        am = isSelected(formData, 'am', selectedProperties)
-        if not am:
-            vrh = isSelected(formData, 'vrh', selectedProperties)
-            vrb = isSelected(formData, 'vrb', selectedProperties)
-            hsb = isSelected(formData, 'hsb', selectedProperties)
-            ympr = isSelected(formData, 'ympr', selectedProperties)
+
+    allCats = isSelectedProperties(formData, 'all_cats', selectedProperties)
+    if not allCats[1]:
+        aem = isSelectedProperties(formData, 'aem', selectedProperties)
+        am = isSelectedProperties(formData, 'am', selectedProperties)
+        if not am[1]:
+            vrh = isSelectedProperties(formData, 'vrh', selectedProperties)
+            vrb = isSelectedProperties(formData, 'vrb', selectedProperties)
+            hsb = isSelectedProperties(formData, 'hsb', selectedProperties)
+            ympr = isSelectedProperties(formData, 'ympr', selectedProperties)
         else:
             vrh = ("vrh", True)
             vrb = ("vrb", True)
             hsb = ("hsb", True)
             ympr = ("ympr", True)
-        sv = isSelected(formData, 'sv', selectedProperties)
-        svr = isSelected(formData, 'svr', selectedProperties)
-        nm = isSelected(formData, 'nm', selectedProperties)
-        af = isSelected(formData, 'af', selectedProperties)
-        ec = isSelected(formData, 'ec', selectedProperties)
-        pre = isSelected(formData, 'pre', selectedProperties)
+        sv = isSelectedProperties(formData, 'sv', selectedProperties)
+        svr = isSelectedProperties(formData, 'svr', selectedProperties)
+        nm = isSelectedProperties(formData, 'nm', selectedProperties)
+        af = isSelectedProperties(formData, 'af', selectedProperties)
+        ec = isSelectedProperties(formData, 'ec', selectedProperties)
+        pre = isSelectedProperties(formData, 'pre', selectedProperties)
     else:
         aem = ("aem", True)
         am = ("am", True)
@@ -69,21 +104,18 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
         ec = ("ec", True)
         pre = ("pre", True)
 
-    # Search the master sheet for any minerals that fit by class, then by type TODO: expand to general case
-    table = pd.read_csv("static/downloads/single-crystal_db.csv", header=3, skip_blank_lines=True, skipinitialspace=True)
-
-    # Get rid of all lines with all NaN values (not including class labels)
-    table.dropna(inplace=True, how="all", axis=1) # columns
-    table.dropna(inplace=True, how="all")         # rows
+    table = getInitialTable()
 
     # Select all rows for each mineral class, assuming they are accurately
     # grouped under their labels, and collect them in their respective
-    # dataframes
+    # dataframes. Also account for structure filters
     lastLabel = ''
     results = pd.DataFrame(columns=table.columns)
     classdf = pd.DataFrame(columns=table.columns)
     for index, row in table.iterrows(): # for each of the rows
-        rowdf = row.to_frame()
+        rowdf = row.to_frame() # Dataframe of row, which is normally a Series
+        if isinstance(row['Structure/SG'], str):
+            structure = lastLabel + '_' + row['Structure/SG'].split(',')[0]
         # if it's a row with a mineral class label
         if not (pd.isnull(row['Name'])) and pd.isnull(row['Composition']) and lastLabel != row['Name']:
             lastLabel = row['Name']
@@ -91,68 +123,84 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
                 results = pd.concat([results, classdf], sort=False)
                 classdf = pd.DataFrame(columns=table.columns)
         # if it's a row following a label but not a label itself
-        elif lastLabel != '' and lastLabel in selectedClasses:
+        elif lastLabel != '' and lastLabel in selectedClasses and (structure in selectedStructures or lastLabel + '_all' in selectedStructures):
             classdf = pd.concat([rowdf.T, classdf]) # transpose of row because pandas stores it as a column
         # if it's a label but it's not being searched for
         elif lastLabel not in selectedClasses:
             lastLabel = ''
         # if it's a case that's unaccounted for
         else:
+            print(structure.split('_')[1])
             print(":( something went wrong or was unexpected at line " + str(index))
     results = pd.concat([results, classdf], sort=False) # for the final category
-
-    print(results)
 
     # Read the selected properties of the matching minerals into a Pandas
     # DataFrame
     # Assumes all values are selected initially and removes the appropriate
     # column(s) if a category isn't
-    if all[0] not in selectedProperties:
+    if allCats[0] not in selectedProperties:
         if aem[0] not in selectedProperties:
+            print("herE aem")
             results.drop('11', axis=1)
             results.drop('44', axis=1)
             results.drop('12', axis=1)
         if am[0] not in selectedProperties:
             if vrh[0] not in selectedProperties:
-                results.drop('K', axis=1)
-                results.drop('G', axis=1)
-                results.drop('K/G', axis=1) # TODO Should more be here?
+                results = results.drop('K', axis=1)
+                results = results.drop('G', axis=1)
+                results = results.drop('K/G', axis=1)
             if vrb[0] not in selectedProperties:
-                results.drop('GR', axis=1)
-                results.drop('GV', axis=1)
+                results = results.drop('GR', axis=1)
+                results = results.drop('GV', axis=1)
             if hsb[0] not in selectedProperties:
-                results.drop('GHS1', axis=1)
-                results.drop('GHS2', axis=1)
-                results.drop('GHSA', axis=1)
+                results = results.drop('GHS1', axis=1)
+                results = results.drop('GHS2', axis=1)
+                results = results.drop('GHSA', axis=1)
             if ympr[0] not in selectedProperties:
-                results.drop('nVRH', axis=1) # TODO Should these be here?
-                results.drop('EVRH', axis=1)
+                results = results.drop('nVRH', axis=1) # TODO Should these be here?
+                results = results.drop('EVRH', axis=1)
         if sv[0] not in selectedProperties:
-            results.drop('VP', axis=1)
-            results.drop('VB', axis=1)
-            results.drop('VS', axis=1)
+            results = results.drop('VP', axis=1)
+            results = results.drop('VB', axis=1)
+            results = results.drop('VS', axis=1)
         if svr[0] not in selectedProperties:
-            results.drop('VP/VS', axis=1) # TODO add in VB/VS AND K/G
+            results = results.drop('VP/VS', axis=1)
         if nm[0] not in selectedProperties:
-            results.drop('C12/C11', axis=1)
-            results.drop('C44/C11', axis=1)
+            results = results.drop('C12/C11', axis=1)
+            results = results.drop('C44/C11', axis=1)
         if af[0] not in selectedProperties:
-            results.drop('AZ', axis=1)
-            results.drop('AU', axis=1)
-            results.drop('AL', axis=1)
-            results.drop('AG', axis=1)
+            results = results.drop('AZ', axis=1)
+            results = results.drop('AU', axis=1)
+            results = results.drop('AL', axis=1)
+            results = results.drop('AG', axis=1)
         if ec[0] not in selectedProperties:
-            results.drop('S11', axis=1)
-            results.drop('S12', axis=1)
-            results.drop('S44', axis=1)
+            results = results.drop('S11', axis=1)
+            results = results.drop('S44', axis=1)
+            results = results.drop('S12', axis=1)
         if pre[0] not in selectedProperties:
-            results.drop('n_110', axis=1)
-            results.drop('n_001', axis=1)
+            results = results.drop('n_110', axis=1)
+            results = results.drop('n_001', axis=1)
     else:
         print("all properties included")
 
-    # Format the DataFrame to be read into the js file
+    setGlobalColumns(results)
+    return formatString(results);
 
+# sets the column labels for the given table for the global variable columnLabels
+def setGlobalColumns(table):
+    global columnLabels
+    columnLabels = list(table);
+
+# sets the properties for the given table for the global variable selectedProperties
+def setGlobalProperties(properties):
+    global selectedProperties
+    selectedProperties = properties;
+
+# Format the results dataframe that is passed in to fit with the JS file that
+# will receive and parse it.
+def formatString(results):
+    # Format the DataFrame to be read into the js file
+    print(results)
     resultString = results.to_string()
     if resultString == "":
         resultString = 'No results found'
@@ -171,3 +219,29 @@ def main(formData) : # TODO: Generalize to work with all data in the spreadsheet
         resultString = resultString[:-1]
     # Return the DataFrame
     return resultString
+
+# Grab the CSV file in the database, skip the the header line assuming it's still
+# the fourth line in the sheet.
+def getInitialTable():
+    table = pd.read_csv("static/downloads/single-crystal_db.csv", header=3, skip_blank_lines=True, skipinitialspace=True)
+
+    # Get rid of all lines with all NaN values (not including class labels)
+    table.dropna(inplace=True, how="all", axis=1) # columns
+    table.dropna(inplace=True, how="all", axis=0) # rows
+
+    return table
+
+# Quickly locate and grab a specific mineral and all of its information
+def getMineral(rowNum):
+    # Find if a mineral matches the given composition. If it does, return the
+    # row. If not, return null.
+    table = getInitialTable()
+    #result = table[table['Composition'].str.contains(composition) == True]
+    # Format the row as a String and return it. Also update columns and properties
+
+    table.dropna(inplace=True, how="any", axis=0) # rows
+    result = table.iloc[[rowNum]]
+
+    setGlobalProperties(['all_cats'])
+    setGlobalColumns(result.columns)
+    return formatString(result)

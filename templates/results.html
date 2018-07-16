@@ -61,12 +61,20 @@
         <p><a href="https://www.princeton.edu/geosciences/">Princeton Geosciences</a></p> <!-- Link to Princeton Geosciences -->
       </div>
       <div id="content" class="col-sm-10 text-left">
+        <form method="get" align="right" action="">
+          <input type="submit" value="Download as CSV" />
+        </form>
+        <form method="get" align="right" action="">
+          <input type="submit" value="Download as Excel sheet" />
+        </form>
         <h1>Results</h1>
       </div>
       <script src="../static/js/showResults.js"></script>
       <script>
       var table = "{{ table }}";
-      fillEntries(table);</script>
+      var properties = "{{ properties }}";
+      var columns = "{{ columns }}";
+      fillEntries(table, properties, columns);</script>
       <script src="../static/js/tableLinks.js"></script>
     </div>
   </div>

@@ -1,34 +1,235 @@
-function fillEntries(table) {
-  var bigTable = document.createElement("table");
-  bigTable.setAttribute("align", "center");
-  // for each line in the string, make a table row and fill it with entries
-  // split by backslashes
+// Called by results.html template. Builds the page based on a query from
+// search.html given the string table of results and the list of desired
+// properties of each result. Also takes in the list of columns, columns, as
+// a string.
+
+function fillEntries(table, properties, columns) {
+  columns = columns.split(", ");
   var rows = table.split("\\");
-  console.log(rows.length);
-  var th = document.createElement("th");
-  var node = document.createTextNode("Name");
-  th.appendChild(node);
-  bigTable.appendChild(th);
-  th = document.createElement("th");
-  node = document.createTextNode("Composition");
-  th.appendChild(node);
-  bigTable.appendChild(th);
-  th = document.createElement("th");
-  node = document.createTextNode("Group");
-  th.appendChild(node);
-  bigTable.appendChild(th);
-  for (var i = 0; i < rows.length - 1; i++) { // Skip the last column, which are
-    var tr = document.createElement("tr");    // the backslashes to make the js
-    var cells = rows[i].split("~*")           // read the multiline string.
-    for (var j = 0; j < 3; j++) {             // Also, parse the cells
-      var td = document.createElement("td");
-      node = document.createTextNode(cells[j]);
-      td.appendChild(node);
-      tr.appendChild(td);
-    }
-    tr.setAttribute("data-href", "#");
-    bigTable.appendChild(tr);
+  var resultAmount = rows.length - 1; // There's an extra row in the table due to invisible characters
+  var h6 = document.createElement("h6");
+  var resultText;
+  if (resultAmount == 1) {
+    resultText = document.createTextNode("1 result found");
+  } else {
+    resultText = document.createTextNode(resultAmount + " results found");
   }
-  var element = document.getElementById("content");
-  element.appendChild(bigTable);
+
+  h6.appendChild(resultText);
+  var content = document.getElementById("content");
+  content.appendChild(h6);
+  br = document.createElement("br");
+  content.appendChild(br);
+  for (var i = 0; i < resultAmount; i++) {
+    var cells = rows[i].split("~*");
+    displayMineral(cells, properties, columns);
+  }
+}
+
+// Displays a mineral from a row of cells, which is in array form, and from the
+// list of properties to display
+function displayMineral(row, properties, columns) {
+  // Set up header content
+  console.log(row.length - 1);
+  console.log(columns.length);
+  var node = document.createTextNode("Mineral: " + row[0] + " (" + row[1] + ")");
+  var h3 = document.createElement("h3");
+  h3.appendChild(node);
+  // h3.setAttribute("data-href", 'search/' + rowNum); TODO: attach mineral links to headers of mineral data chunks
+  var content = document.getElementById("content");
+  content.appendChild(h3);
+
+  // Basic information that always shows up
+  node = document.createTextNode("Basic information");
+  var h5 = document.createElement("h5");
+  h5.appendChild(node);
+  content.appendChild(h5);
+  node = document.createTextNode("Group: " + row[2]);
+  var p = document.createElement("p");
+  p.appendChild(node);
+  content.appendChild(p);
+  node = document.createTextNode("Structure/SG: " + row[3]);
+  p = document.createElement("p");
+  p.appendChild(node);
+  content.appendChild(p);
+  node = document.createTextNode("C1: " + row[4]);
+  p = document.createElement("p");
+  p.appendChild(node);
+  content.appendChild(p);
+  node = document.createTextNode("NS: " + row[5]);
+  p = document.createElement("p");
+  p.appendChild(node);
+  content.appendChild(p);
+  var cubed = document.createElement("sup");
+  node = document.createTextNode("3");
+  cubed.appendChild(node);
+  var str1 = "Density (g/cm";
+  node = document.createTextNode(str1);
+  var str2 = "): " + row[6];
+  node2 = document.createTextNode(str2);
+  p = document.createElement("p");
+  p.appendChild(node);
+  p.appendChild(cubed);
+  p.appendChild(node2);
+  content.appendChild(p);
+
+  console.log(properties.includes("all_cats"));
+
+  // If property is included, build the table for elastic constants TODO account for "all_cats"
+  if (properties.includes("aem") || properties.includes("all_cats")) {
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Adiabatic elastic moduli (GPa)";
+    content.appendChild(h5);
+    var labels = ["C<sub>11</sub>", "C<sub>44</sub>", "C<sub>12</sub>"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;11&#39;"),
+                   columns.indexOf("&#39;44&#39;"),
+                   columns.indexOf("&#39;12&#39;")];
+    buildTable(labels, data, indices);
+  }
+  if (properties.includes("am") || properties.includes("all_cats")) { //TODO integrate subcheckbox functionality
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Aggregate adiabatic elastic moduli (GPa)";
+    content.appendChild(h5);
+
+    var h6 = document.createElement("h6");
+    h6.innerHTML = "Voigt-Reuss-Hill averages (GPa)";
+    content.appendChild(h6);
+    var labels = ["K", "G", "K/G"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;K&#39;"),
+                   columns.indexOf("&#39;G&#39;"),
+                   columns.indexOf("&#39;K/G&#39;")];
+    buildTable(labels, data, indices);
+
+    var h6 = document.createElement("h6");
+    h6.innerHTML = "Voigt, Reuss bounds on shear modulus (GPa)";
+    content.appendChild(h6);
+    labels = ["G<sub>R</sub>", "G<sub>V</sub>"];
+    data = row;
+    indices = [columns.indexOf("&#39;GR&#39;"),
+               columns.indexOf("&#39;GV&#39;")];
+    buildTable(labels, data, indices);
+
+    var h6 = document.createElement("h6");
+    h6.innerHTML = "Hashin-Shtrikman bounds on shear modulus (GPa)";
+    content.appendChild(h6);
+    labels = ["G<sub>HS1</sub>", "G<sub>HS2</sub>", "G<sub>HSA</sub>"];
+    data = row;
+    indices = [columns.indexOf("&#39;GHS1&#39;"),
+               columns.indexOf("&#39;GHS2&#39;"),
+               columns.indexOf("&#39;GHSA&#39;")];
+    buildTable(labels, data, indices);
+
+    var h6 = document.createElement("h6");
+    h6.innerHTML = "Voigt, Reuss bounds on shear modulus (GPa)";
+    content.appendChild(h6);
+    labels = ["G<sub>R</sub>", "G<sub>V</sub>"];
+    data = row;
+    indices = [columns.indexOf("&#39;GR&#39;"),
+               columns.indexOf("&#39;GV&#39;")];
+    buildTable(labels, data, indices);
+  }
+  if (properties.includes("sv") || properties.includes("all_cats")) {
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Sound velocities (km/s)";
+    content.appendChild(h5);
+    var labels = ["V<sub>P</sub>", "V<sub>B</sub>", "V<sub>S</sub>"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;VP&#39;"),
+                   columns.indexOf("&#39;VB&#39;"),
+                   columns.indexOf("&#39;VS&#39;")];
+    buildTable(labels, data, indices);
+  }
+  if (properties.includes("svr") || properties.includes("all_cats")) {
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Sound velocity ratio";
+    content.appendChild(h5);
+    var labels = ["V<sub>P</sub>/V<sub>S</sub>"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;VP/VS&#39;")];
+    buildTable(labels, data, indices);
+  }
+  if (properties.includes("nm") || properties.includes("all_cats")) {
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Normalized elastic moduli";
+    content.appendChild(h5);
+    var labels = ["C<sub>44</sub>/C<sub>11</sub>", "C<sub>12</sub>/C<sub>11</sub>"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;C44/C11&#39;"),
+                   columns.indexOf("&#39;C12/C11&#39;")];
+    buildTable(labels, data, indices);
+  }
+  if (properties.includes("af") || properties.includes("all_cats")) {
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Anisotropy factors";
+    content.appendChild(h5);
+    var labels = ["A<sub>Z</sub>", "A<sub>G</sub>", "A<sub>U</sub>", "A<sub>L</sub>"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;AZ&#39;"),
+                   columns.indexOf("&#39;AG&#39;"),
+                   columns.indexOf("&#39;AU&#39;"),
+                   columns.indexOf("&#39;AL&#39;")];
+    buildTable(labels, data, indices);
+  }
+  if (properties.includes("ec") || properties.includes("all_cats")) {
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Adiabatic elastic compliances (GPa<sup>-1</sup>)";
+    content.appendChild(h5);
+    var labels = ["S<sub>11</sub>", "S<sub>44</sub>", "S<sub>12</sub>"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;S11&#39;"),
+                   columns.indexOf("&#39;S44&#39;"),
+                   columns.indexOf("&#39;S12&#39;")];
+    buildTable(labels, data, indices);
+  }
+  if (properties.includes("pre") || properties.includes("all_cats")) {
+    h5 = document.createElement("h5");
+    h5.innerHTML = "Extrema of Poisson’s ratio";
+    content.appendChild(h5);
+    var labels = ["n_110", "n_001"];
+    var data = row;
+    var indices = [columns.indexOf("&#39;n_110&#39;"),
+                   columns.indexOf("&#39;n_001&#39;")];
+    buildTable(labels, data, indices);
+  }
+
+  // Create space between minerals and between the last mineral and the end of
+  // the page
+  br = document.createElement("br");
+  content.appendChild(br);
+  var hr = document.createElement("hr");
+  content.appendChild(hr);
+  br = document.createElement("br");
+  content.appendChild(br);
+}
+
+// Build a table with HTML elements with the given column labels and data as the
+// rows
+function buildTable(labels, data, indices) {
+  var table = document.createElement("table");
+  table.setAttribute("align", "center");
+
+  var th; // add in the table headers
+  var name;
+  for (var i = 0; i < labels.length; i++) {
+    th = document.createElement("th");
+    th.innerHTML = labels[i];
+    th.setAttribute("data-html", "true");
+    table.appendChild(th);
+  }
+
+  var tr; // append the rest of the data below
+  var td;
+  var name;
+  tr = document.createElement("tr");
+  for (var i = 0; i < indices.length; i++) {
+    td = document.createElement("td");
+    name = document.createTextNode(data[indices[i]]);
+    td.appendChild(name);
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
+  var content = document.getElementById("content");
+  content.appendChild(table);
 }
