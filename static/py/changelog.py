@@ -1,6 +1,18 @@
+"""Script that checks for changes uploaded to the database by Tom through
+FileZilla and updates the master sheet with the changes. Then, it alters the
+changelog.html file to reflect the changes. Uses pandas for the table changes 
+and Beautiful Soup 4 for the html changes.
+"""
+
 import pandas as pd
 import os.path
 import bs4
+
+__author__ = "Robbie Freeman"
+__credits__ = ["Thomas Duffy"]
+__maintainer__ = "Robbie Freeman"
+__email__ = "robbie.a.freeman@gmail.com"
+__status__ = "Development"
 
 # Take in a new excel sheet. Read in the data using Pandas. TODO update with master
 if !os.path.isfile("static/downloads/newSheet.xlsv") :

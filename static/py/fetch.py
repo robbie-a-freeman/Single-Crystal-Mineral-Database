@@ -1,16 +1,34 @@
+"""Performs the searching accessible in search.html and the fetching for individual
+minerals when called. search() is specifically for data coming from search.html, while
+getMineral() is specifically for individual mineral results. All the other functions
+are basically helper functions. Uses pandas and a bit of numpy for table manipulation.
+"""
+
 import pandas as pd
 import math
 import numpy
 
+__author__ = "Robbie Freeman"
+__credits__ = ["Thomas Duffy"]
+__maintainer__ = "Robbie Freeman"
+__email__ = "robbie.a.freeman@gmail.com"
+__status__ = "Development"
+
 selectedProperties = []
 columnLabels = []
+results = None
 
-# Return the selected properties list. Shouldn't be called before main()
+# Return the selected properties list. Shouldn't be called before search()
 def getSelectedProperties() :
     return selectedProperties
 
+# Return the column name list. Shouldn't be called before search()
 def getColumnNames() :
     return columnLabels
+
+# Return the results table. Shouldn't be called before search()
+def getResultsTable() :
+    return results
 
 # Determine if str has a checkbox in formData that is selected. If so, add to
 # the given lists and return a tuple with True. Otherwise, return a tuple with
@@ -157,7 +175,7 @@ def search(formData) : # TODO: Generalize to work with all data in the spreadshe
                 results = results.drop('GHS2', axis=1)
                 results = results.drop('GHSA', axis=1)
             if ympr[0] not in selectedProperties:
-                results = results.drop('nVRH', axis=1) # TODO Should these be here?
+                results = results.drop('nVRH', axis=1)
                 results = results.drop('EVRH', axis=1)
         if sv[0] not in selectedProperties:
             results = results.drop('VP', axis=1)
@@ -184,6 +202,7 @@ def search(formData) : # TODO: Generalize to work with all data in the spreadshe
         print("all properties included")
 
     setGlobalColumns(results)
+    setGlobalResultTable(results)
     return formatString(results);
 
 # sets the column labels for the given table for the global variable columnLabels
@@ -195,6 +214,11 @@ def setGlobalColumns(table):
 def setGlobalProperties(properties):
     global selectedProperties
     selectedProperties = properties;
+
+# sets the properties for the given table for the global variable selectedProperties
+def setGlobalResultTable(resultTable):
+    global results
+    results = resultTable;
 
 # Format the results dataframe that is passed in to fit with the JS file that
 # will receive and parse it.
@@ -244,4 +268,5 @@ def getMineral(rowNum):
 
     setGlobalProperties(['all_cats'])
     setGlobalColumns(result.columns)
+    setGlobalResultTable(results)
     return formatString(result)
