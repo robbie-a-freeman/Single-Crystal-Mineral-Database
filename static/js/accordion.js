@@ -1,4 +1,14 @@
-/* source: https://www.w3schools.com/howto/howto_js_accordion.asp */
+/**
+ * checkboxes.js
+ * Controls the accordions in search.html. Adapted slightly.
+ * source: https://www.w3schools.com/howto/howto_js_accordion.asp
+ *
+ * @author  Robbie Freeman, robbie.a.freeman@gmail.com
+ * @updated 2018-07-17
+ * @link    search.html
+ *
+ */
+
 var acc = document.getElementsByClassName("accordion");
 var i;
 

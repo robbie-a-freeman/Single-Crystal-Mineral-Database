@@ -81,7 +81,7 @@ a, a:visited {
   font-weight:bold;
 }
 
-a:hover, tr:hover {
+a:hover {
   text-decoration:underline;
   color:#ff8f00;
 }

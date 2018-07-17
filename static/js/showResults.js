@@ -1,8 +1,18 @@
+/**
+ * showResults.js
+ * Formats the links of table rows using JQuery. Otherwise, the links don't look
+ * look like proper links. Uses JQuery.
+ *
+ * @author  Robbie Freeman, robbie.a.freeman@gmail.com
+ * @updated 2018-07-17
+ * @link    results.html
+ *
+ */
+
 // Called by results.html template. Builds the page based on a query from
 // search.html given the string table of results and the list of desired
 // properties of each result. Also takes in the list of columns, columns, as
 // a string.
-
 function fillEntries(table, properties, columns) {
   columns = columns.split(", ");
   var rows = table.split("\\");
@@ -27,7 +37,7 @@ function fillEntries(table, properties, columns) {
 }
 
 // Displays a mineral from a row of cells, which is in array form, and from the
-// list of properties to display
+// list of properties to display. Also takes in list of columns to insert
 function displayMineral(row, properties, columns) {
   // Set up header content
   console.log(row.length - 1);
@@ -73,9 +83,7 @@ function displayMineral(row, properties, columns) {
   p.appendChild(node2);
   content.appendChild(p);
 
-  console.log(properties.includes("all_cats"));
-
-  // If property is included, build the table for elastic constants TODO account for "all_cats"
+  // If property is included, build the table for elastic constants
   if (properties.includes("aem") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Adiabatic elastic moduli (GPa)";
@@ -87,6 +95,7 @@ function displayMineral(row, properties, columns) {
                    columns.indexOf("&#39;12&#39;")];
     buildTable(labels, data, indices);
   }
+  // If property is included, build the tables for other elastic constant data
   if (properties.includes("am") || properties.includes("all_cats")) { //TODO integrate subcheckbox functionality
     h5 = document.createElement("h5");
     h5.innerHTML = "Aggregate adiabatic elastic moduli (GPa)";
@@ -130,6 +139,7 @@ function displayMineral(row, properties, columns) {
                columns.indexOf("&#39;GV&#39;")];
     buildTable(labels, data, indices);
   }
+  // If property is included, build the tables for sound velocity data
   if (properties.includes("sv") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Sound velocities (km/s)";
@@ -141,6 +151,7 @@ function displayMineral(row, properties, columns) {
                    columns.indexOf("&#39;VS&#39;")];
     buildTable(labels, data, indices);
   }
+  // If property is included, build the tables for sound velocity ratio data
   if (properties.includes("svr") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Sound velocity ratio";
@@ -150,6 +161,7 @@ function displayMineral(row, properties, columns) {
     var indices = [columns.indexOf("&#39;VP/VS&#39;")];
     buildTable(labels, data, indices);
   }
+  // If property is included, build the tables for normalized elastic moduli
   if (properties.includes("nm") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Normalized elastic moduli";
@@ -160,6 +172,7 @@ function displayMineral(row, properties, columns) {
                    columns.indexOf("&#39;C12/C11&#39;")];
     buildTable(labels, data, indices);
   }
+  // If property is included, build the tables for anisotropy factors
   if (properties.includes("af") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Anisotropy factors";
@@ -172,6 +185,7 @@ function displayMineral(row, properties, columns) {
                    columns.indexOf("&#39;AL&#39;")];
     buildTable(labels, data, indices);
   }
+  // If property is included, build the tables for elastic compliances
   if (properties.includes("ec") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Adiabatic elastic compliances (GPa<sup>-1</sup>)";
@@ -183,6 +197,7 @@ function displayMineral(row, properties, columns) {
                    columns.indexOf("&#39;S12&#39;")];
     buildTable(labels, data, indices);
   }
+  // If property is included, build the tables for Poisson’s ratio
   if (properties.includes("pre") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Extrema of Poisson’s ratio";
@@ -215,7 +230,6 @@ function buildTable(labels, data, indices) {
   for (var i = 0; i < labels.length; i++) {
     th = document.createElement("th");
     th.innerHTML = labels[i];
-    th.setAttribute("data-html", "true");
     table.appendChild(th);
   }
 
