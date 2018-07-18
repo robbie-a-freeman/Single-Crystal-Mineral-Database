@@ -75,7 +75,12 @@
       var properties = "{{ properties }}";
       var columns = "{{ columns }}"
       var rowNum = "{{ rowNum }}";
-      fillEntries(table, properties, columns, rowNum);</script>
+      if (rowNum == "") {
+        fillEntries(table, properties, columns);
+      } else {
+        fillEntries(table, properties, columns, rowNum);
+      }
+      </script>
     </div>
   </div>
 

@@ -1,5 +1,5 @@
 """Generates all entries in the database in a specific format that is easier to
-   browse in bulk and a little quicker than in fetch.py. Using pandas, loads the
+   browse in bulk and a lot quicker than in fetch.py. Using pandas, loads the
    master sheet, cleans it up, and adds backslashes before shipping it to the
    html template. The backslashes are necessary to be parsed in javascript.
 """
@@ -17,12 +17,13 @@ __status__ = "Development"
 # use in the js file entries.js
 def main():
     # Read in the DB
-    table = pd.read_csv("static/downloads/single-crystal_db.csv", usecols=[0, 1, 2], header=3, skip_blank_lines=True, skipinitialspace=True)
+    table = pd.read_csv("static/downloads/single-crystal_db.csv", usecols=[0, 1, 2], header=4, skip_blank_lines=True, skipinitialspace=True)
 
     # Get rid of all lines with NaN values
-    for x in range(len(table.index)):
-        if table.loc[x].isnull().values.any():
-            table.drop(x, inplace=True)
+    table.dropna(inplace=True, how="all", axis=1)
+    table.dropna(inplace=True, how="all", axis=0)
+    table.dropna(inplace=True, how="any", axis=0)
+    print(table)
 
     # insert the backslash for new line in js
     # also extra two backslashes to allow js to split the string
@@ -44,5 +45,4 @@ def main():
 
     # remove the last backslash so that the file terminates and return the table
     editedTable = editedTable[:-1]
-    print(editedTable)
     return editedTable

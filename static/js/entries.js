@@ -18,7 +18,6 @@
 // JS does not like taking in multi-line strings, so that is how the language
 // takes in the string.
 function fillEntries(table) {
-  console.log("being called");
   var bigTable = document.createElement("table");
   bigTable.setAttribute("align", "center");
   // for each line in the string, make a table row and fill it with entries
@@ -40,6 +39,7 @@ function fillEntries(table) {
   var rowNum = 0;
   // generates row of each mineral
   for (var i = 0; i < rows.length; i++) {
+    console.log(rows[i] + " " + i); 
     var tr = document.createElement("tr");
     var cells = rows[i].split("~*")
     for (var j = 0; j < cells.length - 1; j++) {

@@ -158,7 +158,6 @@ def search(formData) : # TODO: Generalize to work with all data in the spreadshe
     # column(s) if a category isn't
     if allCats[0] not in selectedProperties:
         if aem[0] not in selectedProperties:
-            print("herE aem")
             results.drop('11', axis=1)
             results.drop('44', axis=1)
             results.drop('12', axis=1)
@@ -201,6 +200,10 @@ def search(formData) : # TODO: Generalize to work with all data in the spreadshe
     else:
         print("all properties included")
 
+    # Get rid of label rows
+    results.dropna(inplace=True, how="any", axis=0)
+
+    print(len(results))
     setGlobalColumns(results)
     setGlobalResultTable(results)
     return formatString(results);
@@ -247,12 +250,12 @@ def formatString(results):
 # Grab the CSV file in the database, skip the the header line assuming it's still
 # the fourth line in the sheet.
 def getInitialTable():
-    table = pd.read_csv("static/downloads/single-crystal_db.csv", header=3, skip_blank_lines=True, skipinitialspace=True)
+    table = pd.read_csv("static/downloads/single-crystal_db.csv", header=4, skip_blank_lines=True, skipinitialspace=True)
 
     # Get rid of all lines with all NaN values (not including class labels)
     table.dropna(inplace=True, how="all", axis=1) # columns
     table.dropna(inplace=True, how="all", axis=0) # rows
-
+    print("length of initial " + str(len(table)))
     return table
 
 # Quickly locate and grab a specific mineral and all of its information
@@ -260,10 +263,16 @@ def getMineral(rowNum):
     # Find if a mineral matches the given composition. If it does, return the
     # row. If not, return null.
     table = getInitialTable()
-    #result = table[table['Composition'].str.contains(composition) == True]
+
     # Format the row as a String and return it. Also update columns and properties
 
-    table.dropna(inplace=True, how="any", axis=0) # rows
+    table = table.drop([0]) # drop the Silicates line specifically, since it has
+                            # units in it and does not fit the same criteria as
+                            # other rows being dropped.
+    table.dropna(inplace=True, how="any", axis=0, thresh=5) # drop other label rows
+    print(table)
+    print("length of post " + str(len(table)))
+    #print(table.iloc[[201]])
     result = table.iloc[[rowNum]]
 
     setGlobalProperties(['all_cats'])
