@@ -112,7 +112,7 @@ def specificResult(rowNum):
     columns = fetch.getColumnNames()
     global resultsTable
     resultsTable = fetch.getResultsTable()
-    return render_template('results.html', table = results, properties = properties, columns = columns)
+    return render_template('results.html', table = results, properties = properties, columns = columns, rowNum = rowNum)
 
 # basic 404 page. Hopefully isn't called all that often
 @app.errorhandler(404)

@@ -67,14 +67,15 @@
         <form method="get" align="right" action="/downloadExcelResults">
           <input type="submit" value="Download as Excel sheet" />
         </form>
-        <h1>Results</h1>
+        <h1 id="results-title">Results</h1>
       </div>
       <script src="../static/js/showResults.js"></script>
       <script>
       var table = "{{ table }}";
       var properties = "{{ properties }}";
-      var columns = "{{ columns }}";
-      fillEntries(table, properties, columns);</script>
+      var columns = "{{ columns }}"
+      var rowNum = "{{ rowNum }}";
+      fillEntries(table, properties, columns, rowNum);</script>
     </div>
   </div>
 

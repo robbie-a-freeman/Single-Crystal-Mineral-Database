@@ -12,22 +12,30 @@
 // Called by results.html template. Builds the page based on a query from
 // search.html given the string table of results and the list of desired
 // properties of each result. Also takes in the list of columns, columns, as
-// a string.
-function fillEntries(table, properties, columns) {
+// a string. rowNum is undefined unless it's from a specific mineral query
+function fillEntries(table, properties, columns, rowNum) {
+  // if a rowNum is passed in, it's an individual mineral page. Otherwise, it's
+  // a dynamic search result page
   columns = columns.split(", ");
   var rows = table.split("\\");
-  var resultAmount = rows.length - 1; // There's an extra row in the table due to invisible characters
   var h6 = document.createElement("h6");
-  var resultText;
-  if (resultAmount == 1) {
-    resultText = document.createTextNode("1 result found");
+  var resultAmount = rows.length - 1; // There's an extra row in the table due to invisible characters
+  var content = document.getElementById("content");
+  if (typeof rowNum == 'undefined') {
+    var resultText;
+    if (resultAmount == 1) {
+      resultText = document.createTextNode("1 result found");
+    } else {
+      resultText = document.createTextNode(resultAmount + " results found");
+    }
+    h6.appendChild(resultText);
+    content.appendChild(h6);
   } else {
-    resultText = document.createTextNode(resultAmount + " results found");
+    title = document.getElementById("results-title");
+    var cells = rows[0].split("~*");
+    title.innerHTML = cells[0] + " Information";
   }
 
-  h6.appendChild(resultText);
-  var content = document.getElementById("content");
-  content.appendChild(h6);
   br = document.createElement("br");
   content.appendChild(br);
   for (var i = 0; i < resultAmount; i++) {
@@ -90,6 +98,7 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["C<sub>11</sub>", "C<sub>44</sub>", "C<sub>12</sub>"];
     var data = row;
+    console.log(columns);
     var indices = [columns.indexOf("&#39;11&#39;"),
                    columns.indexOf("&#39;44&#39;"),
                    columns.indexOf("&#39;12&#39;")];
