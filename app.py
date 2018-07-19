@@ -125,6 +125,11 @@ if __name__ == "__main__":
 
 # converts pandas table into excel sheet for download. Returns nothing
 def createExcelSheet(table) :
+    # format the table appropriately
+    print(table)
+    #table.drop('\\\\\\')
+    print(table)
+    # make the excel writer
     import pandas as pd
     writer = pd.ExcelWriter('Single_Crystal_Mineral_Database_Results.xlsx')
     table.to_excel(writer,'Sheet1')
@@ -132,5 +137,8 @@ def createExcelSheet(table) :
 
 # converts pandas table into CSV file for download. Returns nothing
 def createCSVSheet(table) :
+    # format the table appropriately
+
+    # convert to csv
     import pandas as pd
     table.to_csv('Single_Crystal_Mineral_Database_Results.csv')

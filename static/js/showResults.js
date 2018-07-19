@@ -103,9 +103,9 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["C<sub>11</sub>", "C<sub>44</sub>", "C<sub>12</sub>"];
     var data = row;
-    var indices = [columns.indexOf("&#39;11&#39;"),
-                   columns.indexOf("&#39;44&#39;"),
-                   columns.indexOf("&#39;12&#39;")];
+    var indices = [locateIndexOf("&#39;11&#39;", columns),
+                   locateIndexOf("&#39;44&#39;", columns),
+                   locateIndexOf("&#39;12&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for other elastic constant data
@@ -123,9 +123,9 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h6);
     var labels = ["K", "G", "K/G"];
     var data = row;
-    var indices = [columns.indexOf("&#39;K&#39;"),
-                   columns.indexOf("&#39;G&#39;"),
-                   columns.indexOf("&#39;K/G&#39;")];
+    var indices = [locateIndexOf("&#39;K&#39;", columns),
+                   locateIndexOf("&#39;G&#39;", columns),
+                   locateIndexOf("&#39;K/G&#39;", columns)];
     buildTable(labels, data, indices);
   }
 
@@ -135,8 +135,8 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h6);
     labels = ["G<sub>R</sub>", "G<sub>V</sub>"];
     data = row;
-    indices = [columns.indexOf("&#39;GR&#39;"),
-               columns.indexOf("&#39;GV&#39;")];
+    indices = [locateIndexOf("&#39;GR&#39;", columns),
+               locateIndexOf("&#39;GV&#39;", columns)];
     buildTable(labels, data, indices);
   }
   if (properties.includes("hsb") || properties.includes("am") || properties.includes("all_cats")) {
@@ -145,19 +145,19 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h6);
     labels = ["G<sub>HS1</sub>", "G<sub>HS2</sub>", "G<sub>HSA</sub>"];
     data = row;
-    indices = [columns.indexOf("&#39;GHS1&#39;"),
-               columns.indexOf("&#39;GHS2&#39;"),
-               columns.indexOf("&#39;GHSA&#39;")];
+    indices = [locateIndexOf("&#39;GHS1&#39;", columns),
+               locateIndexOf("&#39;GHS2&#39;", columns),
+               locateIndexOf("&#39;GHSA&#39;", columns)];
     buildTable(labels, data, indices);
   }
   if (properties.includes("ympr") || properties.includes("am") || properties.includes("all_cats")) {
     var h6 = document.createElement("h6");
-    h6.innerHTML = "Voigt, Reuss bounds on shear modulus (GPa)";
+    h6.innerHTML = "Aggregate Young’s modulus and Poisson’s ratio";
     content.appendChild(h6);
-    labels = ["G<sub>R</sub>", "G<sub>V</sub>"];
+    labels = ["nVRH", "EVRH"];
     data = row;
-    indices = [columns.indexOf("&#39;GR&#39;"),
-               columns.indexOf("&#39;GV&#39;")];
+    indices = [locateIndexOf("&#39;nVRH&#39;", columns),
+               locateIndexOf("&#39;EVRH&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for sound velocity data
@@ -167,9 +167,9 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["V<sub>P</sub>", "V<sub>B</sub>", "V<sub>S</sub>"];
     var data = row;
-    var indices = [columns.indexOf("&#39;VP&#39;"),
-                   columns.indexOf("&#39;VB&#39;"),
-                   columns.indexOf("&#39;VS&#39;")];
+    var indices = [locateIndexOf("&#39;VP&#39;", columns),
+                   locateIndexOf("&#39;VB&#39;", columns),
+                   locateIndexOf("&#39;VS&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for sound velocity ratio data
@@ -179,7 +179,7 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["V<sub>P</sub>/V<sub>S</sub>"];
     var data = row;
-    var indices = [columns.indexOf("&#39;VP/VS&#39;")];
+    var indices = [locateIndexOf("&#39;VP/VS&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for normalized elastic moduli
@@ -189,8 +189,8 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["C<sub>44</sub>/C<sub>11</sub>", "C<sub>12</sub>/C<sub>11</sub>"];
     var data = row;
-    var indices = [columns.indexOf("&#39;C44/C11&#39;"),
-                   columns.indexOf("&#39;C12/C11&#39;")];
+    var indices = [locateIndexOf("&#39;C44/C11&#39;", columns),
+                  locateIndexOf("&#39;C12/C11&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for anisotropy factors
@@ -200,10 +200,10 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["A<sub>Z</sub>", "A<sub>G</sub>", "A<sub>U</sub>", "A<sub>L</sub>"];
     var data = row;
-    var indices = [columns.indexOf("&#39;AZ&#39;"),
-                   columns.indexOf("&#39;AG&#39;"),
-                   columns.indexOf("&#39;AU&#39;"),
-                   columns.indexOf("&#39;AL&#39;")];
+    var indices = [locateIndexOf("&#39;AZ&#39;", columns),
+                   locateIndexOf("&#39;AG&#39;", columns),
+                   locateIndexOf("&#39;AU&#39;", columns),
+                   locateIndexOf("&#39;AL&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for elastic compliances
@@ -213,9 +213,10 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["S<sub>11</sub>", "S<sub>44</sub>", "S<sub>12</sub>"];
     var data = row;
-    var indices = [columns.indexOf("&#39;S11&#39;"),
-                   columns.indexOf("&#39;S44&#39;"),
-                   columns.indexOf("&#39;S12&#39;")];
+    console.log(columns);
+    var indices = [locateIndexOf("&#39;S11&#39;", columns),
+                   locateIndexOf("&#39;S44&#39;", columns),
+                   locateIndexOf("&#39;S12&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for Poisson’s ratio
@@ -225,8 +226,8 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["n_110", "n_001"];
     var data = row;
-    var indices = [columns.indexOf("&#39;n_110&#39;"),
-                   columns.indexOf("&#39;n_001&#39;")];
+    var indices = [locateIndexOf("&#39;n_110&#39;", columns),
+                   locateIndexOf("&#39;n_001&#39;", columns)];
     buildTable(labels, data, indices);
   }
 
@@ -266,13 +267,19 @@ function buildTable(labels, data, indices) {
 }
 
 // Takes in a string and finds it in the array that is passed from fetch.py.
-// Returns an int representing the index, -1 if not found. TODO finish and implement
+// Returns an int representing the index, -1 if not found.
 function locateIndexOf(string, array) {
-  // if the brackets remain from the python array remnants, remove them
-  if (string.contains("[") || string.contains("]")) {
-    // string = string.remove("[");
-    // string = string.remove("]");
+  // if the brackets remain from the python array remnants, find the string anyway
+  var index = array.indexOf(string);
+  if (index == -1) {
+    endString = string + ']';
+    index = array.indexOf(endString);
+    if (index == -1) {
+      beginningString = '[' + string;
+      index = array.indexOf(beginningString);
+    }
   }
-  var index = array.indexOf(string)
+
+  console.log(index);
   return index;
 }

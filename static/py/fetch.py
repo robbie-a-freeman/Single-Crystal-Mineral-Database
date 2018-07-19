@@ -255,7 +255,6 @@ def getInitialTable():
     # Get rid of all lines with all NaN values (not including class labels)
     table.dropna(inplace=True, how="all", axis=1) # columns
     table.dropna(inplace=True, how="all", axis=0) # rows
-    print("length of initial " + str(len(table)))
     return table
 
 # Quickly locate and grab a specific mineral and all of its information
@@ -271,11 +270,9 @@ def getMineral(rowNum):
                             # other rows being dropped.
     table.dropna(inplace=True, how="any", axis=0, thresh=5) # drop other label rows
     print(table)
-    print("length of post " + str(len(table)))
-    #print(table.iloc[[201]])
     result = table.iloc[[rowNum]]
 
     setGlobalProperties(['all_cats'])
     setGlobalColumns(result.columns)
-    setGlobalResultTable(results)
+    setGlobalResultTable(result)
     return formatString(result)
