@@ -4,7 +4,7 @@
  * look like proper links. Uses JQuery.
  *
  * @author  Robbie Freeman, robbie.a.freeman@gmail.com
- * @updated 2018-07-17
+ * @updated 2018-07-18
  * @link    results.html
  *
  */
@@ -16,12 +16,13 @@
 function fillEntries(table, properties, columns, rowNum) {
   // if a rowNum is passed in, it's an individual mineral page. Otherwise, it's
   // a dynamic search result page
+  var isSingleEntry = !(typeof rowNum == 'undefined');
   columns = columns.split(", ");
   var rows = table.split("\\");
   var h6 = document.createElement("h6");
   var resultAmount = rows.length - 1; // There's an extra row in the table due to invisible characters
   var content = document.getElementById("content");
-  if (typeof rowNum == 'undefined') {
+  if (!isSingleEntry) {
     var resultText;
     if (resultAmount == 1) {
       resultText = document.createTextNode("1 result found");
@@ -41,6 +42,12 @@ function fillEntries(table, properties, columns, rowNum) {
   for (var i = 0; i < resultAmount; i++) {
     var cells = rows[i].split("~*");
     displayMineral(cells, properties, columns);
+    if (!isSingleEntry) {
+      var hr = document.createElement("hr");
+      content.appendChild(hr);
+      br = document.createElement("br");
+      content.appendChild(br);
+    }
   }
 }
 
@@ -48,8 +55,6 @@ function fillEntries(table, properties, columns, rowNum) {
 // list of properties to display. Also takes in list of columns to insert
 function displayMineral(row, properties, columns) {
   // Set up header content
-  console.log(row.length - 1);
-  console.log(columns.length);
   var node = document.createTextNode("Mineral: " + row[0] + " (" + row[1] + ")");
   var h3 = document.createElement("h3");
   h3.appendChild(node);
@@ -98,18 +103,21 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["C<sub>11</sub>", "C<sub>44</sub>", "C<sub>12</sub>"];
     var data = row;
-    console.log(columns);
     var indices = [columns.indexOf("&#39;11&#39;"),
                    columns.indexOf("&#39;44&#39;"),
                    columns.indexOf("&#39;12&#39;")];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for other elastic constant data
-  if (properties.includes("am") || properties.includes("all_cats")) { //TODO integrate subcheckbox functionality
-    h5 = document.createElement("h5");
-    h5.innerHTML = "Aggregate adiabatic elastic moduli (GPa)";
-    content.appendChild(h5);
+  if (properties.includes("ympr") || properties.includes("hsb") ||
+      properties.includes("vrb") || properties.includes("vrh") ||
+      properties.includes("am") || properties.includes("all_cats")) {
+        h5 = document.createElement("h5");
+        h5.innerHTML = "Aggregate adiabatic elastic moduli (GPa)";
+        content.appendChild(h5);
+  }
 
+  if (properties.includes("vrh") || properties.includes("am") || properties.includes("all_cats")) {
     var h6 = document.createElement("h6");
     h6.innerHTML = "Voigt-Reuss-Hill averages (GPa)";
     content.appendChild(h6);
@@ -119,7 +127,9 @@ function displayMineral(row, properties, columns) {
                    columns.indexOf("&#39;G&#39;"),
                    columns.indexOf("&#39;K/G&#39;")];
     buildTable(labels, data, indices);
+  }
 
+  if (properties.includes("vrb") || properties.includes("am") || properties.includes("all_cats")) {
     var h6 = document.createElement("h6");
     h6.innerHTML = "Voigt, Reuss bounds on shear modulus (GPa)";
     content.appendChild(h6);
@@ -128,7 +138,8 @@ function displayMineral(row, properties, columns) {
     indices = [columns.indexOf("&#39;GR&#39;"),
                columns.indexOf("&#39;GV&#39;")];
     buildTable(labels, data, indices);
-
+  }
+  if (properties.includes("hsb") || properties.includes("am") || properties.includes("all_cats")) {
     var h6 = document.createElement("h6");
     h6.innerHTML = "Hashin-Shtrikman bounds on shear modulus (GPa)";
     content.appendChild(h6);
@@ -138,7 +149,8 @@ function displayMineral(row, properties, columns) {
                columns.indexOf("&#39;GHS2&#39;"),
                columns.indexOf("&#39;GHSA&#39;")];
     buildTable(labels, data, indices);
-
+  }
+  if (properties.includes("ympr") || properties.includes("am") || properties.includes("all_cats")) {
     var h6 = document.createElement("h6");
     h6.innerHTML = "Voigt, Reuss bounds on shear modulus (GPa)";
     content.appendChild(h6);
@@ -222,10 +234,6 @@ function displayMineral(row, properties, columns) {
   // the page
   br = document.createElement("br");
   content.appendChild(br);
-  var hr = document.createElement("hr");
-  content.appendChild(hr);
-  br = document.createElement("br");
-  content.appendChild(br);
 }
 
 // Build a table with HTML elements with the given column labels and data as the
@@ -255,4 +263,16 @@ function buildTable(labels, data, indices) {
   table.appendChild(tr);
   var content = document.getElementById("content");
   content.appendChild(table);
+}
+
+// Takes in a string and finds it in the array that is passed from fetch.py.
+// Returns an int representing the index, -1 if not found. TODO finish and implement
+function locateIndexOf(string, array) {
+  // if the brackets remain from the python array remnants, remove them
+  if (string.contains("[") || string.contains("]")) {
+    // string = string.remove("[");
+    // string = string.remove("]");
+  }
+  var index = array.indexOf(string)
+  return index;
 }

@@ -39,7 +39,6 @@ function fillEntries(table) {
   var rowNum = 0;
   // generates row of each mineral
   for (var i = 0; i < rows.length; i++) {
-    console.log(rows[i] + " " + i); 
     var tr = document.createElement("tr");
     var cells = rows[i].split("~*")
     for (var j = 0; j < cells.length - 1; j++) {
