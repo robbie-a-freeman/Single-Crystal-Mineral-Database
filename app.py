@@ -13,7 +13,6 @@ from flask import url_for
 from flask import send_file
 import sys
 sys.path.insert(0, 'static/py')
-import allEntries
 import fetch
 
 app = Flask(__name__)
@@ -69,7 +68,9 @@ def downloads():
 # generates and loads the entire database quickly
 @app.route('/entries')
 def entries():
-    table = allEntries.main()
+    file = open('static/text/all.txt', 'r')
+    table = file.read()
+    table = table[:-1]
     return render_template('entries.html', table=table)
 
 # loads the home page
@@ -127,12 +128,16 @@ if __name__ == "__main__":
 def createExcelSheet(table) :
     # format the table appropriately
     print(table)
-    #table.drop('\\\\\\')
-    print(table)
+    table.drop(['\\\\\\'], axis=1, inplace=True)
+    print(table.columns)
     # make the excel writer
     import pandas as pd
     writer = pd.ExcelWriter('Single_Crystal_Mineral_Database_Results.xlsx')
-    table.to_excel(writer,'Sheet1')
+    table.to_excel(writer,'Search Results', index=False)
+    ref1 = pd.read_excel('static/downloads/single-crystal_db.xlsx', sheetname='Refs and Notes')
+    ref1.to_excel(writer,'Refs and Notes', index=False, header=False)
+    ref2 = pd.read_excel('static/downloads/single-crystal_db.xlsx', sheetname='Key and Abbreviations')
+    ref2.to_excel(writer,'Key and Abbreviations', index=False, header=False)
     writer.save()
 
 # converts pandas table into CSV file for download. Returns nothing
