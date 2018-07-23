@@ -11,9 +11,11 @@ from flask import abort
 from flask import redirect
 from flask import url_for
 from flask import send_file
+import os
 import sys
 sys.path.insert(0, 'static/py')
 import fetch
+import allEntries
 
 app = Flask(__name__)
 
@@ -68,6 +70,8 @@ def downloads():
 # generates and loads the entire database quickly
 @app.route('/entries')
 def entries():
+    if not os.path.isfile('static/text/all.txt'):
+        allEntries()
     file = open('static/text/all.txt', 'r')
     table = file.read()
     table = table[:-1]

@@ -51,6 +51,7 @@ for i in range(len(names)):
 if os.path.isfile('static/text/all.txt'):
     os.remove("static/text/all.txt")
 
+
 editedTable = editedTable[:-1]
 orig_stdout = sys.stdout
 file = open('static/text/all.txt', 'w')
