@@ -43,6 +43,9 @@ function fillEntries(table) {
     var cells = rows[i].split("~*")
     for (var j = 0; j < cells.length - 1; j++) {
       var td = document.createElement("td");
+      if (j == 0) { // if in the name column, convert the abbrieviations
+        cells[j] = replaceAbbrievs(cells[j]); // from replaceAbbrievs.js
+      }
       node = document.createTextNode(cells[j]);
       td.appendChild(node);
       tr.appendChild(td);

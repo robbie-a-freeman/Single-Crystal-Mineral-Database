@@ -34,7 +34,8 @@ function fillEntries(table, properties, columns, rowNum) {
   } else {
     title = document.getElementById("results-title");
     var cells = rows[0].split("~*");
-    title.innerHTML = cells[0] + " Information";
+    // from replaceAbbrievs.js
+    title.innerHTML = replaceAbbrievs(cells[0]) + " Information";
   }
 
   br = document.createElement("br");
@@ -52,10 +53,11 @@ function fillEntries(table, properties, columns, rowNum) {
 }
 
 // Displays a mineral from a row of cells, which is in array form, and from the
-// list of properties to display. Also takes in list of columns to insert
+// list of properties to display. Also takes in list of columns to insert.
+// Utlizes replaceAbbrievs.js
 function displayMineral(row, properties, columns) {
   // Set up header content
-  var node = document.createTextNode("Mineral: " + row[0] + " (" + row[1] + ")");
+  var node = document.createTextNode("Mineral: " + replaceAbbrievs(row[0]) + " (" + row[1] + ")");
   var h3 = document.createElement("h3");
   h3.appendChild(node);
   // h3.setAttribute("data-href", 'search/' + rowNum); TODO: attach mineral links to headers of mineral data chunks
