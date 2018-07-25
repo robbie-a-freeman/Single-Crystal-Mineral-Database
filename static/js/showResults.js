@@ -215,7 +215,6 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h5);
     var labels = ["S<sub>11</sub>", "S<sub>44</sub>", "S<sub>12</sub>"];
     var data = row;
-    console.log(columns);
     var indices = [locateIndexOf("&#39;S11&#39;", columns),
                    locateIndexOf("&#39;S44&#39;", columns),
                    locateIndexOf("&#39;S12&#39;", columns)];
@@ -282,6 +281,5 @@ function locateIndexOf(string, array) {
     }
   }
 
-  console.log(index);
   return index;
 }

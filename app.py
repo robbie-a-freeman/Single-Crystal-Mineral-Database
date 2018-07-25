@@ -71,16 +71,17 @@ def downloads():
 @app.route('/entries')
 def entries():
     if not os.path.isfile('static/text/all.txt'):
-        allEntries()
+        allEntries.main()
     file = open('static/text/all.txt', 'r')
     table = file.read()
-    table = table[:-1]
     return render_template('entries.html', table=table)
 
 # loads the home page
 @app.route('/')
 @app.route('/home')
 def home():
+    import changeHandler
+    changeHandler.main()
     return render_template('index.html')
 
 # loads list of related links of other projects
@@ -94,7 +95,11 @@ def links():
 def search():
     if request.method == 'POST': # if args are passed
         return searchResults(request.form)
-    return render_template('search.html')
+    if not os.path.isfile('static/text/categories.txt'):
+        allEntries()
+    file = open('static/text/categories.txt', 'r')
+    cats = file.read()
+    return render_template('search.html', categories=cats)
 
 # finds the results using fetch.py of a search query from search.html. Alters
 # the global table of results and grabs variables for use in the showResults.js

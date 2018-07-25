@@ -53,7 +53,6 @@ function checkDown(checkbox) {
 function checkUp(checkbox) {
   var all = document.getElementsByClassName(checkbox.prop("class"));
   var allChecked = true;
-  console.log(all);
 
   for (var i=0; i < all.length; i++) {
     if (all[i].checked != true) {

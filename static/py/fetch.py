@@ -8,6 +8,8 @@ import pandas as pd
 import math
 import numpy
 
+import tableManager
+
 __author__ = "Robbie Freeman"
 __credits__ = ["Thomas Duffy"]
 __maintainer__ = "Robbie Freeman"
@@ -122,7 +124,7 @@ def search(formData) : # TODO: Generalize to work with all data in the spreadshe
         ec = ("ec", True)
         pre = ("pre", True)
 
-    table = getInitialTable()
+    table = tableManager.getInitialTable()
 
     # Select all rows for each mineral class, assuming they are accurately
     # grouped under their labels, and collect them in their respective
@@ -247,23 +249,11 @@ def formatString(results):
     # Return the DataFrame
     return resultString
 
-# Grab the CSV file in the database, skip the the header line assuming it's still
-# the fourth line in the sheet.
-def getInitialTable():
-    # Could add converters={'col'=to_numeric} to hold int/float values for numbers
-    # in the dataframe
-    table = pd.read_csv("static/downloads/single-crystal_db.csv", header=4, skip_blank_lines=True, skipinitialspace=True)
-
-    # Get rid of all lines with all NaN values (not including class labels)
-    table.dropna(inplace=True, how="all", axis=1) # columns
-    table.dropna(inplace=True, how="all", axis=0) # rows
-    return table
-
 # Quickly locate and grab a specific mineral and all of its information
 def getMineral(rowNum):
     # Find if a mineral matches the given composition. If it does, return the
     # row. If not, return null.
-    table = getInitialTable()
+    table = tableManager.getInitialTable()
 
     # Format the row as a String and return it. Also update columns and properties
 

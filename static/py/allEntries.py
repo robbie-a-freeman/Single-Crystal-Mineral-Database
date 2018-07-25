@@ -18,44 +18,44 @@ __status__ = "Development"
 
 # Reads in the master sheet with the DB info and return a formatted string for
 # use in the js file entries.js
+def main():
+    # Read in the DB
+    table = pd.read_csv('static/downloads/single-crystal_db.csv', usecols=[0, 1, 2], header=4, skip_blank_lines=True, skipinitialspace=True)
 
-# Read in the DB
-table = pd.read_csv('static/downloads/single-crystal_db.csv', usecols=[0, 1, 2], header=4, skip_blank_lines=True, skipinitialspace=True)
+    # Get rid of all lines with NaN values
+    table.dropna(inplace=True, how="all", axis=1)
+    table.dropna(inplace=True, how="all", axis=0)
+    table.dropna(inplace=True, how="any", axis=0)
+    print(table)
 
-# Get rid of all lines with NaN values
-table.dropna(inplace=True, how="all", axis=1)
-table.dropna(inplace=True, how="all", axis=0)
-table.dropna(inplace=True, how="any", axis=0)
-print(table)
+    # insert the backslash for new line in js
+    # also extra two backslashes to allow js to split the string
+    table.insert(3, "\\\\\\", "\\\\\\")
 
-# insert the backslash for new line in js
-# also extra two backslashes to allow js to split the string
-table.insert(3, "\\\\\\", "\\\\\\")
+    # format the table into a string that is easy to read in via js
+    # collect the data and check it
+    names = table["Name"].tolist()
+    compositions = table["Composition"].tolist()
+    groups = table["Group"].tolist()
+    lineBreaks = table["\\\\\\"].tolist()
 
-# format the table into a string that is easy to read in via js
-# collect the data and check it
-names = table["Name"].tolist()
-compositions = table["Composition"].tolist()
-groups = table["Group"].tolist()
-lineBreaks = table["\\\\\\"].tolist()
+    assert (len(names) == len(compositions) == len(groups) == len(lineBreaks))
 
-assert (len(names) == len(compositions) == len(groups) == len(lineBreaks))
+    # build the string row-by-row
+    editedTable = ""
+    for i in range(len(names)):
+        editedTable += names[i] + "~*" + compositions[i] + "~*" + groups[i] + "~*" + lineBreaks[i]
 
-# build the string row-by-row
-editedTable = ""
-for i in range(len(names)):
-    editedTable += names[i] + "~*" + compositions[i] + "~*" + groups[i] + "~*" + lineBreaks[i]
-
-# remove the last backslash so that the file terminates and return the table.
-# save the table in a .txt file
-if os.path.isfile('static/text/all.txt'):
-    os.remove("static/text/all.txt")
+    # remove the last backslash so that the file terminates and return the table.
+    # save the table in a .txt file
+    if os.path.isfile('static/text/all.txt'):
+        os.remove("static/text/all.txt")
 
 
-editedTable = editedTable[:-1]
-orig_stdout = sys.stdout
-file = open('static/text/all.txt', 'w')
-sys.stdout = file
-print(editedTable)
-sys.stdout = orig_stdout
-file.close()
+    editedTable = editedTable[:-1]
+    orig_stdout = sys.stdout
+    file = open('static/text/all.txt', 'w')
+    sys.stdout = file
+    print(editedTable, end='')
+    sys.stdout = orig_stdout
+    file.close()
