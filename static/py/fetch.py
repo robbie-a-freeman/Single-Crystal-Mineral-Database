@@ -65,6 +65,7 @@ def search(formData) :
     selectedClasses = []
     selectedStructures = []
 
+    file = open('static/text/categories.txt', 'r')
     allCategories = file.read()[2:-2] # trim extra characters
     allCategories = allCategories.replace('[', '')
     allCategories = allCategories.replace(']', '')
