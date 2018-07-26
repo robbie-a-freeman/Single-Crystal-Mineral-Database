@@ -57,33 +57,36 @@ def isSelectedProperties(formData, str, catList) :
         return (str, False)
 
 # Take in a request.form (ImmutableMultiDict) that is from search.html
-def search(formData) : # TODO: Generalize to work with all data in the spreadsheet
+def search(formData) :
     # Save the strings of the chosen mineral classes and types in a list
-    # TODO: utilize the select all checkbox for minerals
 
     print(formData)
 
     selectedClasses = []
     selectedStructures = []
 
-    silicates = isSelected(formData, 'Silicates_all', selectedClasses, selectedStructures)
-    if not silicates[1]:
-        garnet = isSelected(formData, 'Silicates_Garnet', selectedClasses, selectedStructures)
-        spinel = isSelected(formData, 'Silicates_Spinel', selectedClasses, selectedStructures)
-        zeolite = isSelected(formData, 'Silicates_Zeolite', selectedClasses, selectedStructures)
-        eulytine = isSelected(formData, 'Silicates_Eulytine', selectedClasses, selectedStructures)
-    else:
-        garnet = (silicates[0] + 'Silicates_Garnet', True)
-        spinel = (silicates[0] + 'Silicates_Spinel', True)
-        zeolite = (silicates[0] + 'Silicates_Zeolite', True)
-        eulytine = (silicates[0] + 'Silicates_Eulytine', True)
-    oxides = isSelected(formData, 'Oxides_all', selectedClasses, selectedStructures)
-    halides = isSelected(formData, 'Halides_all', selectedClasses, selectedStructures)
-    sulfides = isSelected(formData, 'Sulfides_all', selectedClasses, selectedStructures)
-    nitrates = isSelected(formData, 'Nitrates_all', selectedClasses, selectedStructures)
-    carbonAndCarbides = isSelected(formData, 'Carbon and Carbides_all', selectedClasses, selectedStructures)
-    nitrides = isSelected(formData, 'Nitrides_all', selectedClasses, selectedStructures)
-    phosphides = isSelected(formData, 'Phosphides_all', selectedClasses, selectedStructures)
+    allCategories = file.read()[2:-2] # trim extra characters
+    allCategories = allCategories.replace('[', '')
+    allCategories = allCategories.replace(']', '')
+    allCategories = allCategories.replace('(', '')
+    allCategories = allCategories.replace('\'', '')
+    allCategories = allCategories.replace('\"', '')
+    allCategories = allCategories.split('), ')
+    allCategories = [tuple.replace(', ', '_') for tuple in allCategories]
+    print(allCategories)
+    testedCats = []
+    currentCat = allCategories[0].split('_')[0]
+    for i in range(len(allCategories)):
+        if currentCat != allCategories[i].split('_')[0]:
+            testedCats.append(currentCat)
+        currentCat = allCategories[i].split('_')[0]
+        isCatSelected = isSelected(formData, currentCat + '_all', selectedClasses, selectedStructures)[1]
+        if currentCat not in testedCats and not isCatSelected:
+            isSelected(formData, allCategories[i], selectedClasses, selectedStructures)
+        elif currentCat not in testedCats and isCatSelected:
+            testedCats.append(currentCat)
+    print(selectedClasses)
+    print(selectedStructures)
 
     # Save the strings of desired properties to be retrieved in a second list
     # selectedProperties list defined above
@@ -140,11 +143,11 @@ def search(formData) : # TODO: Generalize to work with all data in the spreadshe
         if not (pd.isnull(row['Name'])) and pd.isnull(row['Composition']) and lastLabel != row['Name']:
             lastLabel = row['Name']
             if not classdf.equals(results):
-                results = pd.concat([results, classdf], sort=False)
+                results = pd.concat([classdf, results], sort=False)
                 classdf = pd.DataFrame(columns=table.columns)
         # if it's a row following a label but not a label itself
         elif lastLabel != '' and lastLabel in selectedClasses and (structure in selectedStructures or lastLabel + '_all' in selectedStructures):
-            classdf = pd.concat([rowdf.T, classdf]) # transpose of row because pandas stores it as a column
+            classdf = pd.concat([classdf, rowdf.T]) # transpose of row because pandas stores it as a column
         # if it's a label but it's not being searched for
         elif lastLabel not in selectedClasses:
             lastLabel = ''
