@@ -18,7 +18,7 @@ __status__ = "Development"
 def getInitialTable():
     # Could add converters={'col'=to_numeric} to hold int/float values for numbers
     # in the dataframe
-    table = pd.read_csv("static/downloads/single-crystal_db.csv", header=4, skip_blank_lines=True, skipinitialspace=True)
+    table = pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", header=4, skip_blank_lines=True, skipinitialspace=True, sheetname="Cubic")
 
     # Get rid of all lines with all NaN values (not including class labels)
     table.dropna(inplace=True, how="all", axis=1) # columns

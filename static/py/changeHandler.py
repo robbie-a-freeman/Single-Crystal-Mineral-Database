@@ -23,7 +23,7 @@ def main():
 
     # Take in a new excel sheet. Read in the data using Pandas. Make it the new
     # master sheet
-    """if !os.path.isfile("static/downloads/newSheet.xlsx") :
+    """if not os.path.isfile("static/downloads/newSheet.xlsx") :
         return False
     newData = pd.read_excel("static/downloads/newSheet.xlsx", skip_blank_lines=True, skipinitialspace=True)
     currentData = pd.read_csv("static/downloads/single-crystal_db.csv", header=4, skip_blank_lines=True, skipinitialspace=True)
@@ -42,9 +42,15 @@ def main():
     elif len(newData.index) < len(currentData.index):
         changes.append("Removed minerals")"""
 
+    table = tableManager.getInitialTable()
+
+    # Create the CSV file from the original, master excel sheet
+    if os.path.isfile('static/downloads/single-crystal_db_complete.csv') :
+        os.remove("static/downloads/single-crystal_db_complete.csv")
+    table.to_csv('static/downloads/single-crystal_db_complete.csv', index=False)
+
     # Find the mineral group and structure categories and log them in mineralCats.txt
     # for generating search.html
-    table = tableManager.getInitialTable()
     # Scan through each row looking for unique mineral classes and unique structures
     # within each
     lastLabel = ''

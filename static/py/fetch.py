@@ -244,6 +244,9 @@ def formatString(results):
             for y in range(len(results.columns)):
                 cell = results.iloc[x, y]
                 if type(cell) != str:
+                    # truncate all floats at 4 places except densities
+                    if type(cell) == float:
+                        cell = round(cell, 4)
                     cell = str(cell)
                 if y != len(results.columns) - 1:
                     resultString += cell + "~*" # this is the arbitrarily set

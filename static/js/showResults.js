@@ -99,15 +99,16 @@ function displayMineral(row, properties, columns) {
   content.appendChild(p);
 
   // If property is included, build the table for elastic constants
+  console.log(columns);
   if (properties.includes("aem") || properties.includes("all_cats")) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Adiabatic elastic moduli (GPa)";
     content.appendChild(h5);
     var labels = ["C<sub>11</sub>", "C<sub>44</sub>", "C<sub>12</sub>"];
     var data = row;
-    var indices = [locateIndexOf("&#39;11&#39;", columns),
-                   locateIndexOf("&#39;44&#39;", columns),
-                   locateIndexOf("&#39;12&#39;", columns)];
+    var indices = [locateIndexOf("11", columns),
+                   locateIndexOf("44", columns),
+                   locateIndexOf("12", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for other elastic constant data
@@ -125,6 +126,7 @@ function displayMineral(row, properties, columns) {
     content.appendChild(h6);
     var labels = ["K", "G", "K/G"];
     var data = row;
+    // quotes because these are converted strings
     var indices = [locateIndexOf("&#39;K&#39;", columns),
                    locateIndexOf("&#39;G&#39;", columns),
                    locateIndexOf("&#39;K/G&#39;", columns)];
