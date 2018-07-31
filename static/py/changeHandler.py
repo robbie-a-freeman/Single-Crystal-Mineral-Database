@@ -42,7 +42,8 @@ def main():
     elif len(newData.index) < len(currentData.index):
         changes.append("Removed minerals")"""
 
-    table = tableManager.getInitialTable()
+    tables = tableManager.getInitialTables()
+    table =  pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheetname="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
 
     # Create the CSV file from the original, master excel sheet
     if os.path.isfile('static/downloads/single-crystal_db_complete.csv') :

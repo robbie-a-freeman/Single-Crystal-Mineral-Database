@@ -46,6 +46,9 @@ function fillEntries(table) {
       if (j == 0) { // if in the name column, convert the abbrieviations
         cells[j] = replaceAbbrievs(cells[j]); // from replaceAbbrievs.js
       }
+      if (cells[j] == "nan") {
+        cells[j] = "N/A"
+      }
       node = document.createTextNode(cells[j]);
       td.appendChild(node);
       tr.appendChild(td);

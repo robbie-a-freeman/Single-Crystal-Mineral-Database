@@ -96,7 +96,7 @@ def search():
     if request.method == 'POST': # if args are passed
         return searchResults(request.form)
     if not os.path.isfile('static/text/categories.txt'):
-        allEntries()
+        changeHandler.main()
     file = open('static/text/categories.txt', 'r')
     cats = file.read()
     return render_template('search.html', categories=cats)
@@ -140,11 +140,11 @@ def createExcelSheet(table) :
     # make the excel writer
     import pandas as pd
     writer = pd.ExcelWriter('Single_Crystal_Mineral_Database_Results.xlsx')
-    table.to_excel(writer,'Search Results', index=False)
-    ref1 = pd.read_excel('static/downloads/single-crystal_db.xlsx', sheetname='Refs and Notes')
-    ref1.to_excel(writer,'Refs and Notes', index=False, header=False)
-    ref2 = pd.read_excel('static/downloads/single-crystal_db.xlsx', sheetname='Key and Abbreviations')
-    ref2.to_excel(writer,'Key and Abbreviations', index=False, header=False)
+    table.to_excel(writer,'Cubic', index=False)
+    ref1 = pd.read_excel('static/downloads/single-crystal_db_complete.xlsx', sheet_name='Refs')
+    ref1.to_excel(writer,'References', index=False, header=False)
+    ref2 = pd.read_excel('static/downloads/single-crystal_db_complete.xlsx', sheet_name='Key')
+    ref2.to_excel(writer,'Key', index=False, header=False)
     writer.save()
 
 # converts pandas table into CSV file for download. Returns nothing

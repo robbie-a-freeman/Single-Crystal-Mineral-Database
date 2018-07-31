@@ -10,6 +10,8 @@ import math
 import sys
 import os
 
+import tableManager
+
 __author__ = "Robbie Freeman"
 __credits__ = ["Thomas Duffy"]
 __maintainer__ = "Robbie Freeman"
@@ -20,12 +22,8 @@ __status__ = "Development"
 # use in the js file entries.js
 def main():
     # Read in the DB
-    table = pd.read_csv('static/downloads/single-crystal_db.csv', usecols=[0, 1, 2], header=4, skip_blank_lines=True, skipinitialspace=True)
+    table = tableManager.getInitialTableQuick()
 
-    # Get rid of all lines with NaN values
-    table.dropna(inplace=True, how="all", axis=1)
-    table.dropna(inplace=True, how="all", axis=0)
-    table.dropna(inplace=True, how="any", axis=0)
     print(table)
 
     # insert the backslash for new line in js
@@ -44,7 +42,7 @@ def main():
     # build the string row-by-row
     editedTable = ""
     for i in range(len(names)):
-        editedTable += names[i] + "~*" + compositions[i] + "~*" + groups[i] + "~*" + lineBreaks[i]
+        editedTable += str(names[i]) + "~*" + str(compositions[i]) + "~*" + str(groups[i]) + "~*" + str(lineBreaks[i])
 
     # remove the last backslash so that the file terminates and return the table.
     # save the table in a .txt file

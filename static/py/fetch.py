@@ -74,7 +74,7 @@ def search(formData) :
     allCategories = allCategories.replace('\"', '')
     allCategories = allCategories.split('), ')
     allCategories = [tuple.replace(', ', '_') for tuple in allCategories]
-    print(allCategories)
+    # Check which class/structures are desired against the ones that exist
     testedCats = []
     currentCat = allCategories[0].split('_')[0]
     for i in range(len(allCategories)):
@@ -86,8 +86,6 @@ def search(formData) :
             isSelected(formData, allCategories[i], selectedClasses, selectedStructures)
         elif currentCat not in testedCats and isCatSelected:
             testedCats.append(currentCat)
-    print(selectedClasses)
-    print(selectedStructures)
 
     # Save the strings of desired properties to be retrieved in a second list
     # selectedProperties list defined above
@@ -128,7 +126,11 @@ def search(formData) :
         ec = ("ec", True)
         pre = ("pre", True)
 
-    table = tableManager.getInitialTable()
+    # Grab the initial tables from the spreadsheet
+    tables = tableManager.getInitialTables()
+    table =  pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheet_name="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
+    table.dropna(inplace=True, how="all", axis=1) # columns
+    table.dropna(inplace=True, how="all", axis=0) # rows
 
     # Select all rows for each mineral class, assuming they are accurately
     # grouped under their labels, and collect them in their respective
@@ -229,6 +231,11 @@ def setGlobalResultTable(resultTable):
     global results
     results = resultTable;
 
+# Drops the column with the name given from the given pandas table
+def drop(name, table):
+    if table[[name]] != None:
+        table = results.drop(name, axis=1)
+
 # Format the results dataframe that is passed in to fit with the JS file that
 # will receive and parse it.
 def formatString(results):
@@ -260,7 +267,8 @@ def formatString(results):
 def getMineral(rowNum):
     # Find if a mineral matches the given composition. If it does, return the
     # row. If not, return null.
-    table = tableManager.getInitialTable()
+    tables = tableManager.getInitialTables()
+    table = pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheet_name="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
 
     # Format the row as a String and return it. Also update columns and properties
 
