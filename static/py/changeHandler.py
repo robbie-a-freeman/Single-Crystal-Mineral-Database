@@ -57,6 +57,7 @@ def main():
     classdf = pd.DataFrame(columns=table.columns)
     for index, row in table.iterrows(): # for each of the rows
         rowdf = row.to_frame() # Dataframe of row, which is normally a Series
+        lastLabel = lastLabel.replace(" ","&#160;") # account for spaces in classes (NOT structures)
         if isinstance(row['Structure/SG'], str):
             structure = row['Structure/SG'].split(',')[0]
         # if it's a row with a mineral class label
@@ -64,8 +65,7 @@ def main():
             lastLabel = row['Name']
         # if it's a row following a label but not a label itself
         elif lastLabel != '' and (lastLabel, structure) not in categories:
-            editedLabel = lastLabel.replace(" ","&#160;")
-            categories.append((editedLabel, structure))
+            categories.append((lastLabel, structure))
     print(categories)
     if os.path.isfile("static/text/categories.txt") :
         os.remove("static/text/categories.txt")
