@@ -67,6 +67,7 @@ def search(formData) :
 
     file = open('static/text/categories.txt', 'r')
     allCategories = file.read()[2:-2] # trim extra characters
+    allCategories = allCategories.replace('&#160;', ' ')
     allCategories = allCategories.replace('[', '')
     allCategories = allCategories.replace(']', '')
     allCategories = allCategories.replace('(', '')
@@ -82,6 +83,7 @@ def search(formData) :
             testedCats.append(currentCat)
         currentCat = allCategories[i].split('_')[0]
         isCatSelected = isSelected(formData, currentCat + '_all', selectedClasses, selectedStructures)[1]
+        print(currentCat)
         if currentCat not in testedCats and not isCatSelected:
             isSelected(formData, allCategories[i], selectedClasses, selectedStructures)
         elif currentCat not in testedCats and isCatSelected:
@@ -139,7 +141,7 @@ def search(formData) :
     results = pd.DataFrame(columns=table.columns)
     classdf = pd.DataFrame(columns=table.columns)
     for index, row in table.iterrows(): # for each of the rows
-        rowdf = row.to_frame() # Dataframe of row, which is normally a Series
+        rowdf = row.to_frame() # turns a row (Series) into DataFrame
         if isinstance(row['Structure/SG'], str):
             structure = lastLabel + '_' + row['Structure/SG'].split(',')[0]
         # if it's a row with a mineral class label

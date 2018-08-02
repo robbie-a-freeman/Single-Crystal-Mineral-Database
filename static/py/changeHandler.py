@@ -9,8 +9,6 @@ import os
 import bs4
 import sys
 
-#import changelog
-#import allEntries
 import tableManager
 
 __author__ = "Robbie Freeman"
@@ -66,7 +64,8 @@ def main():
             lastLabel = row['Name']
         # if it's a row following a label but not a label itself
         elif lastLabel != '' and (lastLabel, structure) not in categories:
-            categories.append((lastLabel, structure))
+            editedLabel = lastLabel.replace(" ","&#160;")
+            categories.append((editedLabel, structure))
     print(categories)
     if os.path.isfile("static/text/categories.txt") :
         os.remove("static/text/categories.txt")

@@ -19,6 +19,7 @@ function generateCheckboxes(categories) {
     cat = cat.replace(/\[/g, '');
     cat = cat.replace(/\]/g, '');
     cat = cat.replace(/ /g, '');
+    cat = cat.replace(/&amp;#160;/g, ' ');
     if (cat.split(',')[0] != '' && cat.split(',')[1] != '') {
       categories[index] = cat;
     }

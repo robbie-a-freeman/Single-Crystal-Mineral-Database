@@ -16,6 +16,8 @@ import sys
 sys.path.insert(0, 'static/py')
 import fetch
 import allEntries
+import tableManager
+import changeHandler
 
 app = Flask(__name__)
 
@@ -47,9 +49,9 @@ def definitions():
 def downloadCSVResults():
     global resultsTable
     if resultsTable is None:
-        print("NONE")
-        return render_template('results.html', table = None, properties = None, columns = None)
+        resultsTable = tableManager.getInitialTables()[0]
     createCSVSheet(resultsTable)
+    resultsTable = None
     return send_file('Single_Crystal_Mineral_Database_Results.csv')
 
 # loads the Excel file of appropriate results in results.html
@@ -57,9 +59,9 @@ def downloadCSVResults():
 def downloadExcelResults():
     global resultsTable
     if resultsTable is None:
-        print("NONE")
-        return render_template('results.html', table = None, properties = None, columns = None)
+        resultsTable = tableManager.getInitialTables()[0]
     createExcelSheet(resultsTable)
+    resultsTable = None
     return send_file('Single_Crystal_Mineral_Database_Results.xlsx')
 
 # loads the downloads page
@@ -141,7 +143,7 @@ def createExcelSheet(table) :
     import pandas as pd
     writer = pd.ExcelWriter('Single_Crystal_Mineral_Database_Results.xlsx')
     table.to_excel(writer,'Cubic', index=False)
-    ref1 = pd.read_excel('static/downloads/single-crystal_db_complete.xlsx', sheet_name='Refs')
+    ref1 = pd.read_excel('static/downloads/single-crystal_db_complete.xlsx', sheet_name='Cubic Refs')
     ref1.to_excel(writer,'References', index=False, header=False)
     ref2 = pd.read_excel('static/downloads/single-crystal_db_complete.xlsx', sheet_name='Key')
     ref2.to_excel(writer,'Key', index=False, header=False)

@@ -116,7 +116,7 @@ function displayMineral(row, properties, columns) {
       properties.includes("vrb") || properties.includes("vrh") ||
       properties.includes("am") || properties.includes("all_cats")) {
         h5 = document.createElement("h5");
-        h5.innerHTML = "Aggregate adiabatic elastic moduli (GPa)";
+        h5.innerHTML = "Aggregate adiabatic elastic moduli";
         content.appendChild(h5);
   }
 
@@ -156,12 +156,12 @@ function displayMineral(row, properties, columns) {
   }
   if (properties.includes("ympr") || properties.includes("am") || properties.includes("all_cats")) {
     var h6 = document.createElement("h6");
-    h6.innerHTML = "Aggregate Young’s modulus and Poisson’s ratio";
+    h6.innerHTML = "Aggregate Young’s modulus (GPa) and Poisson’s ratio";
     content.appendChild(h6);
-    labels = ["nVRH", "EVRH"];
+    labels = ["E<sub>VRH</sub>", "n<sub>VRH</sub>"];
     data = row;
-    indices = [locateIndexOf("&#39;nVRH&#39;", columns),
-               locateIndexOf("&#39;EVRH&#39;", columns)];
+    indices = [locateIndexOf("&#39;EVRH&#39;", columns),
+               locateIndexOf("&#39;nVRH&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for sound velocity data

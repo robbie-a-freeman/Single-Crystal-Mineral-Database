@@ -1,11 +1,20 @@
 @font-face {
-  font-family: 'Princeton Monticello';
-  src: url('../fonts/Monticello-fonts-TrueType/fonts-truetype/PrinceMontiDSOSRegular.ttf') format('truetype'); /* princeton_monticello */
+  font-family: 'Open Sans';
+  src: url('../fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype'); /* princeton_monticello */
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype'); /* princeton_monticello */
 }
 
 h1, h2 {
   text-align: center;
   padding:20px;
+}
+
+h1, .sidenav {
+  font-family:'Roboto';
 }
 
 form.bottom-button {
@@ -21,7 +30,7 @@ form.bottom-button {
 }
 
 body {
-  font-family:"Princeton Monticello", "Times New Roman";
+  font-family:"Open Sans", "Roboto";
   min-height:100%;
 }
 
@@ -105,7 +114,7 @@ a:hover {
 }
 
 .tooltip {
-  font-family:"Princeton Monticello";
+  font-family:"Open Sans";
 }
 
 .btn-info:hover, .btn:focus, .btn-info:active  {
