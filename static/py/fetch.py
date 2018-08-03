@@ -166,54 +166,54 @@ def search(formData) :
     # DataFrame
     # Assumes all values are selected initially and removes the appropriate
     # column(s) if a category isn't
-    if allCats[0] not in selectedProperties:
-        if aem[0] not in selectedProperties:
-            results.drop('11', axis=1)
-            results.drop('44', axis=1)
-            results.drop('12', axis=1)
-        if am[0] not in selectedProperties:
-            if vrh[0] not in selectedProperties:
-                results = results.drop('K', axis=1)
-                results = results.drop('G', axis=1)
-                results = results.drop('K/G', axis=1)
-            if vrb[0] not in selectedProperties:
-                results = results.drop('GR', axis=1)
-                results = results.drop('GV', axis=1)
-            if hsb[0] not in selectedProperties:
-                results = results.drop('GHS1', axis=1)
-                results = results.drop('GHS2', axis=1)
-                results = results.drop('GHSA', axis=1)
-            if ympr[0] not in selectedProperties:
-                results = results.drop('nVRH', axis=1)
-                results = results.drop('EVRH', axis=1)
-        if sv[0] not in selectedProperties:
-            results = results.drop('VP', axis=1)
-            results = results.drop('VB', axis=1)
-            results = results.drop('VS', axis=1)
-        if svr[0] not in selectedProperties:
-            results = results.drop('VP/VS', axis=1)
-        if nm[0] not in selectedProperties:
-            results = results.drop('C12/C11', axis=1)
-            results = results.drop('C44/C11', axis=1)
-        if af[0] not in selectedProperties:
-            results = results.drop('AZ', axis=1)
-            results = results.drop('AU', axis=1)
-            results = results.drop('AL', axis=1)
-            results = results.drop('AG', axis=1)
-        if ec[0] not in selectedProperties:
-            results = results.drop('S11', axis=1)
-            results = results.drop('S44', axis=1)
-            results = results.drop('S12', axis=1)
-        if pre[0] not in selectedProperties:
-            results = results.drop('n_110', axis=1)
-            results = results.drop('n_001', axis=1)
-    else:
-        print("all properties included")
+    if not results.empty:
+        if allCats[0] not in selectedProperties:
+            if aem[0] not in selectedProperties:
+                results = results.drop('11', axis=1)
+                results = results.drop('44', axis=1)
+                results = results.drop('12', axis=1)
+            if am[0] not in selectedProperties:
+                if vrh[0] not in selectedProperties:
+                    results = results.drop('K', axis=1)
+                    results = results.drop('G', axis=1)
+                    results = results.drop('K/G', axis=1)
+                if vrb[0] not in selectedProperties:
+                    results = results.drop('GR', axis=1)
+                    results = results.drop('GV', axis=1)
+                if hsb[0] not in selectedProperties:
+                    results = results.drop('GHS1', axis=1)
+                    results = results.drop('GHS2', axis=1)
+                    results = results.drop('GHSA', axis=1)
+                if ympr[0] not in selectedProperties:
+                    results = results.drop('nVRH', axis=1)
+                    results = results.drop('EVRH', axis=1)
+            if sv[0] not in selectedProperties:
+                results = results.drop('VP', axis=1)
+                results = results.drop('VB', axis=1)
+                results = results.drop('VS', axis=1)
+            if svr[0] not in selectedProperties:
+                results = results.drop('VP/VS', axis=1)
+            if nm[0] not in selectedProperties:
+                results = results.drop('C12/C11', axis=1)
+                results = results.drop('C44/C11', axis=1)
+            if af[0] not in selectedProperties:
+                results = results.drop('AZ', axis=1)
+                results = results.drop('AU', axis=1)
+                results = results.drop('AL', axis=1)
+                results = results.drop('AG', axis=1)
+            if ec[0] not in selectedProperties:
+                results = results.drop('S11', axis=1)
+                results = results.drop('S44', axis=1)
+                results = results.drop('S12', axis=1)
+            if pre[0] not in selectedProperties:
+                results = results.drop('n_110', axis=1)
+                results = results.drop('n_001', axis=1)
+        else:
+            print("all properties included")
 
     # Get rid of label rows
     results.dropna(inplace=True, how="any", axis=0)
 
-    print(len(results))
     setGlobalColumns(results)
     setGlobalResultTable(results)
     return formatString(results);

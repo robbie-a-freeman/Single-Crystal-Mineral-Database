@@ -16,29 +16,35 @@ __status__ = "Development"
 
 # Grab the excel file in the database, skip the the header line assuming it's still
 # the fourth line in the sheet. Loads all sheets with data without the references
-def getInitialTables():
+def getInitialTables(spreadsheet = "static/downloads/single-crystal_db_complete.xlsx"):
     # load the file with the restrictions on columns to display publicly
     loadingRules = open('static/text/sheetLoadingControls.txt', 'r').read()
     loadingRules = loadingRules.replace(string.whitespace, '')
+    loadingRules = loadingRules.replace('\n', '')
     rules = loadingRules.split(']')[:-1]
     sheets = []
     columns = []
+    isNonCubicIncluded = True
     for r in rules:
         rule = r.split('[')
         columnNames = rule[1].split(',')
+        if rule[0] == 'noncubic' and '*' in columnNames:
+            isNonCubicIncluded = False
         if '*' in columnNames:
             continue
-        else:
-            columns.append(columnNames)
-            sheets.append(rule[0])
-    assert(len(sheets) == len(columns))
+        if not isNonCubicIncluded:
+            if rule[0] != 'Cubic':
+                continue
+        columnNames = filter(lambda name: name != '', columnNames)
+        columns.append(columnNames)
+        sheets.append(rule[0])
 
+    assert(len(sheets) == len(columns))
     # iterate through the sheets, apply the column dropping rules, and return
     # the results
     tables = [] # array of tables from sheets
-    xl = pd.ExcelFile("static/downloads/single-crystal_db_complete.xlsx")
+    xl = pd.ExcelFile(spreadsheet)
     isGlobalIncluded = 'global' in sheets
-    isNonCubicIncluded = 'noncubic' in sheets
     for x in xl.sheet_names:
         if not "Refs" in x and not "Key" in x and x in sheets and isGlobalIncluded:
             # Cubic is the only sheet that has a messed up header by default
@@ -52,7 +58,7 @@ def getInitialTables():
             # Get rid of specific columns that are not supposed to be publicly
             # visible
             columnsToDrop = []
-            if 'global' in sheets:
+            if isGlobalIncluded:
                 columnsToDrop.append(columns[0])
             if '*' in columns[sheets.index(x)]:
                 break
@@ -62,7 +68,11 @@ def getInitialTables():
                     if x != 'Cubic':
                         table.drop(col, inplace=True, axis=1)
             tables.append(table)
-    return tables
+            # TODO actually drop necessary columns
+    bigTable = pd.DataFrame(columns=tables[0].columns)
+    # Problematic. TODO Need to fix to account for different columns
+    bigTable = pd.concat(tables)
+    return bigTable
 
 # Grab the excel file in the database. Loads all reference sheets and non-table
 # pages. TODO filter with * in loadingRules.txt

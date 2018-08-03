@@ -1,7 +1,8 @@
 """Script that checks for changes uploaded to the database by Tom through
 FileZilla and updates the master sheet to be the new sheet. Then, it alters the
 changelog.html file to reflect the changes. Uses pandas for the table changes
-and Beautiful Soup 4 for the html changes.
+and Beautiful Soup 4 for the html changes. Returns False if no changes are made
+and True if changes are made.
 """
 
 import pandas as pd
@@ -21,14 +22,14 @@ def main():
 
     # Take in a new excel sheet. Read in the data using Pandas. Make it the new
     # master sheet
-    """if not os.path.isfile("static/downloads/newSheet.xlsx") :
+    if not os.path.isfile("../static/downloads/newSheet.xlsx") :
         return False
-    newData = pd.read_excel("static/downloads/newSheet.xlsx", skip_blank_lines=True, skipinitialspace=True)
-    currentData = pd.read_csv("static/downloads/single-crystal_db.csv", header=4, skip_blank_lines=True, skipinitialspace=True)
+    newData = tableManager.getInitialTables("static/downloads/newSheet.xlsx")
+    currentData = tableManager.getInitialTables()
 
 
     # Check for validity. Return the error if invalid. TODO expand checks
-    assert(len(newData.columns) == len(currentData.columns))
+    assert(len(newData) == len(currentData))
 
     # Compare the new data with the data already in the master sheet to determine
     # the nature of the changes TODO implement
@@ -38,10 +39,10 @@ def main():
     elif len(newData.index) > len(currentData.index):
         changes.append("Added minerals")
     elif len(newData.index) < len(currentData.index):
-        changes.append("Removed minerals")"""
+        changes.append("Removed minerals")
 
     tables = tableManager.getInitialTables()
-    table =  pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheetname="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
+    table =  tables[0]
 
     # Create the CSV file from the original, master excel sheet
     if os.path.isfile('static/downloads/single-crystal_db_complete.csv') :
@@ -76,7 +77,7 @@ def main():
     sys.stdout = orig_stdout
     file.close()
 
-    """# Delete the master and use the new sheet as the current master
+    # Delete the master and use the new sheet as the current master
     os.remove("static/downloads/single-crystal_db.xlsx")
     os.remove("static/downloads/single-crystal_db.csv")
     os.rename("static/downloads/newSheet.xlsx", "static/downloads/single-crystal_db.xlsx")
@@ -90,4 +91,4 @@ def main():
     allEntries()
 
     # return True, as changes were successfully made
-    return True"""
+    return True

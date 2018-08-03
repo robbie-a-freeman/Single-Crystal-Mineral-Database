@@ -11,6 +11,10 @@ from flask import abort
 from flask import redirect
 from flask import url_for
 from flask import send_file
+import time
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 import os
 import sys
 sys.path.insert(0, 'static/py')
@@ -28,6 +32,20 @@ __email__ = "robbie.a.freeman@gmail.com"
 __status__ = "Development"
 
 resultsTable = None
+
+def runChangeHandler():
+    changeHandler.main()
+
+scheduler = BackgroundScheduler()
+scheduler.start()
+scheduler.add_job(
+    func=runChangeHandler,
+    trigger=IntervalTrigger(seconds=5),
+    id='tracking_changes',
+    name='Implement and save changes if there are any every 5 seconds',
+    replace_existing=True)
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
 
 # loads the changelog
 @app.route('/changelog')
@@ -49,7 +67,7 @@ def definitions():
 def downloadCSVResults():
     global resultsTable
     if resultsTable is None:
-        resultsTable = tableManager.getInitialTables()[0]
+        resultsTable = tableManager.getInitialTables()
     createCSVSheet(resultsTable)
     resultsTable = None
     return send_file('Single_Crystal_Mineral_Database_Results.csv')
@@ -59,7 +77,7 @@ def downloadCSVResults():
 def downloadExcelResults():
     global resultsTable
     if resultsTable is None:
-        resultsTable = tableManager.getInitialTables()[0]
+        resultsTable = tableManager.getInitialTables()
     createExcelSheet(resultsTable)
     resultsTable = None
     return send_file('Single_Crystal_Mineral_Database_Results.xlsx')
@@ -138,7 +156,9 @@ if __name__ == "__main__":
 # converts pandas table into excel sheet for download. Returns nothing
 def createExcelSheet(table) :
     # format the table appropriately
-    table.drop(['\\\\\\'], axis=1, inplace=True)
+    print(table.columns)
+    if '\\\\\\' in table.columns:
+        table.drop(['\\\\\\'], axis=1, inplace=True)
     # make the excel writer
     import pandas as pd
     writer = pd.ExcelWriter('Single_Crystal_Mineral_Database_Results.xlsx')
@@ -152,7 +172,8 @@ def createExcelSheet(table) :
 # converts pandas table into CSV file for download. Returns nothing
 def createCSVSheet(table) :
     # format the table appropriately
-    table.drop(['\\\\\\'], axis=1, inplace=True)
+    if '\\\\\\' in table.columns:
+        table.drop(['\\\\\\'], axis=1, inplace=True)
 
     # convert to csv
     import pandas as pd
