@@ -1,0 +1,6 @@
+apscheduler
+bs4
+flask
+pandas
+numpy
+xlrd
