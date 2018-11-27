@@ -7,6 +7,7 @@ import pandas as pd
 import os.path
 import bs4
 import sys
+import xlrd
 
 __author__ = "Robbie Freeman"
 __credits__ = ["Thomas Duffy"]

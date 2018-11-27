@@ -9,6 +9,7 @@ import pandas as pd
 import os
 import bs4
 import sys
+import xlrd
 
 import tableManager
 

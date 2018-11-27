@@ -88,7 +88,7 @@ function displayMineral(row, properties, columns) {
   var cubed = document.createElement("sup");
   node = document.createTextNode("3");
   cubed.appendChild(node);
-  var str1 = "Density (g/cm";
+  var str1 = "&rho; (g/cm";
   node = document.createTextNode(str1);
   var str2 = "): " + row[6];
   node2 = document.createTextNode(str2);
@@ -158,10 +158,10 @@ function displayMineral(row, properties, columns) {
     var h6 = document.createElement("h6");
     h6.innerHTML = "Aggregate Young’s modulus (GPa) and Poisson’s ratio";
     content.appendChild(h6);
-    labels = ["E<sub>VRH</sub>", "n<sub>VRH</sub>"];
+    labels = ["E<sub>VRH</sub>", "&mu;<sub>VRH</sub>"];
     data = row;
     indices = [locateIndexOf("&#39;EVRH&#39;", columns),
-               locateIndexOf("&#39;nVRH&#39;", columns)];
+               locateIndexOf("&#39;&mu;VRH&#39;", columns)];
     buildTable(labels, data, indices);
   }
   // If property is included, build the tables for sound velocity data
@@ -227,7 +227,7 @@ function displayMineral(row, properties, columns) {
     h5 = document.createElement("h5");
     h5.innerHTML = "Extrema of Poisson’s ratio";
     content.appendChild(h5);
-    var labels = ["n_110", "n_001"];
+    var labels = ["&mu;_110", "&mu;_001"];
     var data = row;
     var indices = [locateIndexOf("&#39;n_110&#39;", columns),
                    locateIndexOf("&#39;n_001&#39;", columns)];

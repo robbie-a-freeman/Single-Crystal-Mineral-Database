@@ -4,6 +4,7 @@
 import pandas as pd
 import os
 import string
+import xlrd
 
 #import changelog
 #import allEntries

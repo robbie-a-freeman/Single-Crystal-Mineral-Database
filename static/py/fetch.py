@@ -7,6 +7,7 @@ are basically helper functions. Uses pandas and a bit of numpy for table manipul
 import pandas as pd
 import math
 import numpy
+import xlrd
 
 import tableManager
 

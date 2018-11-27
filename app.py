@@ -22,6 +22,7 @@ import fetch
 import allEntries
 import tableManager
 import changeHandler
+import xlrd
 
 app = Flask(__name__)
 
