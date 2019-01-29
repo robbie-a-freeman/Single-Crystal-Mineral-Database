@@ -89,11 +89,10 @@ function displayMineral(row, properties, columns) {
   node = document.createTextNode("3");
   cubed.appendChild(node);
   var str1 = "&rho; (g/cm";
-  node = document.createTextNode(str1);
   var str2 = "): " + row[6];
   node2 = document.createTextNode(str2);
   p = document.createElement("p");
-  p.appendChild(node);
+  p.innerHTML = str1;
   p.appendChild(cubed);
   p.appendChild(node2);
   content.appendChild(p);
