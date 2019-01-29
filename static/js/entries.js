@@ -24,19 +24,25 @@ function fillEntries(table) {
   // split by backslashes
   var rows = table.split("\\");
   // create heads of the table
+  var thead = document.createElement("thead");
+  var trh = document.createElement("tr");
   var th = document.createElement("th");
   var node = document.createTextNode("Name");
   th.appendChild(node);
-  bigTable.appendChild(th);
+  trh.appendChild(th);
   th = document.createElement("th");
   node = document.createTextNode("Composition");
   th.appendChild(node);
-  bigTable.appendChild(th);
+  trh.appendChild(th);
   th = document.createElement("th");
   node = document.createTextNode("Group");
   th.appendChild(node);
-  bigTable.appendChild(th);
+  trh.appendChild(th);
+  thead.appendChild(trh);
+  bigTable.appendChild(thead);
   var rowNum = 0;
+
+  var tbody = document.createElement("tbody");
   // generates row of each mineral
   for (var i = 0; i < rows.length; i++) {
     var tr = document.createElement("tr");
@@ -56,9 +62,11 @@ function fillEntries(table) {
     // individual mineral links. rowNum is the row in the pandas dataframe of the
     // mineral
     tr.setAttribute("data-href", 'search/' + rowNum);
-    bigTable.appendChild(tr);
+    tbody.appendChild(tr);
     rowNum++;
   }
+  bigTable.appendChild(tbody);
   var element = document.getElementById("content");
   element.appendChild(bigTable);
+  bigTable.setAttribute("class", "sortable");
 }
