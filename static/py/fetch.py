@@ -170,9 +170,10 @@ def search(formData) :
     if not results.empty:
         if allCats[0] not in selectedProperties:
             if aem[0] not in selectedProperties:
-                results = results.drop('11', axis=1)
-                results = results.drop('44', axis=1)
-                results = results.drop('12', axis=1)
+                print(list(results))
+                results = results.drop(11, axis=1)
+                results = results.drop(44, axis=1)
+                results = results.drop(12, axis=1)
             if am[0] not in selectedProperties:
                 if vrh[0] not in selectedProperties:
                     results = results.drop('K', axis=1)
