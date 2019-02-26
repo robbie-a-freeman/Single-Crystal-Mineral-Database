@@ -5,7 +5,7 @@
  * mineral in the database.
  *
  * @author  Robbie Freeman, robbie.a.freeman@gmail.com
- * @updated 2018-07-17
+ * @updated 2019-02-26
  * @link    entries.html
  *
  */
