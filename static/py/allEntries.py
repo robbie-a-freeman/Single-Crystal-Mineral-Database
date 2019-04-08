@@ -22,7 +22,8 @@ __status__ = "Development"
 # Reads in the master sheet with the DB info and return a formatted string for
 # use in the js file entries.js
 def main():
-    # Read in the DB
+    # Read in the DB, specifically just the nominal columns of each publicly
+    # accessible sheet.
     table = tableManager.getInitialTableQuick()
 
     print(table)
@@ -45,16 +46,15 @@ def main():
     for i in range(len(names)):
         editedTable += str(names[i]) + "~*" + str(compositions[i]) + "~*" + str(groups[i]) + "~*" + str(lineBreaks[i])
 
-    # remove the last backslash so that the file terminates and return the table.
     # save the table in a .txt file
     if os.path.isfile('static/text/all.txt'):
         os.remove("static/text/all.txt")
 
-
+    # remove the last backslash so that the file terminates and return the table.
     editedTable = editedTable[:-1]
     orig_stdout = sys.stdout
     file = open('static/text/all.txt', 'w')
     sys.stdout = file
-    print(editedTable, end='')
+    print(editedTable.encode("utf-8"), end='')
     sys.stdout = orig_stdout
     file.close()

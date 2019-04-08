@@ -1,5 +1,5 @@
 global[]
-noncubic[*,AVP,AVS,n_min,n_max,h,k,l]
+noncubic[AVP,AVS,n_min,n_max,h,k,l]
 Cubic[]
 Hexagonal[c2,d2]
 Trigonal[C66,c2]

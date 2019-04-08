@@ -23,9 +23,12 @@ def getInitialTables(spreadsheet = "static/downloads/single-crystal_db_complete.
     loadingRules = loadingRules.replace(string.whitespace, '')
     loadingRules = loadingRules.replace('\n', '')
     rules = loadingRules.split(']')[:-1]
-    sheets = []
-    columns = []
-    isNonCubicIncluded = True
+    sheets = [] # a list of the rule labels, which is each of the rules without
+                # beginning asterisks. It's basically sheet names, global, and/or
+                # noncubic
+    columns = [] # a list of the lists of rules. Each index correlates to a the
+                 # index in the list sheets.
+    isNonCubicIncluded = True # default is true, but verifies below
     for r in rules:
         rule = r.split('[')
         columnNames = rule[1].split(',')
@@ -52,12 +55,12 @@ def getInitialTables(spreadsheet = "static/downloads/single-crystal_db_complete.
             if x == 'Cubic':
                 table = xl.parse(sheet_name=x, header=4, skip_blank_lines=True, skipinitialspace=True)
             else:
+                # TODO update header number for each of the possible sheets
                 table = xl.parse(sheet_name=x, skip_blank_lines=True, skipinitialspace=True)
             # Get rid of all lines with all NaN values (not including class labels)
             table.dropna(inplace=True, how="all", axis=1) # columns
             table.dropna(inplace=True, how="all", axis=0) # rows
-            # Get rid of specific columns that are not supposed to be publicly
-            # visible
+            # Get rid of specific columns that are not supposed to be publicly visible
             columnsToDrop = []
             if isGlobalIncluded:
                 columnsToDrop.append(columns[0])
@@ -66,12 +69,11 @@ def getInitialTables(spreadsheet = "static/downloads/single-crystal_db_complete.
             if x in sheets:
                 columnsToDrop.append(columns[sheets.index(x)])
                 for col in columnsToDrop:
-                    if x != 'Cubic':
-                        table.drop(col, inplace=True, axis=1)
+                    table.drop(col, inplace=True, axis=1)
             tables.append(table)
-            # TODO actually drop necessary columns
     bigTable = pd.DataFrame(columns=tables[0].columns)
-    # Problematic. TODO Need to fix to account for different columns
+    # Problematic. TODO Need to fix to account for different sheet formats
+    # Can a dataframe have multiple sheets in it?
     bigTable = pd.concat(tables)
     return bigTable
 
