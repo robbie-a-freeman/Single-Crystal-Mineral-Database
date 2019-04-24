@@ -17,7 +17,7 @@ __status__ = "Development"
 
 # Grab the excel file in the database, skip the the header line assuming it's still
 # the fourth line in the sheet. Loads all sheets with data without the references
-def getInitialTables(spreadsheet = "static/downloads/single-crystal_db_complete.xlsx"):
+def getInitialTables(spreadsheet = "static/downloads/single-crystal_db_complete.xlsx", asOne = True):
     # load the file with the restrictions on columns to display publicly
     loadingRules = open('static/text/sheetLoadingControls.txt', 'r').read()
     loadingRules = loadingRules.replace(string.whitespace, '')
@@ -74,8 +74,11 @@ def getInitialTables(spreadsheet = "static/downloads/single-crystal_db_complete.
     bigTable = pd.DataFrame(columns=tables[0].columns)
     # Problematic. TODO Need to fix to account for different sheet formats
     # Can a dataframe have multiple sheets in it?
-    bigTable = pd.concat(tables)
-    return bigTable
+    if asOne == True:
+        bigTable = pd.concat(tables, sort=False) # not entirely sure what sort does
+        return bigTable
+    else:
+        return tables
 
 # Grab the excel file in the database. Loads all reference sheets and non-table
 # pages. TODO filter with * in loadingRules.txt

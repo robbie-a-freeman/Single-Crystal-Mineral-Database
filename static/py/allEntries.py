@@ -44,7 +44,7 @@ def main():
     # build the string row-by-row
     editedTable = ""
     for i in range(len(names)):
-        editedTable += str(names[i]) + "~*" + str(compositions[i]) + "~*" + str(groups[i]) + "~*" + str(lineBreaks[i])
+        editedTable += str(names[i]) + "~*" + str(compositions[i]) + "~*" + str(groups[i]) + "~*" + str(i) + "~*" + str(lineBreaks[i])
 
     # save the table in a .txt file
     if os.path.isfile('static/text/all.txt'):

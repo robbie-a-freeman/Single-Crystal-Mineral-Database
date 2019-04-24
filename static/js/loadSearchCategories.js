@@ -4,82 +4,107 @@
  * accordingly
  *
  * @author  Robbie Freeman, robbie.a.freeman@gmail.com
- * @updated 2018-07-24
+ * @updated 2019-04-24
  * @link    search.html
  *
  */
 
-function generateCheckboxes(categories) {
-  categories = categories.split('),');
-  // clean up the tuples passed in from the server
-  categories.forEach(function(cat, index) {
-    cat = cat.replace(/&#39;/g, '');
-    cat = cat.replace(/\(/g, '');
-    cat = cat.replace(/\)/g, '');
-    cat = cat.replace(/\[/g, '');
-    cat = cat.replace(/\]/g, '');
-    cat = cat.replace(/ /g, '');
-    cat = cat.replace(/&amp;#160;/g, ' ');
-    if (cat.split(',')[0] != '' && cat.split(',')[1] != '') {
-      categories[index] = cat;
+function generateCheckboxes(mineralTypes) {
+
+  // clean up the data passed in from the server
+  mineralTypes = mineralTypes.split(']');
+
+  for (var i = 0; i < mineralTypes.length; i++) {
+    var mineralTypeName = mineralTypes[i].split('[')[0];
+    if (mineralTypeName == "") {
+      break;
     }
-  });
-  // store each group of structures as an array of their shared parent mineral class
-  var minClass = categories[0].split(',')[0];
-  var minStructList = [];
-  categories.forEach(function(cat, index) {
-    var cats = cat.split(',');
-    if (minClass != cats[0]) {
-      generateGroupCheckbox(minClass, minStructList);
-      minClass = cats[0];
-      minStructList = [cats[1]];
-    } else {
-      minStructList.push(cats[1]);
-    }
-  });
-    generateGroupCheckbox(minClass, minStructList); // for the last one
+    var categories = mineralTypes[i].split('[')[1].split('),');
+    categories.forEach(function(cat, index) {
+      cat = cat.replace(/&#39;/g, '');
+      cat = cat.replace(/\(/g, '');
+      cat = cat.replace(/\)/g, '');
+      cat = cat.replace(/\[/g, '');
+      cat = cat.replace(/\]/g, '');
+      cat = cat.replace(/ /g, '');
+      cat = cat.replace(/&amp;#160;/g, ' ');
+      if (cat.split(',')[0] != '' && cat.split(',')[1] != '') {
+        categories[index] = cat;
+      }
+    });
+
+    // store each group of structures as an array of their shared parent mineral class
+    var minClass = categories[0].split(',')[0];
+    var minStructList = [];
+
+    // for each mineralTypeName
+
+    //console.log(mineralTypeName);
+    generateCheckboxFamily("all_minerals", mineralTypeName, []);
+    categories.forEach(function(cat, index) {
+      var cats = cat.split(',');
+      //if (minClass != cats[0]) {
+      //generateGroupCheckbox(minClass, minStructList);
+      //var input = document.createElement("div");
+      //input.setAttribute("id", "sub_category_" + i);
+      generateCheckboxFamily(mineralTypeName, cats[0]);
+      //minClass = cats[0];
+      //minStructList = [cats[1]];
+      //} else {
+      //  minStructList.push(cats[1]); }
+    });
+    // generateGroupCheckbox(minClass, minStructList); // for the last one
+    generateCheckboxFamily(mineralTypeName, minClass, minStructList);
+  }
+
 }
 
-// Takes in the name of a mineral class group and its sublist of structures. creates
-// a checkbox that acts as a selectall for the sublist. Calls generateStructureCheckbox()
+// Takes in the name of a supercheckbox and its sublist of subcheckboxes. creates
+// a checkbox that acts as a selectall for the sublist. Calls generateSingleCheckbox()
 // to create the sublist's checkboxes
-function generateGroupCheckbox(group, structures) {
-  var sub_categories = document.getElementById("sub_categories");
+function generateCheckboxFamily(parent, name) {
+
+  // check for dupes
+  if (document.getElementById(name.toLowerCase()) != null) {
+    return null;
+  }
+
+  // heirarchy is grandparent div > parentCheckbox and parentDiv > input (new checkbox)
+  var isFirstInFamily = false;
+  // create/retrieve the parentDiv
+  var parentDiv = document.getElementById(parent.toLowerCase() + "_children");
+  if (parentDiv == null || !$(parentDiv).length) {
+    isFirstInFamily = true;
+    parentDiv = document.createElement("div");
+    parentDiv.setAttribute("id", parent.toLowerCase() + "_children");
+    parentDiv.setAttribute("class", "sub_categories");
+    parentDiv.setAttribute("style", "display: none;");
+  }
+
+  // create and insert new checkbox and its data
   var input = document.createElement("input");
-  input.setAttribute("id", group.toLowerCase());
-  input.setAttribute("class", "all_minerals");
+  input.setAttribute("id", name.toLowerCase());
+  input.setAttribute("class", parent.toLowerCase());
   input.setAttribute("type", "checkbox");
-  input.setAttribute("name", group + "_all");
-  input.setAttribute("value", group + "_all");
-  sub_categories.appendChild(input);
-  node = document.createTextNode(" " + group);
-  sub_categories.appendChild(node);
-  var button = document.createElement("button");
-  button.setAttribute("class", "accordion");
-  button.innerHTML = " + ";
-  sub_categories.appendChild(button);
-  var br = document.createElement("br");
-  sub_categories.appendChild(br);
+  input.setAttribute("name", name + "_all");
+  input.setAttribute("value", name + "_all");
 
-  var structuresDiv = document.createElement("div");
-  structuresDiv.setAttribute("class", "structures");
-  structures.forEach(function(structure) {
-    structuresDiv.appendChild(generateStructureCheckbox(group, structure));
-    structuresDiv.appendChild(document.createTextNode(" " + structure));
-    br = document.createElement("br");
-    structuresDiv.appendChild(br);
-  });
+  var inputDiv = document.createElement("div");
+  inputDiv.setAttribute("id", name.toLowerCase() + "_box_div");
+  var node = document.createTextNode(" " + name);
+  inputDiv.appendChild(input);
+  inputDiv.appendChild(node);
+  parentDiv.appendChild(inputDiv);
 
-  sub_categories.appendChild(structuresDiv);
-}
+  var grandparentDiv = (document.getElementById(parent.toLowerCase())).parentElement;
 
-// Takes in name of mineral class and the structure. Makes the checkbox and makes it a
-// child of the mineral class checkbox
-function generateStructureCheckbox(group, structure) {
-  var input = document.createElement("input");
-  input.setAttribute("class", group.toLowerCase());
-  input.setAttribute("type", "checkbox");
-  input.setAttribute("name", group + "_" + structure);
-  input.setAttribute("value", group + "_" + structure);
+  // if the first checkbox in parentDiv, create accordion button
+  if (isFirstInFamily) {
+    var button = document.createElement("button");
+    button.setAttribute("class", "accordion");
+    button.innerHTML = " + ";
+    grandparentDiv.appendChild(button);
+  }
+  grandparentDiv.appendChild(parentDiv);
   return input;
 }

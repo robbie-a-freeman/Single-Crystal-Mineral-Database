@@ -37,7 +37,7 @@ resultsTable = None
 def runChangeHandler():
     changeHandler.main()
 
-scheduler = BackgroundScheduler()
+'''scheduler = BackgroundScheduler()
 scheduler.start()
 scheduler.add_job(
     func=runChangeHandler,
@@ -46,7 +46,7 @@ scheduler.add_job(
     name='Implement and save changes if there are any every 5 seconds',
     replace_existing=True)
 # Shut down the scheduler when exiting the app
-atexit.register(lambda: scheduler.shutdown())
+atexit.register(lambda: scheduler.shutdown()) '''
 
 # loads the changelog
 @app.route('/changelog')
@@ -101,8 +101,6 @@ def entries():
 @app.route('/')
 @app.route('/home')
 def home():
-    import changeHandler
-    changeHandler.main()
     return render_template('index.html')
 
 # loads list of related links of other projects
@@ -114,10 +112,10 @@ def links():
 # page.
 @app.route('/search', methods=['POST', 'GET'])
 def search():
+    if not os.path.isfile('static/text/categories.txt'):
+        runChangeHandler()
     if request.method == 'POST': # if args are passed
         return searchResults(request.form)
-    if not os.path.isfile('static/text/categories.txt'):
-        changeHandler.main()
     file = open('static/text/categories.txt', 'r')
     cats = file.read()
     return render_template('search.html', categories=cats)
@@ -135,15 +133,15 @@ def searchResults(query_params):
 
 # finds specific results, namely a single mineral. Used for links in entries.html
 # and in the results.html #TODO. Returns single-mineral version of results.html
-@app.route('/search/<rowNum>')
-def specificResult(rowNum):
-    print(rowNum)
-    results = fetch.getMineral(rowNum) # Has to be called first
+@app.route('/search/<entryNum>')
+def specificResult(entryNum):
+    print(entryNum)
+    results = fetch.getMineral(entryNum) # Has to be called first
     properties = fetch.getSelectedProperties()
     columns = fetch.getColumnNames()
     global resultsTable
     resultsTable = fetch.getResultsTable()
-    return render_template('results.html', table = results, properties = properties, columns = columns, rowNum = rowNum)
+    return render_template('results.html', table = results, properties = properties, columns = columns, rowNum = entryNum)
 
 # basic 404 page. Hopefully isn't called all that often
 @app.errorhandler(404)

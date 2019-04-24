@@ -4,7 +4,7 @@
  * source: https://www.w3schools.com/howto/howto_js_accordion.asp
  *
  * @author  Robbie Freeman, robbie.a.freeman@gmail.com
- * @updated 2018-07-17
+ * @updated 2019-04-24
  * @link    search.html
  *
  */
@@ -20,11 +20,13 @@ for (i = 0; i < acc.length; i++) {
       this.classList.toggle("active");
 
       /* Toggle between hiding and showing the active panel */
-      var structures = this.nextElementSibling.nextElementSibling; /* skip <br> */
-      if (structures.style.display === "block") {
-        structures.style.display = "none";
+      var sublist = document.getElementById(this.previousElementSibling.id + "_children"); /* skip <br> */
+      console.log(this);
+      console.log(this.previousElementSibling.id);
+      if (sublist.style.display === "block") {
+        sublist.style.display = "none";
       } else {
-        structures.style.display = "block";
+        sublist.style.display = "block";
       }
     });
 }

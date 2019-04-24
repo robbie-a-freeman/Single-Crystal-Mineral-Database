@@ -268,10 +268,29 @@ def formatString(results):
     return resultString
 
 # Quickly locate and grab a specific mineral and all of its information
-def getMineral(rowNum):
+def getMineral(num):
     # Find if a mineral matches the given composition. If it does, return the
     # row. If not, return null.
-    tables = tableManager.getInitialTables()
+    num = int(num)
+    tables = tableManager.getInitialTables(asOne=False)
+    print("START OF TABLES")
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(tables)
+    tableLengths = []
+    for t in range(len(tables)):
+        tables[t] = tables[t].drop([0]) # drop the Silicates (or equivalent) line specifically, since it has
+                                # units in it and does not fit the same criteria as
+                                # other rows being dropped.
+        tables[t].dropna(inplace=True, how="any", axis=0, thresh=5) # drop other label rows
+        tableLengths.append(len(tables[t].index))
+    for t in range(len(tables)):
+        if num - tableLengths[t] < 0:
+            result = tables[t].iloc[[num]]
+            return formatString(result)
+        else:
+            num = num - tableLengths[t]
+    return ""
+'''
     table = pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheet_name="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
 
     # Format the row as a String and return it. Also update columns and properties
@@ -287,3 +306,4 @@ def getMineral(rowNum):
     setGlobalColumns(result.columns)
     setGlobalResultTable(result)
     return formatString(result)
+    '''
