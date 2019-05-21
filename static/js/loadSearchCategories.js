@@ -4,7 +4,7 @@
  * accordingly
  *
  * @author  Robbie Freeman, robbie.a.freeman@gmail.com
- * @updated 2019-04-24
+ * @updated 2019-05-21
  * @link    search.html
  *
  */
@@ -14,7 +14,12 @@ function generateCheckboxes(mineralTypes) {
   // clean up the data passed in from the server
   mineralTypes = mineralTypes.split(']');
 
+  // go through each mineral type, clean input data, and create checkboxes within
+  // the type
   for (var i = 0; i < mineralTypes.length; i++) {
+
+    // clean the data and store the categories (within mineral mineralType) in
+    // their own array
     var mineralTypeName = mineralTypes[i].split('[')[0];
     if (mineralTypeName == "") {
       break;
@@ -35,26 +40,12 @@ function generateCheckboxes(mineralTypes) {
 
     // store each group of structures as an array of their shared parent mineral class
     var minClass = categories[0].split(',')[0];
-    var minStructList = [];
-
-    // for each mineralTypeName
-
-    //console.log(mineralTypeName);
-    generateCheckboxFamily("all_minerals", mineralTypeName, []);
+    generateCheckboxFamily("all_minerals", mineralTypeName);
     categories.forEach(function(cat, index) {
       var cats = cat.split(',');
-      //if (minClass != cats[0]) {
-      //generateGroupCheckbox(minClass, minStructList);
-      //var input = document.createElement("div");
-      //input.setAttribute("id", "sub_category_" + i);
-      generateCheckboxFamily(mineralTypeName, cats[0]);
-      //minClass = cats[0];
-      //minStructList = [cats[1]];
-      //} else {
-      //  minStructList.push(cats[1]); }
+      generateCheckboxFamily("all_minerals" + '_' + mineralTypeName, cats[0]);
+      generateCheckboxFamily("all_minerals" + '_' + mineralTypeName + '_' + cats[0], cats[1]);
     });
-    // generateGroupCheckbox(minClass, minStructList); // for the last one
-    generateCheckboxFamily(mineralTypeName, minClass, minStructList);
   }
 
 }
@@ -65,7 +56,7 @@ function generateCheckboxes(mineralTypes) {
 function generateCheckboxFamily(parent, name) {
 
   // check for dupes
-  if (document.getElementById(name.toLowerCase()) != null) {
+  if (document.getElementById(parent.toLowerCase() + '_' + name.toLowerCase()) != null) {
     return null;
   }
 
@@ -83,7 +74,7 @@ function generateCheckboxFamily(parent, name) {
 
   // create and insert new checkbox and its data
   var input = document.createElement("input");
-  input.setAttribute("id", name.toLowerCase());
+  input.setAttribute("id", parent.toLowerCase() + '_' + name.toLowerCase());
   input.setAttribute("class", parent.toLowerCase());
   input.setAttribute("type", "checkbox");
   input.setAttribute("name", name + "_all");
@@ -96,6 +87,7 @@ function generateCheckboxFamily(parent, name) {
   inputDiv.appendChild(node);
   parentDiv.appendChild(inputDiv);
 
+  // grandparentDiv id is just the parent div id without the last _part"
   var grandparentDiv = (document.getElementById(parent.toLowerCase())).parentElement;
 
   // if the first checkbox in parentDiv, create accordion button
