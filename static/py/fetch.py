@@ -37,7 +37,7 @@ def getResultsTable() :
 # the given lists and return a tuple with True. Otherwise, return a tuple with
 # False. For categories
 def isSelected(formData, str, classList, structList) :
-    if formData.get(str) != None or formData.get('all_minerals') != None:
+    if formData.get(str) != None or formData.get('all-minerals') != None:
         print (str + " is selected")
         if str.split('_')[0] not in classList:
             classList.append(str.split('_')[0])
@@ -67,7 +67,8 @@ def search(formData) :
     selectedStructures = []
 
     file = open('static/text/categories.txt', 'r')
-    allCategories = file.read()[2:-2] # trim extra characters
+    allCategories = file.read()[5:-2] # trim extra characters
+    print(allCategories);
     allCategories = allCategories.replace('&#160;', ' ')
     allCategories = allCategories.replace('[', '')
     allCategories = allCategories.replace(']', '')
@@ -76,6 +77,8 @@ def search(formData) :
     allCategories = allCategories.replace('\"', '')
     allCategories = allCategories.split('), ')
     allCategories = [tuple.replace(', ', '_') for tuple in allCategories]
+
+    print(allCategories);
     # Check which class/structures are desired against the ones that exist
     testedCats = []
     currentCat = allCategories[0].split('_')[0]
@@ -83,7 +86,7 @@ def search(formData) :
         if currentCat != allCategories[i].split('_')[0]:
             testedCats.append(currentCat)
         currentCat = allCategories[i].split('_')[0]
-        isCatSelected = isSelected(formData, currentCat + '_all', selectedClasses, selectedStructures)[1]
+        isCatSelected = isSelected(formData, currentCat, selectedClasses, selectedStructures)[1]
         print(currentCat)
         if currentCat not in testedCats and not isCatSelected:
             isSelected(formData, allCategories[i], selectedClasses, selectedStructures)
@@ -94,7 +97,6 @@ def search(formData) :
     # selectedProperties list defined above
     global selectedProperties
     selectedProperties = []
-
     allCats = isSelectedProperties(formData, 'all_cats', selectedProperties)
     if not allCats[1]:
         aem = isSelectedProperties(formData, 'aem', selectedProperties)
@@ -138,7 +140,7 @@ def search(formData) :
     # Select all rows for each mineral class, assuming they are accurately
     # grouped under their labels, and collect them in their respective
     # dataframes. Also account for structure filters
-    lastLabel = ''
+    lastLabel = ""
     results = pd.DataFrame(columns=table.columns)
     classdf = pd.DataFrame(columns=table.columns)
     for index, row in table.iterrows(): # for each of the rows
@@ -163,14 +165,13 @@ def search(formData) :
             print(":( something went wrong or was unexpected at line " + str(index))
     results = pd.concat([results, classdf], sort=False) # for the final category
 
-    # Read the selected properties of the matching minerals into a Pandas
-    # DataFrame
+    # Read the selected properties of the matching minerals into a Pandas DataFrame
     # Assumes all values are selected initially and removes the appropriate
     # column(s) if a category isn't
     if not results.empty:
         if allCats[0] not in selectedProperties:
+            # print(list(results))
             if aem[0] not in selectedProperties:
-                print(list(results))
                 results = results.drop(11, axis=1)
                 results = results.drop(44, axis=1)
                 results = results.drop(12, axis=1)
@@ -240,6 +241,20 @@ def drop(name, table):
     if table[[name]] != None:
         table = results.drop(name, axis=1)
 
+# takes in the row num of the mineral and returns the name of the sheet of origin
+def getSheetNameOfMineral(rowNum):
+    # Store the number of elements in each sheet of the spreadsheet, i.e. how many
+    # minerals of one type are there, in a list of all the first indices and a
+    # parallel list of names of each type (for example: "cubic" or "hexagonal").
+    # This will be sent to the client along with the other data in the string form
+    sheetIndices = tableManager.getTableIntervals()
+    sheetNames = tableManager.getTableNames()
+    for i in range(len(sheetIndices)):
+        if rowNum <= sheetIndices[i]:
+            return sheetNames[i]
+    return "ROW NUM NOT FOUND IN A SHEET"
+
+
 # Format the results dataframe that is passed in to fit with the JS file that
 # will receive and parse it.
 def formatString(results):
@@ -247,11 +262,15 @@ def formatString(results):
     print(results)
     resultString = results.to_string()
     if resultString == "":
-        resultString = 'No results found'
+        resultString = "No results found"
     else:
         resultString = ""
         results.insert(len(results.columns), "\\\\\\", "\\\\\\")
         for x in range(len(results.index)):
+            # insert the sheetname of origin
+            #resultString += getSheetNameOfMineral(x) + "~*"
+            #print("FINISHED GETTING SHEETNAMES")
+            # insert each cell y in a given row x
             for y in range(len(results.columns)):
                 cell = results.iloc[x, y]
                 if type(cell) != str:
@@ -289,7 +308,7 @@ def getMineral(num):
             return formatString(result)
         else:
             num = num - tableLengths[t]
-    return ""
+    return "Error: no result found with input number"
 '''
     table = pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheet_name="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
 

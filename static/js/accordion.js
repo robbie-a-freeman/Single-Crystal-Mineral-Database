@@ -4,7 +4,7 @@
  * source: https://www.w3schools.com/howto/howto_js_accordion.asp
  *
  * @author  Robbie Freeman, robbie.a.freeman@gmail.com
- * @updated 2019-04-24
+ * @updated 2019-05-25
  * @link    search.html
  *
  */
@@ -20,7 +20,7 @@ for (i = 0; i < acc.length; i++) {
       this.classList.toggle("active");
 
       /* Toggle between hiding and showing the active panel */
-      var sublist = document.getElementById(this.previousElementSibling.id + "_children"); /* skip <br> */
+      var sublist = document.getElementById(this.previousElementSibling.id + "-children"); /* skip <br> */
       console.log(this);
       console.log(this.previousElementSibling.id);
       if (sublist.style.display === "block") {

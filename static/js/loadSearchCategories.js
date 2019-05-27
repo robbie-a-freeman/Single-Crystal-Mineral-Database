@@ -40,11 +40,11 @@ function generateCheckboxes(mineralTypes) {
 
     // store each group of structures as an array of their shared parent mineral class
     var minClass = categories[0].split(',')[0];
-    generateCheckboxFamily("all_minerals", mineralTypeName);
+    generateCheckboxFamily("all-minerals", mineralTypeName);
     categories.forEach(function(cat, index) {
       var cats = cat.split(',');
-      generateCheckboxFamily("all_minerals" + '_' + mineralTypeName, cats[0]);
-      generateCheckboxFamily("all_minerals" + '_' + mineralTypeName + '_' + cats[0], cats[1]);
+      generateCheckboxFamily("all-minerals" + '_' + mineralTypeName, cats[0]);
+      generateCheckboxFamily("all-minerals" + '_' + mineralTypeName + '_' + cats[0], cats[1]);
     });
   }
 
@@ -63,12 +63,12 @@ function generateCheckboxFamily(parent, name) {
   // heirarchy is grandparent div > parentCheckbox and parentDiv > input (new checkbox)
   var isFirstInFamily = false;
   // create/retrieve the parentDiv
-  var parentDiv = document.getElementById(parent.toLowerCase() + "_children");
+  var parentDiv = document.getElementById(parent.toLowerCase() + "-children");
   if (parentDiv == null || !$(parentDiv).length) {
     isFirstInFamily = true;
     parentDiv = document.createElement("div");
-    parentDiv.setAttribute("id", parent.toLowerCase() + "_children");
-    parentDiv.setAttribute("class", "sub_categories");
+    parentDiv.setAttribute("id", parent.toLowerCase() + "-children");
+    parentDiv.setAttribute("class", "sub-categories");
     parentDiv.setAttribute("style", "display: none;");
   }
 
@@ -77,17 +77,17 @@ function generateCheckboxFamily(parent, name) {
   input.setAttribute("id", parent.toLowerCase() + '_' + name.toLowerCase());
   input.setAttribute("class", parent.toLowerCase());
   input.setAttribute("type", "checkbox");
-  input.setAttribute("name", name + "_all");
-  input.setAttribute("value", name + "_all");
+  input.setAttribute("name", parent.toLowerCase() + '_' + name.toLowerCase());
 
   var inputDiv = document.createElement("div");
-  inputDiv.setAttribute("id", name.toLowerCase() + "_box_div");
+  inputDiv.setAttribute("id", name.toLowerCase() + "-box-div");
   var node = document.createTextNode(" " + name);
   inputDiv.appendChild(input);
   inputDiv.appendChild(node);
   parentDiv.appendChild(inputDiv);
 
   // grandparentDiv id is just the parent div id without the last _part"
+  console.log(document.getElementById(parent.toLowerCase()));
   var grandparentDiv = (document.getElementById(parent.toLowerCase())).parentElement;
 
   // if the first checkbox in parentDiv, create accordion button

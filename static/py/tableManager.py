@@ -142,3 +142,23 @@ def getInitialTableQuick():
         results = pd.concat([results, table], sort=False)
 
     return results
+
+# Find the length of each of the tables that are pulled from the spreadsheet
+def getTableIntervals():
+    tables = getInitialTables(asOne=False)
+    tableLengths = []
+    totalLength = 0
+    for t in range(len(tables)):
+        tables[t] = tables[t].drop([0]) # drop the Silicates (or equivalent) line specifically, since it has
+                                # units in it and does not fit the same criteria as
+                                # other rows being dropped.
+        tables[t].dropna(inplace=True, how="any", axis=0, thresh=5) # drop other label rows
+        totalLength = totalLength + len(tables[t].index)
+        tableLengths.append(totalLength)
+    return tableLengths
+
+# Find the names of each sheet pulled from the spreadsheet
+def getTableNames():
+    spreadsheet = "static/downloads/single-crystal_db_complete.xlsx" # could choose to make this global
+    xl = pd.ExcelFile(spreadsheet) # same function call forming basis for getInitialTables() and getInitialTablesQuick()
+    return xl.sheet_names
