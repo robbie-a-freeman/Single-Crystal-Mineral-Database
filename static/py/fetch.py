@@ -8,6 +8,8 @@ import pandas as pd
 import math
 import numpy
 import xlrd
+import re
+from flask import jsonify
 
 import tableManager
 
@@ -17,9 +19,11 @@ __maintainer__ = "Robbie Freeman"
 __email__ = "robbie.a.freeman@gmail.com"
 __status__ = "Development"
 
-selectedProperties = []
-columnLabels = []
 results = None
+
+# Return the results table. Shouldn't be called before search()
+def getResultsTable() :
+    return results
 
 # Return the selected properties list. Shouldn't be called before search()
 def getSelectedProperties() :
@@ -29,69 +33,166 @@ def getSelectedProperties() :
 def getColumnNames() :
     return columnLabels
 
-# Return the results table. Shouldn't be called before search()
-def getResultsTable() :
-    return results
-
-# Determine if str has a checkbox in formData that is selected. If so, add to
-# the given lists and return a tuple with True. Otherwise, return a tuple with
-# False. For categories
-def isSelected(formData, str, classList, structList) :
-    if formData.get(str) != None or formData.get('all-minerals') != None:
-        print (str + " is selected")
-        if str.split('_')[0] not in classList:
-            classList.append(str.split('_')[0])
-        structList.append(str)
-        return (str, True)
+# Check if the exact string is selected. Return a boolean
+def isSelected(formData, query) :
+    if formData.get(query) != None or formData.get('\'all-minerals\'') != None:
+        return True
     else:
-        return (str, False)
+        return False
+
+# Check if the given element or any subelement is selected. Return a boolean
+def isPresent(formData, query) :
+    fullQuery = '\'' + query
+    stringifiedData = str(formData)
+    if stringifiedData.find(fullQuery) != -1 or formData.get('\'all-minerals\'') != None:
+        return True
+    else:
+        return False
 
 # Determine if str has a checkbox in formData that is selected. If so, add to
 # the given lists and return a tuple with True. Otherwise, return a tuple with
 # False. For properties
 def isSelectedProperties(formData, str, catList) :
     if formData.get(str) != None:
-        print (str + " is selected")
         catList.append(str)
         return (str, True)
     else:
         return (str, False)
 
+# Checks if the name of a specific "category", "group", or "structure" (the possible values
+# of the string type) are contained in the 3 lists given, assuming the same format
+# of lists as "all-minerals_CATEGORY_GROUP_STRUCTURE". Returns boolean
+
+# TODO cleanup, kind of cumbersome
+def containsElement(type, name, categories, groups, structures):
+    regexPattern = re.compile(name)
+    if type is "category":
+        if name in categories:
+            return True
+        elif filter(regexPattern.match, groups) != None:
+            return True
+        elif filter(regexPattern.match, structures) != None:
+            return True
+        else:
+            return False
+    elif type is "group":
+        if name in groups:
+            return True
+        elif filter(regexPattern.match, structures) != None:
+            return True
+        else:
+            return False
+    elif type is "structure":
+        if name in structures:
+            return True
+        else:
+            return False
+    else:
+        raise NameError('Invalid type name in containsElement()')
+
 # Take in a request.form (ImmutableMultiDict) that is from search.html
 def search(formData) :
     # Save the strings of the chosen mineral classes and types in a list
-
+    print("formData")
     print(formData)
 
-    selectedClasses = []
-    selectedStructures = []
-
+    # ex. CS1[('G1', 'S1'), ('G2', 'S2')]CS2[('G1', 'S3'), ('G3', 'S4')]
+    # ->  (CS1,'G1','S1'),(CS1,'G2','S2'),(CS2,'G1','S3'),(CS2,'G3','S4')
+    # dupes and whitespace should be removed
     file = open('static/text/categories.txt', 'r')
-    allCategories = file.read()[5:-2] # trim extra characters
-    print(allCategories);
-    allCategories = allCategories.replace('&#160;', ' ')
-    allCategories = allCategories.replace('[', '')
-    allCategories = allCategories.replace(']', '')
-    allCategories = allCategories.replace('(', '')
-    allCategories = allCategories.replace('\'', '')
-    allCategories = allCategories.replace('\"', '')
-    allCategories = allCategories.split('), ')
-    allCategories = [tuple.replace(', ', '_') for tuple in allCategories]
+    allCategories = file.read()
+    allCategories = allCategories.replace("&#160;", " ")
+    print("allCategories")
+    print(allCategories)
 
-    print(allCategories);
-    # Check which class/structures are desired against the ones that exist
-    testedCats = []
-    currentCat = allCategories[0].split('_')[0]
-    for i in range(len(allCategories)):
-        if currentCat != allCategories[i].split('_')[0]:
-            testedCats.append(currentCat)
-        currentCat = allCategories[i].split('_')[0]
-        isCatSelected = isSelected(formData, currentCat, selectedClasses, selectedStructures)[1]
-        print(currentCat)
-        if currentCat not in testedCats and not isCatSelected:
-            isSelected(formData, allCategories[i], selectedClasses, selectedStructures)
-        elif currentCat not in testedCats and isCatSelected:
-            testedCats.append(currentCat)
+    # Check which class/structures are desired against the ones that exist.
+    # Creates the fetchedCategories, fetchedGroups, and fetchedStructures lists,
+    # which store the search criteria for later. Also logs which sheets to open,
+    # which saves time in retrieval
+    # Reminder: Categories > Groups > Structures
+    sheetsToCheck = []
+    fetchedCategories = []
+    fetchedGroups = []
+    fetchedStructures = []
+    numberOfCategories = len(allCategories.split('[')) - 1
+    assert(numberOfCategories > 0)
+    for i in range(numberOfCategories):
+        if i < 1:
+            currentCategory = "all-minerals_" + allCategories.split('[')[i].lower()
+        else:
+            currentCategory = "all-minerals_" + allCategories.split(']')[i].split('[')[0].lower()
+        if isPresent(formData, currentCategory): # if some subset of the category is selected
+            assert(currentCategory not in fetchedCategories)
+            sheetsToCheck.append(currentCategory.split('_')[1].capitalize())
+            if isSelected(formData, currentCategory): # if the category box is selected, and thus all its children
+                fetchedCategories.append(currentCategory)
+            else: # if category box isn't selected, but some of its children are
+                currentCategoryContent = allCategories.split('[')[i+1].split(']')[0]
+                numberOfGroups = len(currentCategoryContent.split('\',')) - 1
+                assert(numberOfGroups > 0)
+                for j in range(numberOfGroups):
+                    currentGroup = currentCategoryContent.split('(\'')[j+1].split('\',')[0].lower()
+                    fullCurrentGroup = currentCategory + '_' + currentGroup
+                    if isPresent(formData, fullCurrentGroup) and fullCurrentGroup not in fetchedGroups: # no duplicate groups
+                        if isSelected(formData, fullCurrentGroup):
+                            fetchedGroups.append(fullCurrentGroup)
+                        else:
+                            # number of nonunique groups is = to number of structures
+                            # one structure per group
+                            currentStructure = currentCategoryContent.split(', \'')[j+1].split('\')')[0].lower()
+                            fullCurrentStructure = fullCurrentGroup + '_' + currentStructure
+                            assert(fullCurrentStructure not in fetchedStructures)
+                            fetchedStructures.append(fullCurrentStructure)
+
+    print(fetchedCategories)
+    print(fetchedGroups)
+    print(fetchedStructures)
+    print(sheetsToCheck)
+
+    # Grab the initial tables from the spreadsheet
+    tables = tableManager.getInitialTables(asOne=False)
+    tableNames = tableManager.getTableNames(filterRefs=True)
+    #table =  pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheet_name="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
+    #table.dropna(inplace=True, how="all", axis=1) # columns
+    #table.dropna(inplace=True, how="all", axis=0) # rows
+
+    # Select all rows for each mineral class, assuming they are accurately
+    # grouped under their labels, and collect them in their respective
+    # dataframes. Also account for structure filters
+    # TODO adjust based on selected tables
+    lastMineralCat = ""
+    lastMineralGroup = ""
+    resultTables = []
+    structure = ""
+    for tn in range(len(sheetsToCheck)):
+        results = pd.DataFrame(columns=tables[tn].columns)
+        classdf = pd.DataFrame(columns=tables[tn].columns)
+        lastMineralCat = sheetsToCheck[tn]
+        print(tableNames)
+        print(len(tables))
+        table = tables[tableNames.index(lastMineralCat)] # retrieve table by index
+        for index, row in table.iterrows(): # for each of the rows in selected table
+            rowdf = row.to_frame() # turns a row (Series) into DataFrame
+            if isinstance(row['Structure/SG'], str):
+                structure = "all-minerals_" + lastMineralCat.lower() + '_' + lastMineralGroup.lower() + '_' + row['Structure/SG'].split(',')[0].lower()
+                #print(structure)
+            # if mineral category is requested at all
+            if isPresent(formData, "all-minerals_" + lastMineralCat.lower()) :
+                # if it's a row with a mineral group label we are looking for
+                if not (pd.isnull(row['Name'])) and pd.isnull(row['Composition']) and lastMineralGroup != row['Name']:
+                    lastMineralGroup = row['Name']
+                    if not classdf.equals(results):
+                        results = pd.concat([classdf, results], sort=False)
+                        classdf = pd.DataFrame(columns=table.columns)
+                # if it's a row with an element we are looking for
+                elif lastMineralGroup != '' and (isPresent(formData, "all-minerals_" + lastMineralCat.lower() + lastMineralGroup.lower()) or isPresent(formData, structure)):
+                    classdf = pd.concat([classdf, rowdf.T]) # transpose of row because pandas stores it as a column
+                # if it's a case that's unaccounted for
+                else:
+                    #print(structure.split('_')[1])
+                    print("Hopefully not something we care about at line " + structure)
+        results = pd.concat([results, classdf], sort=False) # for the final category
+        resultTables.append(results)
 
     # Save the strings of desired properties to be retrieved in a second list
     # selectedProperties list defined above
@@ -131,95 +232,68 @@ def search(formData) :
         ec = ("ec", True)
         pre = ("pre", True)
 
-    # Grab the initial tables from the spreadsheet
-    tables = tableManager.getInitialTables()
-    table =  pd.read_excel("static/downloads/single-crystal_db_complete.xlsx", sheet_name="Cubic", header=4, skip_blank_lines=True, skipinitialspace=True)
-    table.dropna(inplace=True, how="all", axis=1) # columns
-    table.dropna(inplace=True, how="all", axis=0) # rows
-
-    # Select all rows for each mineral class, assuming they are accurately
-    # grouped under their labels, and collect them in their respective
-    # dataframes. Also account for structure filters
-    lastLabel = ""
-    results = pd.DataFrame(columns=table.columns)
-    classdf = pd.DataFrame(columns=table.columns)
-    for index, row in table.iterrows(): # for each of the rows
-        rowdf = row.to_frame() # turns a row (Series) into DataFrame
-        if isinstance(row['Structure/SG'], str):
-            structure = lastLabel + '_' + row['Structure/SG'].split(',')[0]
-        # if it's a row with a mineral class label
-        if not (pd.isnull(row['Name'])) and pd.isnull(row['Composition']) and lastLabel != row['Name']:
-            lastLabel = row['Name']
-            if not classdf.equals(results):
-                results = pd.concat([classdf, results], sort=False)
-                classdf = pd.DataFrame(columns=table.columns)
-        # if it's a row following a label but not a label itself
-        elif lastLabel != '' and lastLabel in selectedClasses and (structure in selectedStructures or lastLabel + '_all' in selectedStructures):
-            classdf = pd.concat([classdf, rowdf.T]) # transpose of row because pandas stores it as a column
-        # if it's a label but it's not being searched for
-        elif lastLabel not in selectedClasses:
-            lastLabel = ''
-        # if it's a case that's unaccounted for
-        else:
-            print(structure.split('_')[1])
-            print(":( something went wrong or was unexpected at line " + str(index))
-    results = pd.concat([results, classdf], sort=False) # for the final category
-
     # Read the selected properties of the matching minerals into a Pandas DataFrame
     # Assumes all values are selected initially and removes the appropriate
     # column(s) if a category isn't
-    if not results.empty:
-        if allCats[0] not in selectedProperties:
-            # print(list(results))
-            if aem[0] not in selectedProperties:
-                results = results.drop(11, axis=1)
-                results = results.drop(44, axis=1)
-                results = results.drop(12, axis=1)
-            if am[0] not in selectedProperties:
-                if vrh[0] not in selectedProperties:
-                    results = results.drop('K', axis=1)
-                    results = results.drop('G', axis=1)
-                    results = results.drop('K/G', axis=1)
-                if vrb[0] not in selectedProperties:
-                    results = results.drop('GR', axis=1)
-                    results = results.drop('GV', axis=1)
-                if hsb[0] not in selectedProperties:
-                    results = results.drop('GHS1', axis=1)
-                    results = results.drop('GHS2', axis=1)
-                    results = results.drop('GHSA', axis=1)
-                if ympr[0] not in selectedProperties:
-                    results = results.drop('nVRH', axis=1)
-                    results = results.drop('EVRH', axis=1)
-            if sv[0] not in selectedProperties:
-                results = results.drop('VP', axis=1)
-                results = results.drop('VB', axis=1)
-                results = results.drop('VS', axis=1)
-            if svr[0] not in selectedProperties:
-                results = results.drop('VP/VS', axis=1)
-            if nm[0] not in selectedProperties:
-                results = results.drop('C12/C11', axis=1)
-                results = results.drop('C44/C11', axis=1)
-            if af[0] not in selectedProperties:
-                results = results.drop('AZ', axis=1)
-                results = results.drop('AU', axis=1)
-                results = results.drop('AL', axis=1)
-                results = results.drop('AG', axis=1)
-            if ec[0] not in selectedProperties:
-                results = results.drop('S11', axis=1)
-                results = results.drop('S44', axis=1)
-                results = results.drop('S12', axis=1)
-            if pre[0] not in selectedProperties:
-                results = results.drop('n_110', axis=1)
-                results = results.drop('n_001', axis=1)
-        else:
-            print("all properties included")
+    for t in resultTables:
+        if not t.empty:
+            if allCats[0] not in selectedProperties:
+                # print(list(t))
+                if aem[0] not in selectedProperties:
+                    t = t.drop(11, axis=1)
+                    t = t.drop(44, axis=1)
+                    t = t.drop(12, axis=1)
+                if am[0] not in selectedProperties:
+                    if vrh[0] not in selectedProperties:
+                        t = t.drop('K', axis=1)
+                        t = t.drop('G', axis=1)
+                        t = t.drop('K/G', axis=1)
+                    if vrb[0] not in selectedProperties:
+                        t = t.drop('GR', axis=1)
+                        t = t.drop('GV', axis=1)
+                    if hsb[0] not in selectedProperties:
+                        t = t.drop('GHS1', axis=1)
+                        t = t.drop('GHS2', axis=1)
+                        t = t.drop('GHSA', axis=1)
+                    if ympr[0] not in selectedProperties:
+                        t = t.drop('nVRH', axis=1)
+                        t = t.drop('EVRH', axis=1)
+                if sv[0] not in selectedProperties:
+                    t = t.drop('VP', axis=1)
+                    t = t.drop('VB', axis=1)
+                    t = t.drop('VS', axis=1)
+                if svr[0] not in selectedProperties:
+                    t = t.drop('VP/VS', axis=1)
+                if nm[0] not in selectedProperties:
+                    t = t.drop('C12/C11', axis=1)
+                    t = t.drop('C44/C11', axis=1)
+                if af[0] not in selectedProperties:
+                    t = t.drop('AZ', axis=1)
+                    t = t.drop('AU', axis=1)
+                    t = t.drop('AL', axis=1)
+                    t = t.drop('AG', axis=1)
+                if ec[0] not in selectedProperties:
+                    t = t.drop('S11', axis=1)
+                    t = t.drop('S44', axis=1)
+                    t = t.drop('S12', axis=1)
+                if pre[0] not in selectedProperties:
+                    t = t.drop('n_110', axis=1)
+                    t = t.drop('n_001', axis=1)
+            else:
+                print("all properties included")
 
-    # Get rid of label rows
-    results.dropna(inplace=True, how="any", axis=0)
+        # Get rid of label rows
+        t.dropna(inplace=True, thresh=15, axis=0)
+    setGlobalColumns(resultTables[0]) # TODO fix
+    setGlobalResultTable(resultTables)
+    for t in resultTables:
+        t = t.to_json()
+    return resultTables # formatString(results)
 
-    setGlobalColumns(results)
-    setGlobalResultTable(results)
-    return formatString(results);
+# sets the properties for the given table for the global variable selectedProperties
+def setGlobalResultTable(resultTables):
+    global results
+    results = resultTables
 
 # sets the column labels for the given table for the global variable columnLabels
 def setGlobalColumns(table):
@@ -230,11 +304,6 @@ def setGlobalColumns(table):
 def setGlobalProperties(properties):
     global selectedProperties
     selectedProperties = properties;
-
-# sets the properties for the given table for the global variable selectedProperties
-def setGlobalResultTable(resultTable):
-    global results
-    results = resultTable;
 
 # Drops the column with the name given from the given pandas table
 def drop(name, table):

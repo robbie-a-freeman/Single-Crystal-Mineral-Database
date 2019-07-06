@@ -127,8 +127,10 @@ def searchResults(query_params):
     results = fetch.search(query_params) # Has to be called first
     properties = fetch.getSelectedProperties()
     columns = fetch.getColumnNames()
+    print("JSON results")
+    print(results)
     global resultsTable
-    resultsTable = fetch.getResultsTable()
+    resultsTable = fetch.getResultsTable() # TODO fix, this is completely broken
     return render_template('results.html', table = results, properties = properties, columns = columns)
 
 # finds specific results, namely a single mineral. Used for links in entries.html

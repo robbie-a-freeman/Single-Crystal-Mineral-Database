@@ -16,6 +16,9 @@
 function fillEntries(table, properties, columns, rowNum) {
   // if a rowNum is passed in, it's an individual mineral page. Otherwise, it's
   // a dynamic search result page
+
+  console.log(table);
+
   var isSingleEntry = !(typeof rowNum == 'undefined');
   columns = columns.split(", ");
   var rows = table.split("\\");

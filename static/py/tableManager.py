@@ -5,6 +5,7 @@ import pandas as pd
 import os
 import string
 import xlrd
+import re
 
 #import changelog
 #import allEntries
@@ -157,8 +158,13 @@ def getTableIntervals():
         tableLengths.append(totalLength)
     return tableLengths
 
-# Find the names of each sheet pulled from the spreadsheet
-def getTableNames():
+# Find the names of each sheet pulled from the spreadsheet. If filterRefs is True,
+# just return the names of the sheets with mineral data
+def getTableNames(filterRefs=False): # TODO fix with the rule sheets
     spreadsheet = "static/downloads/single-crystal_db_complete.xlsx" # could choose to make this global
     xl = pd.ExcelFile(spreadsheet) # same function call forming basis for getInitialTables() and getInitialTablesQuick()
-    return xl.sheet_names
+    filteredNames = xl.sheet_names
+    if filterRefs:
+        regexPattern = re.compile("^((?!Refs|Key).)*$")
+        filteredNames = list(filter(regexPattern.match, filteredNames))
+    return filteredNames
